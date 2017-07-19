@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#444444</color>
+    <color name="colorPrimaryDark">#444444</color>
+    <color name="colorAccent">#40ffb3</color>
+
+
+
+    <color name="statusbar">#555555</color>
+    <color name="clockSeparator">#cccccc</color>
+    <color name="actionSeparator">#666</color>
+    <color name="background">#222222</color>
+    <color name="actionClockText">#dddddd</color>
+    <color name="actionTitleText">#ffffff</color>
+
+    <color name="nav_button_default">#444</color>
+    <color name="nav_button_click">#222</color>
+
+    <color name="calendar_text">#e6ffee</color>
+
+    <color name="settings_background">#444</color>
+    <color name="settings_bar_titleText">#ffffff</color>
+    <color name="settings_bar_background">#222222</color>
+    <color name="settings_button_title">#ffffff</color>
+    <color name="settings_button_subtitle">#aaaaaa</color>
+    
+    <color name="spinnerBG">#777</color>
+
+
+
+</resources>

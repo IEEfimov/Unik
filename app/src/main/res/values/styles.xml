@@ -1,0 +1,40 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <!--Main theme of application-->
+    <style name="AppTheme.ActionBar" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.Widget.Day" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/calendar_text </item>
+    </style>
+
+    <!--Тема туулбара-->
+    <style name="AppTheme.Bar" parent="AppTheme">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textColorSecondary">#fff</item>
+    </style>
+
+    <style name="AppTheme.CheckBox" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">#fff</item>
+    </style>
+
+    <!--Выпадающий список-->
+    <style name="AppTheme.PopupDark" parent="AppTheme">
+        <item name="android:textColor">#fff</item>
+        <item name="android:colorBackground">@color/spinnerBG</item>
+    </style>
+
+</resources>

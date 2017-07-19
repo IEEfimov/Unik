@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Unik</string>
+    <string name="app_BD_name">UnizeBD</string>
+
+    <string name="nav_acconunt">Аккаунт</string>
+    <string name="nav_sync">Синхронизация</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_selectData">Выбрать дату</string>
+    <string name="nav_info">О приложении</string>
+    <string name="nav_clock"></string>
+    <string name="nav_diary">Выбрать дневник</string>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+
+    <string name="settings_calendar_edit_title">Список календарей</string>
+    <string name="settings_calendar_edit_subtitle">!!!!Настройки цикличности календарей </string>
+    <string name="settings_item_edit_title">Расписание календарей</string>
+    <string name="settings_item_edit_subtitle">!!!!Настройки расписания календарей </string>
+
+    <string name="settings_calendars">Календари</string>
+    <string name="settings_calendars_selected">Выбранный календарь:</string>
+    <string name="settings_calendars_New">Добавить календарь</string>
+    <string name="settings_calendars_Delete">Удалить</string>
+    <string name="settings_calendars_Rename">Переименовать</string>
+    <string name="settings_calendars_Crypt">Зашифровать (PRO)</string>
+    <string name="settings_items">Расписание</string>
+    <string name="settings_difrentWeekTitle">Контроль четности</string>
+    <string name="settings_difrentWeekSubtitle">Разное расписание для четных и нечетных недель</string>
+    <string name="settings_itemCount">Количество элементов</string>
+
+
+</resources>

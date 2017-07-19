@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    >
+
+    <ImageView
+        app:srcCompat="@drawable/nav_header"
+        android:id="@+id/imageView"
+        android:layout_width="260dp"
+        android:layout_height="171dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+        <Button
+            android:text="@string/nav_acconunt"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/ic_account_circle_white_24dp"
+            android:id="@+id/button2"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp"
+            android:layout_height="55dp" />
+
+        <Button
+            android:text="@string/nav_sync"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:drawableLeft="@drawable/ic_autorenew_white_24dp"
+            android:id="@+id/button4"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:text="@string/nav_diary"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:drawableLeft="@drawable/ic_book_white_24dp"
+            android:id="@+id/button7"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:text="@string/nav_selectData"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:drawableLeft="@drawable/ic_date_range_white_24dp"
+            android:id="@+id/button8"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:text="@string/nav_settings"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:drawableLeft="@drawable/ic_settings_white_24dp"
+            android:id="@+id/nav_settingsBtn"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:text="@string/nav_info"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:drawableLeft="@drawable/ic_info_outline_white_24dp"
+            android:id="@+id/button5"
+            android:background="@drawable/nav"
+            android:textColor="@android:color/background_light"
+            android:paddingLeft="20dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:drawablePadding="30dp"
+            android:elevation="0dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
