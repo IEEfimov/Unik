@@ -30,6 +30,7 @@
     <string name="settings_difrentWeekTitle">Контроль четности</string>
     <string name="settings_difrentWeekSubtitle">Разное расписание для четных и нечетных недель</string>
     <string name="settings_itemCount">Количество элементов</string>
+    <string name="settings_itemCountSubtitle">Количество элементов рассписания каждый день</string>
 
 
 </resources>

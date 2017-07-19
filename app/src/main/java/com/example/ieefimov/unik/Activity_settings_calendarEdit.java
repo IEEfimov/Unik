@@ -29,14 +29,21 @@ import java.util.Map;
 public class Activity_settings_calendarEdit extends AppCompatActivity {
 
     Spinner calendarSelector;
-    LinearLayout diffrentWeekLyout;
+    LinearLayout diffrentWeekLayout;
+    LinearLayout itemCountLayout;
     CheckBox diffrentWeekChkBx;
     SeekBar itemCount;
+    TextView countView_old;
     TextView countView;
     ListView timeList;
 
+
+    int count = 3;
+
     String[] time_start = {"08:00","09:30","11:10"};
     String[] time_end = {"09:20","10:50","12:30"};;
+
+
 
     String calendars[] = {"IEEfimov","Unki","Добавить календарь..."};
 
@@ -57,20 +64,26 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
         kostil.setLayoutParams(params);
 
         calendarSelector = (Spinner) findViewById(R.id.sett_cal_spinner);
-        diffrentWeekLyout = (LinearLayout) findViewById(R.id.diffrentWeekBtn);
+        diffrentWeekLayout = (LinearLayout) findViewById(R.id.diffrentWeekLayout);
+        itemCountLayout = (LinearLayout) findViewById(R.id.itemCountLayout);
         diffrentWeekChkBx = (CheckBox) findViewById(R.id.diffrentWeek);
         itemCount = (SeekBar) findViewById(R.id.seekBar);
-        countView = (TextView) findViewById(R.id.seekValue);
+        countView_old = (TextView) findViewById(R.id.seekValue);
+        countView = (TextView) findViewById(R.id.item_count);
         timeList = (ListView) findViewById(R.id.timeList);
+
+
+        itemCount.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        diffrentWeekLayout.setOnClickListener(linearOnClick);
+        itemCountLayout.setOnClickListener(linearOnClick);
+
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,calendars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         calendarSelector.setAdapter(spinnerAdapter);
-        itemCount.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        diffrentWeekLyout.setOnClickListener(linearOnClick);
-
         update();
+
+        countView.setText(count+"");
 
     }
 
@@ -99,8 +112,11 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.diffrentWeekBtn:
+                case R.id.diffrentWeekLayout:
                     diffrentWeekChkBx.setChecked(!diffrentWeekChkBx.isChecked());
+                    break;
+                case R.id.itemCountLayout:
+
                     break;
             }
         }
@@ -109,24 +125,17 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
     SeekBar.OnSeekBarChangeListener onSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            countView.setText(""+(progress+1));
+            countView_old.setText(""+(progress+1));
             update();
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
+        public void onStartTrackingTouch(SeekBar seekBar) {}
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
+        public void onStopTrackingTouch(SeekBar seekBar) {}
     };
 
     private void update(){
-        int count = itemCount.getProgress()+1;
-
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(count);
         Map<String, Object> m;
 

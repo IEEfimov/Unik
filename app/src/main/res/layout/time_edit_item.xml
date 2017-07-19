@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/settings_background"
+    android:paddingTop="25dp">
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="time"
         android:ems="10"
         android:layout_weight="1"
         android:id="@+id/time_start"
         android:textSize="15sp"
-        android:textColor="@color/actionTitleText" />
+        android:textColor="@color/actionTitleText"
+        android:text="00:00"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
 
     <TextView
         android:text=" - "
@@ -19,9 +25,11 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textStyle="normal|bold"
-        android:textColor="@color/actionTitleText" />
+        android:textColor="@color/actionTitleText"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="time"
@@ -29,5 +37,6 @@
         android:layout_weight="1"
         android:id="@+id/time_end"
         android:textSize="15sp"
-        android:textColor="@color/actionTitleText" />
+        android:textColor="@color/actionTitleText"
+        android:text="00:00" />
 </LinearLayout>
