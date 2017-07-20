@@ -1,5 +1,6 @@
 package com.example.ieefimov.unik;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ieefimov.unik.Classes.Space;
+import com.example.ieefimov.unik.Dialogs.askDigit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +118,8 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
                     diffrentWeekChkBx.setChecked(!diffrentWeekChkBx.isChecked());
                     break;
                 case R.id.itemCountLayout:
-
+                    DialogFragment ask = new askDigit();
+                    ask.show(getFragmentManager(),"aks");
                     break;
             }
         }

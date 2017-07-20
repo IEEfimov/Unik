@@ -33,4 +33,8 @@
     <string name="settings_itemCountSubtitle">Количество элементов рассписания каждый день</string>
 
 
+    <string name="dialog_askItemCountTitile">Выберите количество элементов:</string>
+    <string name="dialog_askItemCountSubtitle">Git is better VCS</string>
+
+
 </resources>
