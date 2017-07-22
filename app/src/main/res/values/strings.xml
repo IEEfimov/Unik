@@ -35,6 +35,8 @@
 
     <string name="dialog_askItemCountTitile">Выберите количество элементов:</string>
     <string name="dialog_askItemCountSubtitle">Git is better VCS</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
 
 
 </resources>

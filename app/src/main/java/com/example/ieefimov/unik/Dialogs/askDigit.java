@@ -1,16 +1,27 @@
 package com.example.ieefimov.unik.Dialogs;
 
 import android.app.DialogFragment;
-import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import com.example.ieefimov.unik.R;
 
+import java.lang.reflect.Field;
+
 public class askDigit extends DialogFragment {
+
+    NumberPicker num;
+    Button cancel;
+    Button ok;
 
     private OnFragmentInteractionListener mListener;
 
@@ -18,15 +29,7 @@ public class askDigit extends DialogFragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment askDigit.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static askDigit newInstance(String param1, String param2) {
         askDigit fragment = new askDigit();
         Bundle args = new Bundle();
@@ -37,33 +40,29 @@ public class askDigit extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setStyle(DialogFragment.STYLE_NO_TITLE,android.R.style.Theme_Holo_Dialog);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ask_digit, container, false);
+        View view = inflater.inflate(R.layout.fragment_ask_digit,container,false);
+        num = (NumberPicker) view.findViewById(R.id.numberPicker);
+        cancel = (Button) view.findViewById(R.id.btn_cancel);
+        ok = (Button) view.findViewById(R.id.btn_ok);
+        num.setMaxValue(20);
+        num.setMinValue(1);
+        num.setValue(4);
+        num.setWrapSelectorWheel(false);
+
+        cancel.setOnClickListener(btnOnClick);
+        ok.setOnClickListener(btnOnClick);
+
+        setNumberPickerTextColor(num, Color.WHITE);
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {
@@ -71,18 +70,50 @@ public class askDigit extends DialogFragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    Button.OnClickListener btnOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btn_cancel:
+                    // TODO: Заполнить обработку кнопок в диалоге
+                    dismiss();
+                    break;
+                case R.id.btn_ok:
+                    break;
+            }
+        }
+    };
+
+    public static boolean setNumberPickerTextColor(NumberPicker numberPicker, int color)
+    {
+        final int count = numberPicker.getChildCount();
+        for(int i = 0; i < count; i++){
+            View child = numberPicker.getChildAt(i);
+            if(child instanceof EditText){
+                try{
+                    Field selectorWheelPaintField = numberPicker.getClass()
+                            .getDeclaredField("mSelectorWheelPaint");
+                    selectorWheelPaintField.setAccessible(true);
+                    ((Paint)selectorWheelPaintField.get(numberPicker)).setColor(color);
+                    ((EditText)child).setTextColor(color);
+                    numberPicker.invalidate();
+                    return true;
+                }
+                catch(NoSuchFieldException e){
+                    Log.w("setNumberPickerTextColo", e);
+                }
+                catch(IllegalAccessException e){
+                    Log.w("setNumberPickerTextColo", e);
+                }
+                catch(IllegalArgumentException e){
+                    Log.w("setNumberPickerTextColo", e);
+                }
+            }
+        }
+        return false;
     }
 }

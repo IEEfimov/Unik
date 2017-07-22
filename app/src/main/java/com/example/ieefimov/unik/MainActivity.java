@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         Space.mainDrawer = drawerLayout;
         Space.stausBarHeight = getStatusBarHeight();
 
+        Intent test = new Intent(getApplicationContext(),Activity_settings_calendarEdit.class);
+        startActivity(test);
+
     }
 
     @Override
