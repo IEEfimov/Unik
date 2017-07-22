@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik;
+package com.ieefimov.unik;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.example.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Classes.Space;
 
 public class Activity_settings_itemsEdit extends AppCompatActivity {
 

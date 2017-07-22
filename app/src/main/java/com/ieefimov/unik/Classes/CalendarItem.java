@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik.Classes;
+package com.ieefimov.unik.Classes;
 
 /**
  * Created by IEEfimov on 22.07.2017.

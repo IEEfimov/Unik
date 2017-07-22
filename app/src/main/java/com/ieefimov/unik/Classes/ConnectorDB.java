@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik.Classes;
+package com.ieefimov.unik.Classes;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.ieefimov.unik.R;
+import com.ieefimov.unik.R;
 
 import static android.content.ContentValues.TAG;
 

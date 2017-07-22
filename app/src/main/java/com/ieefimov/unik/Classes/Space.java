@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik.Classes;
+package com.ieefimov.unik.Classes;
 
 import android.support.v4.widget.DrawerLayout;
 

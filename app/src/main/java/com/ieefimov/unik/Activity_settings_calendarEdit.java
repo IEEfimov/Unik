@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik;
+package com.ieefimov.unik;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -20,10 +20,10 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.ieefimov.unik.Classes.CalendarItem;
-import com.example.ieefimov.unik.Classes.ConnectorDB;
-import com.example.ieefimov.unik.Classes.Space;
-import com.example.ieefimov.unik.Dialogs.askDigit;
+import com.ieefimov.unik.Classes.CalendarItem;
+import com.ieefimov.unik.Classes.ConnectorDB;
+import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Dialogs.askDigit;
 
 import java.util.ArrayList;
 import java.util.HashMap;

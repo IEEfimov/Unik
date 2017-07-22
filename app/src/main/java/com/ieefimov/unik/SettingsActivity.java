@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik;
+package com.ieefimov.unik;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.example.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Classes.Space;
 
 public class SettingsActivity extends AppCompatActivity {
 

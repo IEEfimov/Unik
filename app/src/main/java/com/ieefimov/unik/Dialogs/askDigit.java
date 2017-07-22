@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik.Dialogs;
+package com.ieefimov.unik.Dialogs;
 
 import android.app.DialogFragment;
 import android.graphics.Color;
@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
-import com.example.ieefimov.unik.R;
+import com.ieefimov.unik.R;
 
 import java.lang.reflect.Field;
 

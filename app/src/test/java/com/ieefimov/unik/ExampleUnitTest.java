@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik;
+package com.ieefimov.unik;
 
 import org.junit.Test;
 

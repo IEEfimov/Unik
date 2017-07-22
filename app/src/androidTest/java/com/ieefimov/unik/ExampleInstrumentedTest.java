@@ -1,4 +1,4 @@
-package com.example.ieefimov.unik;
+package com.ieefimov.unik;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/settings_background"
-    tools:context="com.example.ieefimov.unik.Activity_settings_calendarEdit">
+    tools:context="com.example.ieefimov.unik.com.ieefimov.unik.Activity_settings_calendarEdit">
 
     <FrameLayout
         android:id="@+id/kostil_top"
