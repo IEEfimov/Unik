@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ieefimov.unik.Dialogs.askDigit"
+    tools:context="com.ieefimov.unik.Dialogs.askTime"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,17 +18,17 @@
         android:paddingStart="20dp">
 
         <TextView
-            android:id="@+id/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_editItemCount_title"
+            android:text="@string/dialog_addCalendar_title"
             android:textColor="@color/actionTitleText"
-            android:textSize="17sp" />
+            android:id="@+id/Title"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_editItemCount_subtitle"
+            android:text="@string/dialog_addCalendar_subtitle"
             android:textColor="@color/settings_button_subtitle"
             android:paddingStart="20dp"
             android:id="@+id/Subtitle"
@@ -47,11 +47,21 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <NumberPicker
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/startTime"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/numberPicker"
-                    android:gravity="center" />
+                    android:inputType="time"
+                    android:ems="10"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/endTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"/>
+
             </LinearLayout>
         </LinearLayout>
 

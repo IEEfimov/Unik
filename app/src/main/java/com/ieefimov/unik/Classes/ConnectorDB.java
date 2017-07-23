@@ -176,7 +176,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
     }
 
     // новый календарь
-    public  boolean insertCalendar(CalendarItem item){
+    public  long insertCalendar(CalendarItem item){
         int week = 0;
         if (item.isDifferentWeek()) week = 1;
         SQLiteDatabase db = getReadableDatabase();
@@ -195,11 +195,12 @@ public class ConnectorDB extends SQLiteOpenHelper {
             cv.put("Items",item.getItemCount());
             cv.put("WeekCount",week);
 
-            db.insert("Calendars",null,cv);
+            long result = db.insert("Calendars",null,cv);
 
-            return true;
+
+            return result;
         }
-        return false;
+        return -1;
     }
 
     // обновить календарь

@@ -1,6 +1,6 @@
 package com.ieefimov.unik;
 
-import android.app.DialogFragment;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +25,9 @@ import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askConfirm;
+import com.ieefimov.unik.Dialogs.askDigit;
 import com.ieefimov.unik.Dialogs.askName;
+import com.ieefimov.unik.Dialogs.askTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +54,8 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
 
     CalendarItem currentCalendar;
     ConnectorDB database;
+
+    Activity activity;
 
 
     final String ATTRIBUTE_START = "start";
@@ -85,7 +89,9 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         diffrentWeekLayout.setOnClickListener(linearOnClick);
         itemCountLayout.setOnClickListener(linearOnClick);
         calendarSelector.setOnItemSelectedListener(spinnerOnClick);
+        timeList.setOnItemClickListener(onItemClickListener);
 
+        activity = this;
 
         //////////////////////////////////////////////////
         getData();
@@ -113,7 +119,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
                 finish();
                 break;
             case R.id.action_add:
-
                 askName.setActivity(this,Space.OnCompleteListener.ADD_CALENDAR);
                 askName.show(getFragmentManager(),"Новый календарь");
                 break;
@@ -141,10 +146,13 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
             switch (v.getId()){
                 case R.id.diffrentWeekLayout:
                     differentWeekChkBx.setChecked(!differentWeekChkBx.isChecked());
+                    currentCalendar.setDifferentWeek(differentWeekChkBx.isChecked());
+                    database.updateCalendar(currentCalendar);
                     break;
                 case R.id.itemCountLayout:
-                    DialogFragment ask = new askName();
-                    ask.show(getFragmentManager(),"aks");
+                    askDigit ask = new askDigit();
+                    ask.setActivity(activity,Space.OnCompleteListener.EDIT_ITEM_COUNT);
+                    ask.show(getFragmentManager(),(currentCalendar.getItemCount()+""));
                     break;
 
             }
@@ -206,21 +214,38 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         for (int i=0;i<calendars.length;i++){
             calendars[i] = calendarItems[i].getName();
         }
-        if (currentCalendar == null) currentCalendar = calendarItems[0];
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,calendars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         calendarSelector.setAdapter(spinnerAdapter);
+
+        if (currentCalendar == null) currentCalendar = calendarItems[0];
+        else {
+            boolean flag = false;
+            for (int i = 0; i < calendarItems.length; i++) {
+                if (currentCalendar.getId() == calendarItems[i].getId()) {
+                    currentCalendar = calendarItems[i];
+                    calendarSelector.setSelection(i);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) currentCalendar = calendarItems[0];
+
+        }
+
     }
 
     ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener(){
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            EditText temp = (EditText) view;
-            temp.setText("16:30");
-            temp.setOnEditorActionListener(onEditorActionListener);
+            askTime askTime = new askTime();
+            askTime.setActivity(activity,Space.OnCompleteListener.EDIT_ITEM);
+            askTime.show(getFragmentManager(),"13:10","14:00");
         }
     };
+
 
     EditText.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
@@ -235,7 +260,9 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     @Override
     public void addCalendar(String result) {
         CalendarItem temp = new CalendarItem(0,result,3,false);
-        database.insertCalendar(temp);
+        long newId = database.insertCalendar(temp);
+        temp.setId(newId);
+        currentCalendar = temp;
         getData();
         update();
     }
@@ -254,6 +281,19 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         database.deleteCalendar(currentCalendar);
         getData();
         update();
+    }
+
+    @Override
+    public void editItemCount(int count) {
+        currentCalendar.setItemCount(count);
+        countView.setText(count+"");
+        database.updateCalendar(currentCalendar);
+        update();
+    }
+
+    @Override
+    public void editItem(int num, String result) {
+
     }
 
 

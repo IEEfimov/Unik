@@ -35,14 +35,14 @@ public class askName extends DialogFragment {
         this.mListener = (Space.OnCompleteListener) activity;
         this.todo = todo;
         if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
-            titleStr = "Введите новое имя:";
-            subStr = "Выбранное имя будет установленно для выбранного календаря";
+            titleStr = activity.getResources().getString(R.string.dialog_renameCalendar_title);
+            subStr = activity.getResources().getString(R.string.dialog_renameCalendar_subtitle);
 
         }
         if (todo==Space.OnCompleteListener.ADD_CALENDAR){
-            titleStr = "Введите имя календаря:";
-            subStr = "Будет создан новый календарь, который Вы позже сможете настроить";
-            nameFieldText = "Новый календарь";
+            titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
+            subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
+            nameFieldText = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
         }
 
     }
@@ -70,6 +70,7 @@ public class askName extends DialogFragment {
         title = (TextView) view.findViewById(R.id.Title);
         subtitle = (TextView) view.findViewById(R.id.Subtitle);
         name.setText(nameFieldText);
+        name.setOnClickListener(editOnClick);
 
         title.setText(titleStr);
         subtitle.setText(subStr);
@@ -107,6 +108,14 @@ public class askName extends DialogFragment {
                     }
                     break;
             }
+        }
+    };
+
+    EditText.OnClickListener editOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String newSrt = getResources().getString(R.string.dialog_addCalendar_defaultName);
+            if (name.getText().toString().equals(newSrt)) name.setText("");
         }
     };
 

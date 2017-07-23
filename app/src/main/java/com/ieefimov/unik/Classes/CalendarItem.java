@@ -5,7 +5,7 @@ package com.ieefimov.unik.Classes;
  */
 
 public class CalendarItem {
-    private int id;
+    private long id;
     private String name;
     private int itemCount;
     private boolean differentWeek;
@@ -17,7 +17,7 @@ public class CalendarItem {
         this.differentWeek = true;
     }
 
-    public CalendarItem(int id, String name, int itemCount, boolean differentWeek) {
+    public CalendarItem(long id, String name, int itemCount, boolean differentWeek) {
         this.id = id;
         this.name = name;
         this.itemCount = itemCount;
@@ -31,11 +31,11 @@ public class CalendarItem {
         this.differentWeek = copy.differentWeek;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

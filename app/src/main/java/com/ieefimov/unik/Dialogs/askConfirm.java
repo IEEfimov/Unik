@@ -31,6 +31,8 @@ public class askConfirm extends DialogFragment {
 
     //////////////////////////////////////////
 
+    Activity activity;
+
     public askConfirm() {
         // Required empty public constructor
     }
@@ -38,6 +40,7 @@ public class askConfirm extends DialogFragment {
     public void setActivity(Activity activity, int todo){
         this.mListener = (Space.OnCompleteListener) activity;
         this.todo = todo;
+        this.activity = activity;
         //if (tod==Space.OnCompleteListener.DELETE_CALENDAR)
     }
 
@@ -50,7 +53,7 @@ public class askConfirm extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ask_confirm,container,false);
+        View view = inflater.inflate(R.layout.dialog_ask_confirm,container,false);
         cancel = (Button) view.findViewById(R.id.btn_cancel);
         ok = (Button) view.findViewById(R.id.btn_ok);
         aSwitch = (Switch) view.findViewById(R.id.switch1);
@@ -69,8 +72,10 @@ public class askConfirm extends DialogFragment {
     @Override
     public void show(FragmentManager manager, String tag) {
         super.show(manager, tag);
-        titleStr = "Удаление календаря \""+tag+"\"";
-        subStr = "Восстановить календарь можно только при наличии резервной копии";
+
+        titleStr = activity.getResources().getString(R.string.dialog_deleteCalendar_title) + tag + "\".";
+        subStr = activity.getResources().getString(R.string.dialog_deleteCalendar_subtitle);
+
     }
 
     Button.OnClickListener btnOnClick = new View.OnClickListener() {

@@ -1,9 +1,10 @@
 package com.ieefimov.unik.Dialogs;
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
+import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
 
 import java.lang.reflect.Field;
@@ -20,21 +23,34 @@ import java.lang.reflect.Field;
 public class askDigit extends DialogFragment {
 
     NumberPicker num;
+
     Button cancel;
     Button ok;
 
-    private OnFragmentInteractionListener mListener;
+    TextView title,subtitle;
+    String titleStr,subStr, nameFieldText;
+
+    Space.OnCompleteListener mListener;
+    int todo;
 
     public askDigit() {
         // Required empty public constructor
     }
 
+    public void setActivity(Activity activity, int todo){
+        this.mListener = (Space.OnCompleteListener) activity;
+        this.todo = todo;
+        if (todo==Space.OnCompleteListener.EDIT_ITEM_COUNT){
+            titleStr = activity.getResources().getString(R.string.dialog_editItemCount_title);
+            subStr = activity.getResources().getString(R.string.dialog_editItemCount_subtitle);
 
-    public static askName newInstance(String param1, String param2) {
-        askName fragment = new askName();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        }
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        super.show(manager, tag);
+        nameFieldText = tag;
     }
 
     @Override
@@ -50,9 +66,21 @@ public class askDigit extends DialogFragment {
         num = (NumberPicker) view.findViewById(R.id.numberPicker);
         cancel = (Button) view.findViewById(R.id.btn_cancel);
         ok = (Button) view.findViewById(R.id.btn_ok);
+        title = (TextView) view.findViewById(R.id.Title);
+        subtitle = (TextView) view.findViewById(R.id.Subtitle);
+
+        title.setText(titleStr);
+        subtitle.setText(subStr);
+
         num.setMaxValue(20);
         num.setMinValue(1);
-        num.setValue(4);
+
+        try {
+            int number = Integer.parseInt(nameFieldText);
+            num.setValue(number);
+        }catch (Exception e){};
+
+
         num.setWrapSelectorWheel(false);
 
         cancel.setOnClickListener(btnOnClick);
@@ -70,9 +98,6 @@ public class askDigit extends DialogFragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
 
     Button.OnClickListener btnOnClick = new View.OnClickListener() {
         @Override
@@ -83,6 +108,8 @@ public class askDigit extends DialogFragment {
                     dismiss();
                     break;
                 case R.id.btn_ok:
+                    mListener.editItemCount(num.getValue());
+                    dismiss();
                     break;
             }
         }

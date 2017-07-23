@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_askNameTitile"
+            android:text="@string/dialog_addCalendar_title"
             android:textColor="@color/actionTitleText"
             android:id="@+id/Title"
             android:textSize="20sp" />
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_askNameSubtitle"
+            android:text="@string/dialog_addCalendar_subtitle"
             android:textColor="@color/settings_button_subtitle"
             android:paddingStart="20dp"
             android:id="@+id/Subtitle"
