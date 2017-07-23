@@ -19,17 +19,19 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Dialogs.askDigit;
+import com.ieefimov.unik.Dialogs.askConfirm;
+import com.ieefimov.unik.Dialogs.askName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_settings_calendarEdit extends AppCompatActivity {
+public class Activity_settings_calendarEdit extends AppCompatActivity implements Space.OnCompleteListener {
 
     Spinner calendarSelector;
     LinearLayout diffrentWeekLayout;
@@ -43,11 +45,13 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
 
     CalendarItem[] calendarItems;
     String calendars[];
-    int calendarID;
-    boolean differentWeekFlag;
-    int itemCount;
     String[] time_start;
     String[] time_end;;
+
+    //////////////////////
+
+    CalendarItem currentCalendar;
+    ConnectorDB database;
 
 
     final String ATTRIBUTE_START = "start";
@@ -56,6 +60,9 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        database = new ConnectorDB(this,1); // подключение к БД.
+
         setContentView(R.layout.activity_settings_calendar_edit);
 
         Toolbar tool = (Toolbar) findViewById(R.id.toolbar);
@@ -77,13 +84,11 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
 
         diffrentWeekLayout.setOnClickListener(linearOnClick);
         itemCountLayout.setOnClickListener(linearOnClick);
+        calendarSelector.setOnItemSelectedListener(spinnerOnClick);
+
 
         //////////////////////////////////////////////////
         getData();
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,calendars);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        calendarSelector.setAdapter(spinnerAdapter);
 
         update();
     }
@@ -101,13 +106,33 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        askName askName = new askName();
+        askConfirm askConfirm = new askConfirm();
         switch (item.getItemId()){
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.action_add:
+
+                askName.setActivity(this,Space.OnCompleteListener.ADD_CALENDAR);
+                askName.show(getFragmentManager(),"Новый календарь");
+                break;
+            case R.id.action_Rename:
+                askName.setActivity(this,Space.OnCompleteListener.RENAME_CALENDAR);
+                askName.show(getFragmentManager(),currentCalendar.getName());
+                break;
+            case R.id.action_delete:
+                askConfirm.setActivity(this,Space.OnCompleteListener.DELETE_CALENDAR);
+                askConfirm.show(getFragmentManager(),currentCalendar.getName());
+                break;
+            case R.id.action_crypt:
+                Toast.makeText(this,"Обновите до PRO",Toast.LENGTH_SHORT);
+                break;
         }
         return true;
     }
+
+
 
     LinearLayout.OnClickListener linearOnClick = new View.OnClickListener() {
         //TODO: Обработчик элемента время
@@ -118,30 +143,44 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
                     differentWeekChkBx.setChecked(!differentWeekChkBx.isChecked());
                     break;
                 case R.id.itemCountLayout:
-                    DialogFragment ask = new askDigit();
+                    DialogFragment ask = new askName();
                     ask.show(getFragmentManager(),"aks");
                     break;
+
             }
         }
     };
 
-    private void update(){
-        calendarID = calendarItems[0].getId();
-        differentWeekFlag = calendarItems[0].isDifferentWeek();
-        itemCount = calendarItems[0].getItemCount();
+    Spinner.OnItemSelectedListener spinnerOnClick = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            try{
+                currentCalendar = calendarItems[position];
+                update();
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(),"Ошибочка вышла :(",Toast.LENGTH_LONG);
+            }
+        }
 
-        time_start = new String[0];
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    private void update(){
+        time_start = new String[0]; // TODO: ТУТ ДЫРА РАЗМЕРОМ С АМЕРИКУ
         time_end = new String[0];
 
-        differentWeekChkBx.setChecked(differentWeekFlag);
-        countView.setText(itemCount+"");
+        differentWeekChkBx.setChecked(currentCalendar.isDifferentWeek());
+        countView.setText(currentCalendar.getItemCount()+"");
 
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(itemCount);
+        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(currentCalendar.getItemCount());
         Map<String, Object> m;
 
-        for (int i = 0; i < itemCount; i++) {
-            String temp1 = "";
-            String temp2 = "";
+        for (int i = 0; i < currentCalendar.getItemCount(); i++) {
+            String temp1 = "00:00";
+            String temp2 = "00:00";
             if (time_start.length > i) temp1 = time_start[i];
             if (time_end.length > i)   temp2 = time_end[i];
 
@@ -161,15 +200,16 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
     }
 
     private void getData(){
-        ConnectorDB db = new ConnectorDB(this,1);
-        db.insertCalendar(new CalendarItem());
-        calendarItems = db.selectCalendar(-1);
 
+        calendarItems = database.selectCalendar(-1);
         calendars = new String[calendarItems.length];
         for (int i=0;i<calendars.length;i++){
             calendars[i] = calendarItems[i].getName();
         }
-
+        if (currentCalendar == null) currentCalendar = calendarItems[0];
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,calendars);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        calendarSelector.setAdapter(spinnerAdapter);
     }
 
     ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener(){
@@ -190,4 +230,31 @@ public class Activity_settings_calendarEdit extends AppCompatActivity {
             return false;
         }
     };
+
+
+    @Override
+    public void addCalendar(String result) {
+        CalendarItem temp = new CalendarItem(0,result,3,false);
+        database.insertCalendar(temp);
+        getData();
+        update();
+    }
+
+    @Override
+    public void renameCalendar(String result) {
+        CalendarItem temp = new CalendarItem(currentCalendar);
+        temp.setName(result);
+        database.updateCalendar(temp);
+        getData();
+        update();
+    }
+
+    @Override
+    public void deleteCalendar() {
+        database.deleteCalendar(currentCalendar);
+        getData();
+        update();
+    }
+
+
 }

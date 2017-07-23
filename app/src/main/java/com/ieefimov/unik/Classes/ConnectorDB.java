@@ -220,4 +220,12 @@ public class ConnectorDB extends SQLiteOpenHelper {
         return true;
     }
 
+    // удалить календарь
+    public boolean deleteCalendar(CalendarItem item){
+        String selectCondition = "id = " + item.getId();
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("Calendars",selectCondition,null);
+        return true;
+    }
+
 }

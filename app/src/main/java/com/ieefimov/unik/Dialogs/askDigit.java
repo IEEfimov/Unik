@@ -30,8 +30,8 @@ public class askDigit extends DialogFragment {
     }
 
 
-    public static askDigit newInstance(String param1, String param2) {
-        askDigit fragment = new askDigit();
+    public static askName newInstance(String param1, String param2) {
+        askName fragment = new askName();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -46,7 +46,7 @@ public class askDigit extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ask_digit,container,false);
+        View view = inflater.inflate(R.layout.dialog_ask_digit,container,false);
         num = (NumberPicker) view.findViewById(R.id.numberPicker);
         cancel = (Button) view.findViewById(R.id.btn_cancel);
         ok = (Button) view.findViewById(R.id.btn_ok);

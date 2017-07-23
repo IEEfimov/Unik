@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.ieefimov.unik.com.ieefimov.unik.Dialogs.askDigit"
+    tools:context="com.ieefimov.unik.Dialogs.askName"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -20,9 +20,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_askItemCountTitile"
+            android:text="@string/dialog_askNameTitile"
             android:textColor="@color/actionTitleText"
-            android:textSize="17sp" />
+            android:id="@+id/Title"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_askNameSubtitle"
+            android:textColor="@color/settings_button_subtitle"
+            android:paddingStart="20dp"
+            android:id="@+id/Subtitle"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -37,11 +47,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <NumberPicker
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/numberPicker"
-                    android:gravity="center" />
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:ems="10"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/editText" />
+
             </LinearLayout>
         </LinearLayout>
 

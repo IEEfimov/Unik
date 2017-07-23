@@ -34,9 +34,15 @@
 
 
     <string name="dialog_askItemCountTitile">Выберите количество элементов:</string>
+    <string name="dialog_askNameTitile">Введите имя:</string>
+    <string name="dialog_askNameSubtitle">Выбранное имя будет использовано для нового календаря</string>
+    <string name="dialog_askConfirmSwipe">Я знаю что делаю  </string>
     <string name="dialog_askItemCountSubtitle">Git is better VCS</string>
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
