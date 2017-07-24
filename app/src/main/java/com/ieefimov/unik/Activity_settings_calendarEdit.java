@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
+import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askConfirm;
 import com.ieefimov.unik.Dialogs.askDigit;
@@ -53,6 +54,7 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     //////////////////////
 
     CalendarItem currentCalendar;
+    Hour[] currentHours;
     ConnectorDB database;
 
     Activity activity;
@@ -177,8 +179,50 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     };
 
     private void update(){
-        time_start = new String[0]; // TODO: ТУТ ДЫРА РАЗМЕРОМ С АМЕРИКУ
-        time_end = new String[0];
+        Hour[] tempHours = database.selectHour(currentCalendar);
+
+        currentHours = new Hour[currentCalendar.getItemCount()];
+        for (int i=0;i<currentHours.length;i++){
+            if (tempHours!=null && tempHours.length>i) currentHours[i] = tempHours[i];
+            else {
+                currentHours[i] = new Hour();
+                currentHours[i].setCalendar(currentCalendar.getId());
+            }
+        }
+
+//        if (tempHours == null){
+//            currentHours = new Hour[currentCalendar.getItemCount()];
+//            for (int i=0;i<currentCalendar.getItemCount();i++){
+//                currentHours[i] = new Hour();
+//                currentHours[i].setCalendar(currentCalendar.getId());
+//            }
+//        }else {
+//            if (tempHours.length<currentCalendar.getItemCount()){
+//                currentHours = new Hour[currentCalendar.getItemCount()];
+//                for (int i=0;i<currentCalendar.getItemCount();i++){
+//                    currentHours[i] = new Hour();
+//                    currentHours[i].setCalendar(currentCalendar.getId());
+//                }
+//            }
+//        }
+
+        time_start = new String[currentHours.length];
+        time_end = new String[currentHours.length];
+
+        for (int i=0;i<time_start.length;i++){
+            time_start[i] = currentHours[i].getStart();
+            time_end[i] = currentHours[i].getEnd();
+        }
+
+//        if (currentHours != null) {
+//            time_start = new String[currentHours.length];
+//            time_end = new String[currentHours.length];
+//        }else {
+//            time_start = new String[0];
+//            time_end = new String[0];
+//        }
+
+
 
         differentWeekChkBx.setChecked(currentCalendar.isDifferentWeek());
         countView.setText(currentCalendar.getItemCount()+"");
@@ -187,14 +231,16 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         Map<String, Object> m;
 
         for (int i = 0; i < currentCalendar.getItemCount(); i++) {
-            String temp1 = "00:00";
-            String temp2 = "00:00";
-            if (time_start.length > i) temp1 = time_start[i];
-            if (time_end.length > i)   temp2 = time_end[i];
+//            String temp1 = "00:00";
+//            String temp2 = "00:00";
+//            if (time_start.length > i) temp1 = time_start[i];
+//            if (time_end.length > i)   temp2 = time_end[i];
+
+
 
             m = new HashMap<String, Object> ();
-            m.put(ATTRIBUTE_START, temp1);
-            m.put(ATTRIBUTE_END, temp2);
+            m.put(ATTRIBUTE_START, time_start[i]);
+            m.put(ATTRIBUTE_END, time_end[i]);
             data.add(m);
         } // массив имен атрибутов, из которых будут читаться данные
         String[] from = { ATTRIBUTE_START, ATTRIBUTE_END,};
@@ -242,7 +288,7 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             askTime askTime = new askTime();
             askTime.setActivity(activity,Space.OnCompleteListener.EDIT_ITEM);
-            askTime.show(getFragmentManager(),"13:10","14:00");
+            askTime.show(getFragmentManager(),currentHours[position]);
         }
     };
 
@@ -292,8 +338,16 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     }
 
     @Override
-    public void editItem(int num, String result) {
+    public void editItem(Hour hour) {
+        if (hour.getId()!= -1) database.updateHour(hour);
+        else database.insertHour(hour);
+        update();
+    }
 
+    @Override
+    public void addItem(Hour hour) {
+        database.insertHour(hour);
+        update();
     }
 
 

@@ -18,6 +18,35 @@ import static android.content.ContentValues.TAG;
 public class ConnectorDB extends SQLiteOpenHelper {
     Context context = null;
 
+    final String TABLE_ITEMS = "Main";
+    final String ROW_ITEMS_NAME = "Name";
+    final String ROW_ITEMS_ROOM = "Room";
+    final String ROW_ITEMS_HOUR = "Hour";
+    final String ROW_ITEMS_DAY = "Day";
+    final String ROW_ITEMS_WEEK = "Week";
+    final String ROW_ITEMS_CALENDAR = "Calendar";
+
+    final String TABLE_CALENDARS = "Calendars";
+    final String ROW_CALENDARS_NAME = "Name";
+    final String ROW_CALENDARS_ITEMS_COUNT = "Items";
+    final String ROW_CALENDARS_WEEKS_COUNT = "WeekCount";
+
+    final String TABLE_HOURS = "Items";
+    final String ROW_HOURS_START = "Start";
+    final String ROW_HOURS_END = "End";
+    final String ROW_HOURS_CALENDAR = "Calendar";
+
+    final String TABLE_SUBJECTS = "Subjects";
+    final String ROW_SUBJECTS_NAME = "Name";
+
+    final String TABLE_HOMEWORK = "HomeWork";
+    final String ROW_HOMEWORK_SUBJECT = "Subject";
+    final String ROW_HOMEWORK_DATE_OF_ADD = "Date";
+    final String ROW_HOMEWORK_MY_TEXT = "MyText";
+    final String ROW_HOMEWORK_GROUP_TEXT = "GroupText";
+
+    final String ROW_ID = "id";
+
     public ConnectorDB(Context context, int version) {
         super(context,context.getResources().getString(R.string.app_BD_name) , null, version);
         this.context = context;
@@ -29,7 +58,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         Log.d(TAG,"Creating table...");
 
         // таблица основных записей
-        db.execSQL("create table `Main` ("
+        db.execSQL("create table "+ TABLE_ITEMS +" ("
                 + "id integer primary key autoincrement,"
                 + "Name text,"
                 + "Room text,"
@@ -39,19 +68,31 @@ public class ConnectorDB extends SQLiteOpenHelper {
                 + "Calendar integer" + ");");
 
         // таблица настроек календаря
-        db.execSQL("create table Calendars ("
+        db.execSQL("create table "+TABLE_CALENDARS+" ("
                 + "id integer primary key autoincrement,"
                 + "Name text,"
                 + "Items integer,"
                 + "WeekCount integer);");
 
         // таблица настроек пар
-        db.execSQL("create table `Items` ("
+        db.execSQL("create table "+ TABLE_HOURS +" ("
                 + "id integer primary key autoincrement,"
                 + "Start text,"
                 + "End integer,"
                 + "Calendar integer);");
 
+        // таблица предметов
+        db.execSQL("create table "+ TABLE_SUBJECTS +" ("
+                + "id integer primary key autoincrement,"
+                +  ROW_SUBJECTS_NAME +" text);");
+
+
+        db.execSQL("create table "+ TABLE_HOMEWORK +" ("
+                + "id integer primary key autoincrement,"
+                + ROW_HOMEWORK_SUBJECT+ " integer,"
+                + ROW_HOMEWORK_DATE_OF_ADD+ " text,"
+                + ROW_HOMEWORK_MY_TEXT+ " text,"
+                + ROW_HOMEWORK_GROUP_TEXT+ " text);");
 
         firstInserts(db);
 
@@ -69,7 +110,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         cv.put("Items",item.getItemCount());
         cv.put("WeekCount",week);
 
-        db.insert("Calendars",null,cv);
+        db.insert(TABLE_CALENDARS,null,cv);
     }
 
     @Override // при несоответствии версии
@@ -226,6 +267,94 @@ public class ConnectorDB extends SQLiteOpenHelper {
         String selectCondition = "id = " + item.getId();
         SQLiteDatabase db = getWritableDatabase();
         db.delete("Calendars",selectCondition,null);
+        return true;
+    }
+
+
+    //=======================================================//
+
+
+    public Hour[] selectHour(CalendarItem calendar){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectCondition = ROW_HOURS_CALENDAR+" = " + calendar.getId();
+        Cursor reader = db.query(TABLE_HOURS,null,selectCondition,null,null,null,null);
+        // поиск по таблице с заданным условием
+
+        if (reader.moveToFirst()){ // если найдена хотя бы одна запись
+            int count = reader.getCount();
+            int idIndex = reader.getColumnIndex("id");
+            int startIndex = reader.getColumnIndex(ROW_HOURS_START);
+            int endIndex = reader.getColumnIndex(ROW_HOURS_END);
+            int calendarIndex = reader.getColumnIndex(ROW_HOURS_CALENDAR);
+
+            int i = 0;
+            Hour[] items = new Hour[count];
+            do {
+                Hour temp = new Hour();
+                temp.setId(reader.getInt(idIndex));
+                temp.setStart(reader.getString(startIndex));
+                temp.setEnd(reader.getString(endIndex));
+                temp.setCalendar(reader.getInt(calendarIndex));
+
+                items[i] = temp;
+                i++;
+            }
+            while (reader.moveToNext());
+            return  items;
+        }
+        else return null;
+    }
+
+    public long insertHour(Hour item){
+        if (!item.isValid()) return -1;
+        // не записывать если данные не правильные
+        SQLiteDatabase db = getReadableDatabase();
+        String selectCondition = "("
+                +ROW_HOURS_START+" = ? and "
+                +ROW_HOURS_END+" = ? and "
+                +ROW_HOURS_CALENDAR+" = ?)";
+        String[] values = {item.getStart(),item.getEnd(),item.getCalendar()+""};
+        Cursor reader = db.query(TABLE_HOURS,null,selectCondition,values,null,null,null,null);
+
+        // если уже существует запись с данными параметрами - выход
+        if (!reader.moveToFirst()){
+            db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+
+            cv.put(ROW_HOURS_START,item.getStart());
+            cv.put(ROW_HOURS_END,item.getEnd());
+            cv.put(ROW_HOURS_CALENDAR,item.getCalendar());
+
+            long result = db.insert(TABLE_HOURS,null,cv);
+
+
+            return result;
+        }
+        return -1;
+    }
+
+    public boolean updateHour(Hour item){
+        if (!item.isValid()) return false;
+        if (item.getId()<0) return false;
+        // не изменять при поврежденных данных
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectCondition = "id = " + item.getId();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ROW_HOURS_START,item.getStart());
+        cv.put(ROW_HOURS_END,item.getEnd());
+        cv.put(ROW_HOURS_CALENDAR,item.getCalendar());
+
+        db.update(TABLE_HOURS,cv,selectCondition,null);
+        return true;
+    }
+
+    public boolean deleteHour(Hour item){
+        if (item.getId()<0) return false;
+        String selectCondition = "id = " + item.getId();
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_HOURS,selectCondition,null);
         return true;
     }
 

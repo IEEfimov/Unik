@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
 
@@ -32,6 +33,8 @@ public class askTime extends DialogFragment {
 
     EditText timeStart,timeEnd;
 
+    Hour hour;
+
     private Space.OnCompleteListener mListener;
     private int todo;
 
@@ -43,6 +46,7 @@ public class askTime extends DialogFragment {
         this.mListener = (Space.OnCompleteListener) activity;
         this.todo = todo;
         if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
+            // todo Написать нормальный текст
             titleStr = activity.getResources().getString(R.string.dialog_editTime_title);
             subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
         }
@@ -50,10 +54,11 @@ public class askTime extends DialogFragment {
     }
 
 
-    public void show(FragmentManager manager, String tag,String tag2) {
-        super.show(manager, tag);
-        nameFieldText1 = tag;
-        nameFieldText2 = tag2;
+    public void show(FragmentManager manager, Hour hour) {
+        super.show(manager, "askTime");
+        nameFieldText1 = hour.getStart();
+        nameFieldText2 = hour.getEnd();
+        this.hour = hour;
     }
 
 
@@ -102,12 +107,13 @@ public class askTime extends DialogFragment {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btn_cancel:
-                    // TODO: Заполнить обработку кнопок в диалоге
                     dismiss();
                     break;
                 case R.id.btn_ok:
                     try{
-
+                        hour.setStart(timeStart.getText().toString());
+                        hour.setEnd(timeEnd.getText().toString());
+                        if (todo == Space.OnCompleteListener.EDIT_ITEM) mListener.editItem(hour);
                         dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());
