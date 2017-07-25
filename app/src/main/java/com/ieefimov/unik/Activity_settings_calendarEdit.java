@@ -175,24 +175,15 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     };
 
     private void update(){
-        Hour[] tempHours = database.selectHour(currentCalendar);
+        currentHours = database.selectHour(currentCalendar);
 
-        currentHours = new Hour[currentCalendar.getItemCount()];
-        for (int i=0;i<currentHours.length;i++){
-            if (tempHours!=null && tempHours.length>i) currentHours[i] = tempHours[i];
-            else {
-                currentHours[i] = new Hour();
-                currentHours[i].setCalendar(currentCalendar.getId());
-            }
-        }
+        //time_start = new String[currentHours.length];
+       // time_end = new String[currentHours.length];
 
-        time_start = new String[currentHours.length];
-        time_end = new String[currentHours.length];
-
-        for (int i=0;i<time_start.length;i++){
-            time_start[i] = currentHours[i].getStart();
-            time_end[i] = currentHours[i].getEnd();
-        }
+//        for (int i=0;i<time_start.length;i++){
+//            time_start[i] = currentHours[i].getStart();
+//            time_end[i] = currentHours[i].getEnd();
+//        }
 
         differentWeekChkBx.setChecked(currentCalendar.isDifferentWeek());
         countView.setText(currentCalendar.getItemCount()+"");
@@ -202,8 +193,8 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
 
         for (int i = 0; i < currentCalendar.getItemCount(); i++) {
             m = new HashMap<String, Object> ();
-            m.put(ATTRIBUTE_START, time_start[i]);
-            m.put(ATTRIBUTE_END, time_end[i]);
+            m.put(ATTRIBUTE_START, currentHours[i].getStart());
+            m.put(ATTRIBUTE_END, currentHours[i].getEnd());
             data.add(m);
         } // массив имен атрибутов, из которых будут читаться данные
         String[] from = { ATTRIBUTE_START, ATTRIBUTE_END,};
@@ -293,7 +284,7 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
 
     @Override
     public void editItemTime(Hour hour) {
-        if (hour.getId()!= -1) database.updateHour(hour);
+        if (hour.getId() > -1) database.updateHour(hour);
         else database.insertHour(hour);
         update();
     }

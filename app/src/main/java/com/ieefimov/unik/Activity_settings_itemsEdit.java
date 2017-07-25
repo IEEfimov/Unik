@@ -172,24 +172,18 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
     private void update(){
         int day = 0;
         int week = 0;
-
         for (int i = 0; i <daySelect.length ; i++) {
             if (daySelect[i].isChecked()){
                 day = i;
                 break;
             }
         }
-
         for (int i = 0; i <weekSelect.length ; i++) {
             if (weekSelect[i].isChecked()){
                 week = i;
                 break;
             }
         }
-
-        Hour[] tempHours = database.selectHour(currentCalendar);
-        Item[] tempItems = database.selectItems(day,week,currentCalendar.getId());
-
         if (!currentCalendar.isDifferentWeek()){
             weekSelect[0].setChecked(true);
             weekSelect[1].setChecked(false);
@@ -197,23 +191,25 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
         }
         else weekLayout.setVisibility(View.VISIBLE);
 
+        ////////////////////////////////////////////////
 
-
-        currentHours = new Hour[currentCalendar.getItemCount()];
+        currentHours = database.selectHour(currentCalendar);
+        //================
         currentItems = new Item[currentCalendar.getItemCount()];
-        for (int i=0;i<currentHours.length;i++){
-            if (tempHours!=null && tempHours.length>i) currentHours[i] = tempHours[i];
-            else {
-                currentHours[i] = new Hour();
-                currentHours[i].setCalendar(currentCalendar.getId());
+        Item[] tempItems = database.selectItems(day,week,currentCalendar.getId());
+
+        for (int i = 0; i < tempItems.length; i++) {
+            for (int j = 0; j < currentHours.length;j++){
+                if (tempItems[i].getHour()==currentHours[j].getId())
+                    currentItems[currentHours[j].getNum()] = tempItems[i];
             }
-            if (tempItems!=null && tempItems.length>i) currentItems[i] = tempItems[i];
-            else {
+        }
+        for (int i=0;i<currentItems.length;i++){
+            if (currentItems[i] == null){
                 currentItems[i] = new Item();
                 currentItems[i].setDay(day);
                 currentItems[i].setCalendar(currentCalendar.getId());
                 currentItems[i].setHour(currentHours[i].getId());
-                currentItems[i].setId(-1);
                 currentItems[i].setWeek(week);
                 currentItems[i].setName(getResources().getString(R.string.dialog_editItem_defaultName));
                 currentItems[i].setRoom(getResources().getString(R.string.dialog_editItem_defaultRoom));
@@ -278,8 +274,8 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
     ToggleButton.OnClickListener onClickListenerToggle = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            for (int i = 0; i < daySelect.length ; i++) {
-                daySelect[i].setChecked(false);
+            for (ToggleButton aDaySelect : daySelect) {
+                aDaySelect.setChecked(false);
             }
             ToggleButton btn = (ToggleButton) v;
             btn.setChecked(true);
@@ -290,8 +286,8 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
     ToggleButton.OnClickListener onClickListenerWeek = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            for (int i = 0; i < weekSelect.length ; i++) {
-                weekSelect[i].setChecked(false);
+            for (ToggleButton aWeekSelect : weekSelect) {
+                aWeekSelect.setChecked(false);
             }
             ToggleButton btn = (ToggleButton) v;
             btn.setChecked(true);
@@ -302,6 +298,9 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
 
     @Override
     public void editItem(Item item) {
+        if (item.getHour() == -1){
+
+        }
         if (item.getId()!= -1) database.updateItem(item);
         else database.insertItem(item);
         update();

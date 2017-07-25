@@ -16,34 +16,35 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ConnectorDB extends SQLiteOpenHelper {
-    Context context = null;
+    private Context context = null;
 
-    final String TABLE_ITEMS = "Main";
-    final String ROW_ITEMS_NAME = "Name";
-    final String ROW_ITEMS_ROOM = "Room";
-    final String ROW_ITEMS_HOUR = "Hour";
-    final String ROW_ITEMS_DAY = "Day";
-    final String ROW_ITEMS_WEEK = "Week";
-    final String ROW_ITEMS_CALENDAR = "Calendar";
+    private final String TABLE_ITEMS = "Main";
+    private final String ROW_ITEMS_NAME = "Name";
+    private final String ROW_ITEMS_ROOM = "Room";
+    private final String ROW_ITEMS_HOUR = "Hour";
+    private final String ROW_ITEMS_DAY = "Day";
+    private final String ROW_ITEMS_WEEK = "Week";
+    private final String ROW_ITEMS_CALENDAR = "Calendar";
 
-    final String TABLE_CALENDARS = "Calendars";
-    final String ROW_CALENDARS_NAME = "Name";
-    final String ROW_CALENDARS_ITEMS_COUNT = "Items";
-    final String ROW_CALENDARS_WEEKS_COUNT = "WeekCount";
+    private final String TABLE_CALENDARS = "Calendars";
+    private final String ROW_CALENDARS_NAME = "Name";
+    private final String ROW_CALENDARS_ITEMS_COUNT = "Items";
+    private final String ROW_CALENDARS_WEEKS_COUNT = "WeekCount";
 
-    final String TABLE_HOURS = "Items";
-    final String ROW_HOURS_START = "Start";
-    final String ROW_HOURS_END = "End";
-    final String ROW_HOURS_CALENDAR = "Calendar";
+    private final String TABLE_HOURS = "Items";
+    private final String ROW_HOURS_START = "Start";
+    private final String ROW_HOURS_END = "End";
+    private final String ROW_HOURS_CALENDAR = "Calendar";
+    private final String ROW_HOURS_NUMBER = "num";
 
-    final String TABLE_SUBJECTS = "Subjects";
-    final String ROW_SUBJECTS_NAME = "Name";
+    private final String TABLE_SUBJECTS = "Subjects";
+    private final String ROW_SUBJECTS_NAME = "Name";
 
-    final String TABLE_HOMEWORK = "HomeWork";
-    final String ROW_HOMEWORK_SUBJECT = "Subject";
-    final String ROW_HOMEWORK_DATE_OF_ADD = "Date";
-    final String ROW_HOMEWORK_MY_TEXT = "MyText";
-    final String ROW_HOMEWORK_GROUP_TEXT = "GroupText";
+    private final String TABLE_HOMEWORK = "HomeWork";
+    private final String ROW_HOMEWORK_SUBJECT = "Subject";
+    private final String ROW_HOMEWORK_DATE_OF_ADD = "Date";
+    private final String ROW_HOMEWORK_MY_TEXT = "MyText";
+    private final String ROW_HOMEWORK_GROUP_TEXT = "GroupText";
 
     final String ROW_ID = "id";
 
@@ -79,6 +80,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
                 + "id integer primary key autoincrement,"
                 + "Start text,"
                 + "End integer,"
+                + ROW_HOURS_NUMBER + " integer,"
                 + "Calendar integer);");
 
         // таблица предметов
@@ -164,18 +166,26 @@ public class ConnectorDB extends SQLiteOpenHelper {
             while (reader.moveToNext());
             return  items;
         }
-        else return null;
+        else return new Item[0];
     }
 
     public long insertItem(Item item){
         if (!item.isValid()) return -1;
         // не записывать если данные не правильные
+        if (item.getHour()<0){
+            Hour temp = new Hour();
+            temp.setCalendar(item.getCalendar());
+            temp.setNum((int)-item.getHour());
+            item.setHour(insertHour(temp));
+        }
         SQLiteDatabase db = getReadableDatabase();
         String selectCondition = "("
+                +ROW_ITEMS_HOUR+" = ? and "
                 +ROW_ITEMS_DAY+" = ? and "
                 +ROW_ITEMS_WEEK+" = ? and "
                 +ROW_ITEMS_CALENDAR+" = ?)";
-        String[] values = {item.getDay()+"",item.getWeek()+"",item.getCalendar()+""};
+        String[] values = {item.getHour()+"",item.getDay()+"",
+                item.getWeek()+"",item.getCalendar()+""};
         Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
         // если уже существует запись с данными параметрами - выход
         if (!reader.moveToFirst()){
@@ -318,6 +328,10 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
     public Hour[] selectHour(CalendarItem calendar){
         SQLiteDatabase db = getReadableDatabase();
+
+        Hour[] result = new Hour[calendar.getItemCount()];
+
+
         String selectCondition = ROW_HOURS_CALENDAR+" = " + calendar.getId();
         Cursor reader = db.query(TABLE_HOURS,null,selectCondition,null,null,null,null);
         // поиск по таблице с заданным условием
@@ -328,23 +342,31 @@ public class ConnectorDB extends SQLiteOpenHelper {
             int startIndex = reader.getColumnIndex(ROW_HOURS_START);
             int endIndex = reader.getColumnIndex(ROW_HOURS_END);
             int calendarIndex = reader.getColumnIndex(ROW_HOURS_CALENDAR);
+            int numberIndex = reader.getColumnIndex(ROW_HOURS_NUMBER);
 
             int i = 0;
-            Hour[] items = new Hour[count];
+            //Hour[] items = new Hour[count];
             do {
                 Hour temp = new Hour();
                 temp.setId(reader.getInt(idIndex));
                 temp.setStart(reader.getString(startIndex));
                 temp.setEnd(reader.getString(endIndex));
                 temp.setCalendar(reader.getInt(calendarIndex));
+                temp.setNum(reader.getInt(numberIndex));
 
-                items[i] = temp;
-                i++;
+                if (temp.getNum()<calendar.getItemCount()) result[temp.getNum()] = temp;
             }
             while (reader.moveToNext());
-            return  items;
         }
-        else return null;
+        for (int i=0;i<result.length;i++){
+            if (result[i] == null) {
+                result[i] = new Hour();
+                result[i].setCalendar(calendar.getId());
+                result[i].setNum(i);
+                result[i].setId(-i);
+            }
+        }
+        return result;
     }
 
     public long insertHour(Hour item){
@@ -352,10 +374,9 @@ public class ConnectorDB extends SQLiteOpenHelper {
         // не записывать если данные не правильные
         SQLiteDatabase db = getReadableDatabase();
         String selectCondition = "("
-                +ROW_HOURS_START+" = ? and "
-                +ROW_HOURS_END+" = ? and "
+                +ROW_HOURS_NUMBER+" = ? and "
                 +ROW_HOURS_CALENDAR+" = ?)";
-        String[] values = {item.getStart(),item.getEnd(),item.getCalendar()+""};
+        String[] values = {item.getNum()+"",item.getCalendar()+""};
         Cursor reader = db.query(TABLE_HOURS,null,selectCondition,values,null,null,null,null);
 
         // если уже существует запись с данными параметрами - выход
@@ -366,6 +387,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
             cv.put(ROW_HOURS_START,item.getStart());
             cv.put(ROW_HOURS_END,item.getEnd());
             cv.put(ROW_HOURS_CALENDAR,item.getCalendar());
+            cv.put(ROW_HOURS_NUMBER,item.getNum());
 
             long result = db.insert(TABLE_HOURS,null,cv);
 
@@ -387,6 +409,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         cv.put(ROW_HOURS_START,item.getStart());
         cv.put(ROW_HOURS_END,item.getEnd());
         cv.put(ROW_HOURS_CALENDAR,item.getCalendar());
+        cv.put(ROW_HOURS_NUMBER,item.getNum());
 
         db.update(TABLE_HOURS,cv,selectCondition,null);
         return true;

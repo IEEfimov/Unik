@@ -44,7 +44,6 @@ public class Item {
     }
 
     public boolean isValid(){
-        if (hour<0) return false;
         if (day<0) return false;
         if (week<0) return false;
         if (calendar<0) return false;

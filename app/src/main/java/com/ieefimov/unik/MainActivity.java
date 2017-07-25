@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Space.mainDrawer = drawerLayout;
         Space.stausBarHeight = getStatusBarHeight();
 
-        Intent test = new Intent(getApplicationContext(),Activity_settings_itemsEdit.class);
+        Intent test = new Intent(getApplicationContext(),SettingsActivity.class);
         startActivity(test);
 
     }
