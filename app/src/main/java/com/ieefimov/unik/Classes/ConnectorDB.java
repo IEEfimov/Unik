@@ -118,17 +118,22 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
     }
 
-    // получаем массив пар в заданный день
-    public  Item[] select(int day, int week, int calendar){
+
+    //=======================================================//
+
+
+    public Item[] selectItems(int day, int week, long calendar){
         SQLiteDatabase db = getReadableDatabase();
+        // TODO: 25.07.2017 Сделать аргументный ввод
         String selectCondition = "Day = " + day
                 + "Week = " + week
                 + "Calendar = " + calendar;
         Cursor reader = db.query("Main table",null,selectCondition,null,null,null,null);
-            // поиск по таблице с заданным условием
+        // поиск по таблице с заданным условием
 
         if (reader.moveToFirst()){ // если найдена хотя бы одна запись
             int count = reader.getCount();
+            int idIndex = reader.getColumnIndex(ROW_ID);
             int nameIndex = reader.getColumnIndex("Name");
             int roomIndex = reader.getColumnIndex("Room");
             int hourIndex = reader.getColumnIndex("Hour");
@@ -139,6 +144,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
             Item[] items = new Item[count];
             do {
                 Item temp = new Item();
+                temp.setId(reader.getInt(idIndex));
                 temp.setName(reader.getString(nameIndex));
                 temp.setRoom(reader.getString(roomIndex));
                 temp.setHour(reader.getInt(hourIndex));
@@ -155,8 +161,9 @@ public class ConnectorDB extends SQLiteOpenHelper {
         else return null;
     }
 
-    // новая запись в таблице Main
-    public  boolean insert(Item item){
+    public long insertItem(Item item){
+        if (!item.isValid()) return -1;
+        // не записывать если данные не правильные
         SQLiteDatabase db = getReadableDatabase();
         String selectCondition = "Day = " + item.getDay()
                 + "Week = " + item.getWeek()
@@ -168,21 +175,52 @@ public class ConnectorDB extends SQLiteOpenHelper {
             db = getWritableDatabase();
             ContentValues cv = new ContentValues();
 
-            cv.put("Name",item.getName());
-            cv.put("Room",item.getRoom());
-            cv.put("Hour",item.getHour());
-            cv.put("Day",item.getDay());
-            cv.put("Week",item.getWeek());
-            cv.put("Calendar",item.getCalendar());
+            cv.put(ROW_ITEMS_NAME,item.getName());
+            cv.put(ROW_ITEMS_ROOM,item.getRoom());
+            cv.put(ROW_ITEMS_HOUR,item.getHour());
+            cv.put(ROW_ITEMS_DAY,item.getDay());
+            cv.put(ROW_ITEMS_WEEK,item.getWeek());
+            cv.put(ROW_ITEMS_CALENDAR,item.getCalendar());
 
-            db.insert("Main table",null,cv);
-            return true;
+            long result = db.insert("Main table",null,cv);
+
+            return result;
         }
-        return false;
+        return -1;
+    }
+
+    public boolean updateItem(Item item){
+        if (!item.isValid()) return false;
+        if (item.getId()<0) return false;
+        // не изменять при поврежденных данных
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectCondition = "id = " + item.getId();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ROW_ITEMS_NAME,item.getName());
+        cv.put(ROW_ITEMS_ROOM,item.getRoom());
+        cv.put(ROW_ITEMS_HOUR,item.getHour());
+        cv.put(ROW_ITEMS_DAY,item.getDay());
+        cv.put(ROW_ITEMS_WEEK,item.getWeek());
+        cv.put(ROW_ITEMS_CALENDAR,item.getCalendar());
+
+        db.update(TABLE_HOURS,cv,selectCondition,null);
+        return true;
+    }
+
+    public boolean deleteItem(Item item){
+        if (item.getId()<0) return false;
+        String selectCondition = "id = " + item.getId();
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_HOURS,selectCondition,null);
+        return true;
     }
 
 
-    // Получаем календарь
+    //=======================================================//
+
+
     public  CalendarItem[] selectCalendar(int id){
         SQLiteDatabase db = getReadableDatabase();
         String selectCondition = "id = " + id;
@@ -216,7 +254,6 @@ public class ConnectorDB extends SQLiteOpenHelper {
         else return null;
     }
 
-    // новый календарь
     public  long insertCalendar(CalendarItem item){
         int week = 0;
         if (item.isDifferentWeek()) week = 1;
@@ -244,7 +281,6 @@ public class ConnectorDB extends SQLiteOpenHelper {
         return -1;
     }
 
-    // обновить календарь
     public boolean updateCalendar(CalendarItem item){
         int week = 0;
         if (item.isDifferentWeek()) week = 1;
@@ -262,7 +298,6 @@ public class ConnectorDB extends SQLiteOpenHelper {
         return true;
     }
 
-    // удалить календарь
     public boolean deleteCalendar(CalendarItem item){
         String selectCondition = "id = " + item.getId();
         SQLiteDatabase db = getWritableDatabase();

@@ -39,7 +39,7 @@
         </android.support.v7.widget.Toolbar>
 
         <include
-            layout="@layout/action_list"
+            layout="@layout/item_action_main_old"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"/>

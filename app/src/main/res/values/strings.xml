@@ -51,9 +51,31 @@
     <string name="dialog_editTime_title">Введите новое имя:</string>
     <string name="dialog_editTime_subtitle">Выбранное имя будет установленно для выбранного календаря</string>
 
+    <string name="dialog_editItem_title">Введите данные:</string>
+    <string name="dialog_editItem_subtitle">Первое поле - имя элемента \n\r Второе поле - комната</string>
+    <string name="dialog_editItem_defaultName">Название</string>
+    <string name="dialog_editItem_defaultRoom">Комната</string>
+
+    <string name="settings_edit">Редактировать</string>
+    <string name="settings_blankItem">Редактировать</string>
+    <string name="settings_blankRoom">\?</string>
+
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
 
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <string name="w1">пн</string>
+    <string name="w2">вт</string>
+    <string name="w3">ср</string>
+    <string name="w4">чт</string>
+    <string name="w5">пт</string>
+    <string name="w6">сб</string>
+    <string name="w7">вс</string>
+
+    <string name="week1">1</string>
+    <string name="week2">2</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

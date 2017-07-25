@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:paddingTop="20dp"
+    android:paddingBottom="5dp"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/nav">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text=" 8:00"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/timeStart"
+            android:textColor="@color/actionClockText"
+            android:layout_width="50dp" />
+
+        <TextView
+            android:text=" 9:20"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/timeEnd"
+            android:textColor="@color/actionClockText"
+            android:layout_width="50dp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="1dp"
+        android:background="@color/clockSeparator">
+
+    </FrameLayout>
+
+    <TextView
+        android:text="Теорія ймовірності (л)"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/actionText"
+        android:textColor="@color/actionTitleText"
+        android:layout_gravity="left|center"
+        android:textSize="18sp"
+        android:padding="5dp" />
+
+    <TextView
+        android:text="14-108"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actionRoom"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:textColor="@color/actionClockText" />
+</LinearLayout>

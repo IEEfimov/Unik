@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/settings_background"
-    tools:context="com.example.ieefimov.unik.com.ieefimov.unik.Activity_settings_itemsEdit">
+    tools:context="com.ieefimov.unik.Activity_settings_itemsEdit">
 
     <FrameLayout
         android:id="@+id/kostil_top"
@@ -39,5 +39,123 @@
             android:backgroundTint="@color/actionTitleText" />
 
     </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dayLayout">
+
+            <ToggleButton
+                android:textOn="@string/w1"
+                android:textOff="@string/w1"
+                android:layout_width="wrap_content"
+                android:id="@+id/w1"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector"
+                android:layout_height="30dp" />
+
+            <ToggleButton
+                android:textOn="@string/w2"
+                android:textOff="@string/w2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w2"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector" />
+
+            <ToggleButton
+                android:textOn="@string/w3"
+                android:textOff="@string/w3"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w3"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector"/>
+
+            <ToggleButton
+                android:textOn="@string/w4"
+                android:textOff="@string/w4"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w4"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector"/>
+
+            <ToggleButton
+                android:textOn="@string/w5"
+                android:textOff="@string/w5"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w5"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector"/>
+
+            <ToggleButton
+                android:textOn="@string/w6"
+                android:textOff="@string/w6"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w6"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector" />
+
+            <ToggleButton
+                android:textOn="@string/w7"
+                android:textOff="@string/w7"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/w7"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weekLayout">
+
+            <ToggleButton
+                android:textOn="@string/week1"
+                android:textOff="@string/week1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/week1"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector"
+                />
+
+            <ToggleButton
+                android:textOff="@string/week2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/week2"
+                android:layout_weight="1"
+                android:textOn="@string/week2"
+                android:background="@drawable/toggle_button_bg_selector"
+                android:textColor="@color/toggle_button_text_selector" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/itemList" />
 
 </LinearLayout>

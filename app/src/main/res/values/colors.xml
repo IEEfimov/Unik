@@ -26,6 +26,15 @@
     
     <color name="spinnerBG">#777</color>
 
+    <color name="toggleBG_normal">#444</color>
+    <color name="toggleBG_pressed">#555</color>
+    <color name="toggleBG_toggle">#333</color>
+
+    <color name="toggleText_normal">#fff</color>
+    <color name="toggleText_pressed">#fff</color>
+    <color name="toggleText_toggle">#40ffb3</color>
+
+
 
 
 </resources>

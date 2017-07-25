@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,10 +35,9 @@ import java.util.Map;
 public class Activity_settings_calendarEdit extends AppCompatActivity implements Space.OnCompleteListener {
 
     Spinner calendarSelector;
-    LinearLayout diffrentWeekLayout;
+    LinearLayout differentWeekLayout;
     LinearLayout itemCountLayout;
     CheckBox differentWeekChkBx;
-    TextView countView_old;
     TextView countView;
     ListView timeList;
 
@@ -80,15 +77,14 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         kostil.setLayoutParams(params);
 
         calendarSelector = (Spinner) findViewById(R.id.sett_cal_spinner);
-        diffrentWeekLayout = (LinearLayout) findViewById(R.id.diffrentWeekLayout);
+        differentWeekLayout = (LinearLayout) findViewById(R.id.diffrentWeekLayout);
         itemCountLayout = (LinearLayout) findViewById(R.id.itemCountLayout);
         differentWeekChkBx = (CheckBox) findViewById(R.id.diffrentWeek);
-        countView_old = (TextView) findViewById(R.id.seekValue);
         countView = (TextView) findViewById(R.id.item_count);
         timeList = (ListView) findViewById(R.id.timeList);
 
 
-        diffrentWeekLayout.setOnClickListener(linearOnClick);
+        differentWeekLayout.setOnClickListener(linearOnClick);
         itemCountLayout.setOnClickListener(linearOnClick);
         calendarSelector.setOnItemSelectedListener(spinnerOnClick);
         timeList.setOnItemClickListener(onItemClickListener);
@@ -190,22 +186,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
             }
         }
 
-//        if (tempHours == null){
-//            currentHours = new Hour[currentCalendar.getItemCount()];
-//            for (int i=0;i<currentCalendar.getItemCount();i++){
-//                currentHours[i] = new Hour();
-//                currentHours[i].setCalendar(currentCalendar.getId());
-//            }
-//        }else {
-//            if (tempHours.length<currentCalendar.getItemCount()){
-//                currentHours = new Hour[currentCalendar.getItemCount()];
-//                for (int i=0;i<currentCalendar.getItemCount();i++){
-//                    currentHours[i] = new Hour();
-//                    currentHours[i].setCalendar(currentCalendar.getId());
-//                }
-//            }
-//        }
-
         time_start = new String[currentHours.length];
         time_end = new String[currentHours.length];
 
@@ -214,16 +194,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
             time_end[i] = currentHours[i].getEnd();
         }
 
-//        if (currentHours != null) {
-//            time_start = new String[currentHours.length];
-//            time_end = new String[currentHours.length];
-//        }else {
-//            time_start = new String[0];
-//            time_end = new String[0];
-//        }
-
-
-
         differentWeekChkBx.setChecked(currentCalendar.isDifferentWeek());
         countView.setText(currentCalendar.getItemCount()+"");
 
@@ -231,13 +201,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         Map<String, Object> m;
 
         for (int i = 0; i < currentCalendar.getItemCount(); i++) {
-//            String temp1 = "00:00";
-//            String temp2 = "00:00";
-//            if (time_start.length > i) temp1 = time_start[i];
-//            if (time_end.length > i)   temp2 = time_end[i];
-
-
-
             m = new HashMap<String, Object> ();
             m.put(ATTRIBUTE_START, time_start[i]);
             m.put(ATTRIBUTE_END, time_end[i]);
@@ -246,7 +209,7 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         String[] from = { ATTRIBUTE_START, ATTRIBUTE_END,};
         int [] to = { R.id.time_start, R.id.time_end};
 
-        SimpleAdapter sAdapter = new SimpleAdapter(this, data, R.layout.time_edit_item, from, to);
+        SimpleAdapter sAdapter = new SimpleAdapter(this, data, R.layout.item_time, from, to);
 
         timeList.setAdapter(sAdapter);
         timeList.setOnItemClickListener(onItemClickListener);
@@ -261,7 +224,7 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
             calendars[i] = calendarItems[i].getName();
         }
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,calendars);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,R.layout.item_spinner,calendars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         calendarSelector.setAdapter(spinnerAdapter);
 
@@ -292,15 +255,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
         }
     };
 
-
-    EditText.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            String temp = (String) v.getText();
-            if (temp.length()==2) v.setText(temp+":");
-            return false;
-        }
-    };
 
 
     @Override
@@ -338,17 +292,10 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
     }
 
     @Override
-    public void editItem(Hour hour) {
+    public void editItemTime(Hour hour) {
         if (hour.getId()!= -1) database.updateHour(hour);
         else database.insertHour(hour);
         update();
     }
-
-    @Override
-    public void addItem(Hour hour) {
-        database.insertHour(hour);
-        update();
-    }
-
 
 }

@@ -15,15 +15,17 @@ public class Space {
         public final int RENAME_CALENDAR = 2;
         public final int DELETE_CALENDAR = 3;
         public final int EDIT_ITEM_COUNT = 4;
-        public final int ADD_ITEM = 5;
-        public final int EDIT_ITEM = 6;
+        public final int EDIT_ITEM = 5;
 
         public abstract void addCalendar(String result);
         public abstract void renameCalendar(String result);
         public abstract void deleteCalendar();
         public abstract void editItemCount(int count);
-        public abstract void editItem(Hour hour);
-        public abstract void addItem(Hour hour);
+        public abstract void editItemTime(Hour hour);
+    }
+
+    public static interface itemsEditListener{
+        public abstract void editItem(Item item);
     }
 
 

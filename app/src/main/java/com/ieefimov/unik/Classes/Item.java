@@ -5,21 +5,24 @@ package com.ieefimov.unik.Classes;
  */
 
 public class Item {
-    private int hour;
+    private long id;
+    private long hour;
     private int day;
     private int week;
-    private int calendar;
+    private long calendar;
     private String name;
     private String room;
 
     public Item(){
-        hour = 0;
-        day = 0;
-        week = 0;
-        calendar = 0;
+        id = -1;
+        hour = -1;
+        day = -1;
+        week = -1;
+        calendar = -1;
     }
 
-    public Item(int hour, int day, int week,int calendar,String name,String room) {
+    public Item(long id,long hour, int day, int week,long calendar,String name,String room) {
+        this.id = id;
         this.hour = hour;
         this.day = day;
         this.week = week;
@@ -29,6 +32,7 @@ public class Item {
     }
 
     public Item(Item copy) {
+        this.id = copy.id;
         this.hour = copy.hour;
         this.day = copy.day;
         this.week = copy.week;
@@ -37,11 +41,27 @@ public class Item {
         this.room = copy.room;
     }
 
-    public int getHour() {
+    public boolean isValid(){
+        if (hour<0) return false;
+        if (day<0) return false;
+        if (week<0) return false;
+        if (calendar<0) return false;
+        return true;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(long hour) {
         this.hour = hour;
     }
 
@@ -61,11 +81,11 @@ public class Item {
         this.week = week;
     }
 
-    public int getCalendar() {
+    public long getCalendar() {
         return calendar;
     }
 
-    public void setCalendar(int calendar) {
+    public void setCalendar(long calendar) {
         this.calendar = calendar;
     }
 
@@ -84,4 +104,6 @@ public class Item {
     public void setRoom(String room) {
         this.room = room;
     }
+
+
 }

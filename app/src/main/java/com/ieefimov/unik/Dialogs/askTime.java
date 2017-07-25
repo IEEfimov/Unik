@@ -113,7 +113,7 @@ public class askTime extends DialogFragment {
                     try{
                         hour.setStart(timeStart.getText().toString());
                         hour.setEnd(timeEnd.getText().toString());
-                        if (todo == Space.OnCompleteListener.EDIT_ITEM) mListener.editItem(hour);
+                        if (todo == Space.OnCompleteListener.EDIT_ITEM) mListener.editItemTime(hour);
                         dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());
