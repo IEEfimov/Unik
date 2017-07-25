@@ -41,10 +41,6 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
 
     CalendarItem[] calendarItems;
     String calendars[];
-    String[] time_start;
-    String[] time_end;;
-    String[] actions;
-    String[] rooms;;
 
     //////////////////////
 

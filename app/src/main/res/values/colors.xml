@@ -8,7 +8,7 @@
 
     <color name="statusbar">#555555</color>
     <color name="clockSeparator">#cccccc</color>
-    <color name="actionSeparator">#666</color>
+    <color name="actionSeparator">#666666</color>
     <color name="background">#222222</color>
     <color name="actionClockText">#dddddd</color>
     <color name="actionTitleText">#ffffff</color>
