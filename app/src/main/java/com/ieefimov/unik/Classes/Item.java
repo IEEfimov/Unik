@@ -19,6 +19,8 @@ public class Item {
         day = -1;
         week = -1;
         calendar = -1;
+        name = "";
+        room = "";
     }
 
     public Item(long id,long hour, int day, int week,long calendar,String name,String room) {

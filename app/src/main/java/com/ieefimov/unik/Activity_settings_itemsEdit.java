@@ -24,7 +24,7 @@ import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Dialogs.askTime;
+import com.ieefimov.unik.Dialogs.askAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,6 +111,8 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
         for (int i=0;i<weekSelect.length;i++) {
             weekSelect[i].setOnClickListener(onClickListenerWeek);
         }
+
+        activity = this;
 
         getData();
         update();
@@ -213,8 +215,8 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
                 currentItems[i].setHour(currentHours[i].getId());
                 currentItems[i].setId(-1);
                 currentItems[i].setWeek(week);
-                currentItems[i].setName(getResources().getString(R.string.settings_blankItem));
-                currentItems[i].setRoom(getResources().getString(R.string.settings_blankRoom));
+                currentItems[i].setName(getResources().getString(R.string.dialog_editItem_defaultName));
+                currentItems[i].setRoom(getResources().getString(R.string.dialog_editItem_defaultRoom));
             }
         }
 
@@ -260,9 +262,9 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            askTime askTime = new askTime();
-            askTime.setActivity(activity,Space.OnCompleteListener.EDIT_ITEM);
-            askTime.show(getFragmentManager(),currentHours[position]);
+            askAction askAction = new askAction();
+            askAction.setActivity(activity);
+            askAction.show(getFragmentManager(),currentItems[position]);
         }
     };
 
@@ -281,6 +283,7 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
             }
             ToggleButton btn = (ToggleButton) v;
             btn.setChecked(true);
+            update();
         }
     };
 
@@ -292,6 +295,7 @@ public class Activity_settings_itemsEdit extends AppCompatActivity implements Sp
             }
             ToggleButton btn = (ToggleButton) v;
             btn.setChecked(true);
+            update();
         }
     };
 

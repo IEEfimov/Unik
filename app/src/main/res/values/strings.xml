@@ -53,12 +53,10 @@
 
     <string name="dialog_editItem_title">Введите данные:</string>
     <string name="dialog_editItem_subtitle">Первое поле - имя элемента \n\r Второе поле - комната</string>
-    <string name="dialog_editItem_defaultName">Название</string>
-    <string name="dialog_editItem_defaultRoom">Комната</string>
+    <string name="dialog_editItem_defaultName">Новое название</string>
+    <string name="dialog_editItem_defaultRoom">аудитория</string>
 
     <string name="settings_edit">Редактировать</string>
-    <string name="settings_blankItem">Редактировать</string>
-    <string name="settings_blankRoom">\?</string>
 
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>

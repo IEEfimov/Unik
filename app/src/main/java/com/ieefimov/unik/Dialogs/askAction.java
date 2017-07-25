@@ -39,20 +39,16 @@ public class askAction extends DialogFragment {
     Item currentItem;
 
     private Space.itemsEditListener mListener;
-    private int todo;
 
     public askAction() {
         // Required empty public constructor
     }
 
-    public void setActivity(Activity activity, int todo){
+    public void setActivity(Activity activity){
         this.mListener = (Space.itemsEditListener) activity;
-        this.todo = todo;
-        if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
-            // todo Написать нормальный текст
-            titleStr = activity.getResources().getString(R.string.dialog_editTime_title);
-            subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
-        }
+
+            titleStr = activity.getResources().getString(R.string.dialog_editItem_title);
+            //subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
 
     }
 
@@ -115,7 +111,7 @@ public class askAction extends DialogFragment {
                     try{
                         currentItem.setName(nameEdit.getText().toString());
                         currentItem.setRoom(roomEdit.getText().toString());
-                        if (todo == Space.OnCompleteListener.EDIT_ITEM) mListener.editItem(currentItem);
+                        mListener.editItem(currentItem);
                         dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());

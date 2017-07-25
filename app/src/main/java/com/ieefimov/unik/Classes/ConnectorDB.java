@@ -124,11 +124,17 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
     public Item[] selectItems(int day, int week, long calendar){
         SQLiteDatabase db = getReadableDatabase();
-        // TODO: 25.07.2017 Сделать аргументный ввод
-        String selectCondition = "Day = " + day
-                + "Week = " + week
-                + "Calendar = " + calendar;
-        Cursor reader = db.query("Main table",null,selectCondition,null,null,null,null);
+//        // TODO: 25.07.2017 Сделать аргументный ввод
+//        String selectCondition = "Day = " + day
+//                + "Week = " + week
+//                + "Calendar = " + calendar;
+//        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,null,null,null,null);
+        String selectCondition = "("
+                +ROW_ITEMS_DAY+" = ? and "
+                +ROW_ITEMS_WEEK+" = ? and "
+                +ROW_ITEMS_CALENDAR+" = ?)";
+        String[] values = {day+"",week+"",calendar+""};
+        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
         // поиск по таблице с заданным условием
 
         if (reader.moveToFirst()){ // если найдена хотя бы одна запись
@@ -165,11 +171,12 @@ public class ConnectorDB extends SQLiteOpenHelper {
         if (!item.isValid()) return -1;
         // не записывать если данные не правильные
         SQLiteDatabase db = getReadableDatabase();
-        String selectCondition = "Day = " + item.getDay()
-                + "Week = " + item.getWeek()
-                + "Hour = " + item.getHour()
-                + "Calendar = " + item.getCalendar();
-        Cursor reader = db.query("Main table",null,selectCondition,null,null,null,null);
+        String selectCondition = "("
+                +ROW_ITEMS_DAY+" = ? and "
+                +ROW_ITEMS_WEEK+" = ? and "
+                +ROW_ITEMS_CALENDAR+" = ?)";
+        String[] values = {item.getDay()+"",item.getWeek()+"",item.getCalendar()+""};
+        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
         // если уже существует запись с данными параметрами - выход
         if (!reader.moveToFirst()){
             db = getWritableDatabase();
@@ -182,7 +189,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
             cv.put(ROW_ITEMS_WEEK,item.getWeek());
             cv.put(ROW_ITEMS_CALENDAR,item.getCalendar());
 
-            long result = db.insert("Main table",null,cv);
+            long result = db.insert(TABLE_ITEMS,null,cv);
 
             return result;
         }
@@ -205,7 +212,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         cv.put(ROW_ITEMS_WEEK,item.getWeek());
         cv.put(ROW_ITEMS_CALENDAR,item.getCalendar());
 
-        db.update(TABLE_HOURS,cv,selectCondition,null);
+        db.update(TABLE_ITEMS,cv,selectCondition,null);
         return true;
     }
 
@@ -213,7 +220,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         if (item.getId()<0) return false;
         String selectCondition = "id = " + item.getId();
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_HOURS,selectCondition,null);
+        db.delete(TABLE_ITEMS,selectCondition,null);
         return true;
     }
 
