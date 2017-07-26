@@ -10,6 +10,13 @@ public class Space {
     public static DrawerLayout mainDrawer;
     public static int stausBarHeight=0;
 
+    public static final String FILE_EXTENSION = ".iee";
+    public static final String APP_PREFERENCE = "settings.IEE";
+    public static final String PREF_CURRENT_CALENDAR = "stng_1";
+
+    public static String currentCalendar="";
+
+
     public static interface OnCompleteListener{
         public final int ADD_CALENDAR = 1;
         public final int RENAME_CALENDAR = 2;

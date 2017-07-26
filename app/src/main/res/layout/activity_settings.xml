@@ -39,8 +39,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -48,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/nav"
                 android:id="@+id/settings_calendarListBtn"
-                android:padding="5dp">
+                android:padding="6dp">
 
                 <TextView
                     android:text="@string/settings_calendar_edit_title"
@@ -71,14 +70,14 @@
 
             </LinearLayout>
 
+            <!--////////////////////////////////////////////////////////-->
+
             <FrameLayout
                 android:layout_height="1dp"
                 android:layout_width="match_parent"
                 android:background="@color/clockSeparator"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp">
+                android:layout_marginEnd="8dp">
 
             </FrameLayout>
 
@@ -103,6 +102,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView4"
+                    android:textColor="@color/settings_button_subtitle"
+                    android:layout_marginStart="20dp"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!--////////////////////////////////////////////////////////////-->
+
+            <FrameLayout
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/clockSeparator"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/nav"
+                android:id="@+id/settings_backupLayout"
+                android:padding="5dp">
+
+                <TextView
+                    android:text="@string/settings_backup_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/settings_button_title"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:text="@string/settings_backup_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/settings_button_subtitle"
                     android:layout_marginStart="20dp"
                     android:textSize="12sp" />

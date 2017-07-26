@@ -19,6 +19,10 @@
     <string name="settings_calendar_edit_subtitle">!!!!Настройки цикличности календарей </string>
     <string name="settings_item_edit_title">Расписание календарей</string>
     <string name="settings_item_edit_subtitle">!!!!Настройки расписания календарей </string>
+    <string name="settings_backup_title">Резервное копирование</string>
+    <string name="settings_backup_subtitle">Импорт и экспорт календарей</string>
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////-->
 
     <string name="settings_calendars">Календари</string>
     <string name="settings_calendars_selected">Выбранный календарь:</string>
@@ -26,6 +30,7 @@
     <string name="settings_calendars_Delete">Удалить</string>
     <string name="settings_calendars_Rename">Переименовать</string>
     <string name="settings_calendars_Crypt">Зашифровать (PRO)</string>
+    <string name="settings_calendars_Save">Сохранить</string>
     <string name="settings_items">Расписание</string>
     <string name="settings_difrentWeekTitle">Контроль четности</string>
     <string name="settings_difrentWeekSubtitle">Разное расписание для четных и нечетных недель</string>
@@ -63,6 +68,7 @@
 
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->
+
 
     <string name="w1">пн</string>
     <string name="w2">вт</string>

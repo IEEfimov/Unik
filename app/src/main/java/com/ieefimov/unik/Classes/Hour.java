@@ -1,10 +1,12 @@
 package com.ieefimov.unik.Classes;
 
+import java.io.Serializable;
+
 /**
  * Created by IEEfimov on 24.07.2017.
  */
 
-public class Hour {
+public class Hour implements Serializable {
     private long id;
     private String start;
     private String end;

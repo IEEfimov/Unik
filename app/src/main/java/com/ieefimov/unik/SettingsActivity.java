@@ -12,6 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Settings.Activity_backups;
+import com.ieefimov.unik.Settings.Activity_calendarEdit;
+import com.ieefimov.unik.Settings.Activity_itemsEdit;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -30,9 +33,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         LinearLayout calendarListBtn = (LinearLayout) findViewById(R.id.settings_calendarListBtn);
         LinearLayout itemListBtn = (LinearLayout) findViewById(R.id.settings_ItemListBtn);
+        LinearLayout backupBtn = (LinearLayout) findViewById(R.id.settings_backupLayout);
 
         calendarListBtn.setOnClickListener(onClickListener);
         itemListBtn.setOnClickListener(onClickListener);
+        backupBtn.setOnClickListener(onClickListener);
 
     }
 
@@ -55,11 +60,15 @@ public class SettingsActivity extends AppCompatActivity {
 
             switch (v.getId()){
                 case R.id.settings_calendarListBtn:
-                    intent = new Intent(getApplicationContext(),Activity_settings_calendarEdit.class);
+                    intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
                     startActivity(intent,options.toBundle());
                     break;
                 case R.id.settings_ItemListBtn:
-                    intent = new Intent(getApplicationContext(),Activity_settings_itemsEdit.class);
+                    intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
+                    startActivity(intent,options.toBundle());
+                    break;
+                case R.id.settings_backupLayout:
+                    intent = new Intent(getApplicationContext(),Activity_backups.class);
                     startActivity(intent,options.toBundle());
                     break;
             }

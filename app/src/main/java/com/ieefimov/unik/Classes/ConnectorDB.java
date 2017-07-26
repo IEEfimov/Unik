@@ -169,6 +169,44 @@ public class ConnectorDB extends SQLiteOpenHelper {
         else return new Item[0];
     }
 
+    public Item[] selectItems(CalendarItem calendar){
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selectCondition = "("+ROW_ITEMS_CALENDAR+" = ?)";
+        String[] values = {calendar.getId()+""};
+        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
+        // поиск по таблице с заданным условием
+
+        if (reader.moveToFirst()){ // если найдена хотя бы одна запись
+            int count = reader.getCount();
+            int idIndex = reader.getColumnIndex(ROW_ID);
+            int nameIndex = reader.getColumnIndex("Name");
+            int roomIndex = reader.getColumnIndex("Room");
+            int hourIndex = reader.getColumnIndex("Hour");
+            int dayIndex = reader.getColumnIndex("Day");
+            int weekIndex = reader.getColumnIndex("Week");
+            int calendarIndex = reader.getColumnIndex("Calendar");
+            int i = 0;
+            Item[] items = new Item[count];
+            do {
+                Item temp = new Item();
+                temp.setId(reader.getInt(idIndex));
+                temp.setName(reader.getString(nameIndex));
+                temp.setRoom(reader.getString(roomIndex));
+                temp.setHour(reader.getInt(hourIndex));
+                temp.setDay(reader.getInt(dayIndex));
+                temp.setWeek(reader.getInt(weekIndex));
+                temp.setCalendar(reader.getInt(calendarIndex));
+
+                items[i] = temp;
+                i++;
+            }
+            while (reader.moveToNext());
+            return  items;
+        }
+        else return new Item[0];
+    }
+
     public long insertItem(Item item){
         if (!item.isValid()) return -1;
         // не записывать если данные не правильные
@@ -422,5 +460,41 @@ public class ConnectorDB extends SQLiteOpenHelper {
         db.delete(TABLE_HOURS,selectCondition,null);
         return true;
     }
+
+
+    //=======================================================//
+
+
+    public SaveItem getSaveData(CalendarItem calendar){
+        //SQLiteDatabase db = getReadableDatabase();
+
+        SaveItem result = new SaveItem();
+        result.setHours(selectHour(calendar));
+        result.setItems(selectItems(calendar));
+
+        return result;
+    }
+
+    public boolean writeSaveData(SaveItem item){
+        //if (!item.isValid()) return false;
+
+        long newID = insertCalendar(item.getCalendar());
+        for (int i = 0; i < item.getHours().length; i++) {
+            item.getHours()[i].setCalendar(newID);
+            long hId = insertHour(item.getHours()[i]);
+            for (int j = 0; j < item.getItems().length; j++){
+                if (item.getItems()[j].getHour() == item.getHours()[i].getId()){
+                    Item temp = item.getItems()[j];
+                    temp.setHour(hId);
+                    temp.setCalendar(newID);
+                    insertItem(temp);
+                }
+
+            }
+        }
+        return true;
+    }
+
+
 
 }

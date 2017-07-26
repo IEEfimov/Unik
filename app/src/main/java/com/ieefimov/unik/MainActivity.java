@@ -2,6 +2,7 @@ package com.ieefimov.unik;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     ListView mainList;
     Button today,tomorrow;
 
+    Button choiseCalendarBtn;
+
     final String ATTRIBUTE_START = "start";
     final String ATTRIBUTE_END = "end";
     final String ATTRIBUTE_ACTION = "action";
@@ -49,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
     //////////////////////////////////////
 
     CalendarView calendarView;
-    int day,week;
+    Calendar calendar;
+    //int day,week;
+
+    //int Day,Week,DayOfMonth;
 
 
     @Override
@@ -73,7 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button settingsBtn = (Button) findViewById(R.id.nav_settingsBtn);
-        settingsBtn.setOnClickListener(onClickListener);
+        choiseCalendarBtn = (Button) findViewById(R.id.nav_choiseCalendar);
+
+        settingsBtn.setOnClickListener(onNavClickListener);
+        choiseCalendarBtn.setOnClickListener(onNavClickListener);
 
         today.setOnClickListener(onClickListener);
         tomorrow.setOnClickListener(onClickListener);
@@ -87,7 +96,14 @@ public class MainActivity extends AppCompatActivity {
         getData();
         calendarView.setOnDateChangeListener(onDateChangeListener);
 
-        update();
+        calendar = Calendar.getInstance();
+
+
+//        day = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
+//        week = (calendar.get(Calendar.WEEK_OF_YEAR)%2);
+
+
+
 
     }
 
@@ -103,17 +119,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData(){
 
-        currentCalendar = database.selectCalendar(-1)[0];
-        Calendar now = Calendar.getInstance();
-        day = (now.get(Calendar.DAY_OF_WEEK)+5)%7;
-        week = (now.get(Calendar.WEEK_OF_YEAR)%2);
+        SharedPreferences mPreferences;
+        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
+        int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
 
+        CalendarItem[] items = database.selectCalendar(-1);
+        if (current >= items.length) current = 0;
+        currentCalendar = items[current];
 
+        calendar = Calendar.getInstance();
+
+        update();
     }
 
     private void update(){
+
         currentHours = database.selectHour(currentCalendar);
         //================
+
+        int day = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
+        int week = (calendar.get(Calendar.WEEK_OF_YEAR)%2);
+
         currentItems = new Item[currentCalendar.getItemCount()];
         Item[] tempItems = database.selectItems(day,week,currentCalendar.getId());
 
@@ -167,41 +193,45 @@ public class MainActivity extends AppCompatActivity {
     public CalendarView.OnDateChangeListener onDateChangeListener = new CalendarView.OnDateChangeListener() {
         @Override
         public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-            Calendar now = Calendar.getInstance();
-            now.set(year,month,dayOfMonth);
-            day = (now.get(Calendar.DAY_OF_WEEK)+5)%7;
-            week = (now.get(Calendar.WEEK_OF_YEAR)%2);
+            calendar.set(year,month,dayOfMonth);
             update();
             // info.setText(ufo);
         }
     };
 
-    public Button.OnClickListener onClickListener = new View.OnClickListener() {
+    public Button.OnClickListener onNavClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Calendar now = Calendar.getInstance();
+            Intent intent = new Intent();
             switch (v.getId()){
-
                 case R.id.nav_settingsBtn:
-                    Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
-                    ActivityOptions options =
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-                    startActivity(intent,options.toBundle());
+                    intent = new Intent(getApplicationContext(),SettingsActivity.class);
                     break;
+                case (R.id.nav_choiseCalendar):
+                    intent = new Intent(getApplicationContext(),SelectCalendar.class);
+                    getData();
+                    break;
+
+            }
+            ActivityOptions options =
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+            startActivity(intent,options.toBundle());
+        }
+    };
+public Button.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            calendar = Calendar.getInstance();
+            switch (v.getId()){
                 case (R.id.today):
-                    calendarView.setDate(now.getTime().getTime());
-                    day = (now.get(Calendar.DAY_OF_WEEK)+5)%7;
-                    week = (now.get(Calendar.WEEK_OF_YEAR)%2);
-                    update();
+                    calendarView.setDate(calendar.getTime().getTime());
                     break;
                 case (R.id.tomorrow):
-                    now.add(Calendar.DATE,1);
-                    calendarView.setDate(now.getTime().getTime());
-                    day = (now.get(Calendar.DAY_OF_WEEK)+5)%7;
-                    week = (now.get(Calendar.WEEK_OF_YEAR)%2);
-                    update();
+                    calendar.add(Calendar.DATE,1);
+                    calendarView.setDate(calendar.getTime().getTime());
                     break;
             }
+            update();
         }
     };
 

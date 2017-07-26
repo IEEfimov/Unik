@@ -1,10 +1,12 @@
 package com.ieefimov.unik.Classes;
 
+import java.io.Serializable;
+
 /**
  * Created by IEEfimov on 22.07.2017.
  */
 
-public class CalendarItem {
+public class CalendarItem implements Serializable {
     private long id;
     private String name;
     private int itemCount;

@@ -1,4 +1,4 @@
-package com.ieefimov.unik;
+package com.ieefimov.unik.Settings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,12 +25,13 @@ import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askAction;
+import com.ieefimov.unik.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_settings_itemsEdit extends AppCompatActivity implements Space.itemsEditListener{
+public class Activity_itemsEdit extends AppCompatActivity implements Space.itemsEditListener{
 
     Spinner calendarSelector;
     ToggleButton daySelect[];

@@ -8,16 +8,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ActionBar">
-        <activity android:name="com.ieefimov.unik.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.ieefimov.unik.SettingsActivity" />
-        <activity android:name="com.ieefimov.unik.Activity_settings_itemsEdit" />
-        <activity android:name="com.ieefimov.unik.Activity_settings_calendarEdit"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".Settings.Activity_itemsEdit" />
+        <activity android:name=".Settings.Activity_calendarEdit" />
+        <activity android:name=".Settings.Activity_backups" />
+        <activity android:name=".SelectCalendar"></activity>
     </application>
 
 </manifest>

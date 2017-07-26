@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_edit_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/settings_background"
+    tools:context="com.ieefimov.unik.Settings.Activity_backups">
+
+    <FrameLayout
+        android:id="@+id/kostil_top"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/settings_bar_background">
+    </FrameLayout>
+
+    <!--Toolbar-->
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:theme="@style/AppTheme.Bar"
+        android:elevation="0dp"
+        android:background="@color/settings_bar_background"
+        android:layout_height="?actionBarSize"
+        android:longClickable="false"
+        app:title="@string/settings_backup_title"
+        app:titleTextColor="@color/settings_bar_titleText"
+        app:titleMargin="10dp"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+        app:popupTheme="@style/AppTheme.PopupDark">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/backupsList" />
+
+</LinearLayout>

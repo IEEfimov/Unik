@@ -1,4 +1,4 @@
-package com.ieefimov.unik;
+package com.ieefimov.unik.Settings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,17 +22,23 @@ import android.widget.Toast;
 import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Hour;
+import com.ieefimov.unik.Classes.SaveItem;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askConfirm;
 import com.ieefimov.unik.Dialogs.askDigit;
 import com.ieefimov.unik.Dialogs.askName;
 import com.ieefimov.unik.Dialogs.askTime;
+import com.ieefimov.unik.R;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_settings_calendarEdit extends AppCompatActivity implements Space.OnCompleteListener {
+public class Activity_calendarEdit extends AppCompatActivity implements Space.OnCompleteListener {
 
     Spinner calendarSelector;
     LinearLayout differentWeekLayout;
@@ -45,8 +51,6 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
 
     CalendarItem[] calendarItems;
     String calendars[];
-    String[] time_start;
-    String[] time_end;;
 
     //////////////////////
 
@@ -125,12 +129,38 @@ public class Activity_settings_calendarEdit extends AppCompatActivity implements
                 askName.show(getFragmentManager(),currentCalendar.getName());
                 break;
             case R.id.action_delete:
+                if (calendarItems.length < 2){
+                    Toast.makeText(activity, "Нельзя удалить единственный календарь", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 askConfirm.setActivity(this,Space.OnCompleteListener.DELETE_CALENDAR);
                 askConfirm.show(getFragmentManager(),currentCalendar.getName());
+
                 break;
             case R.id.action_crypt:
-                Toast.makeText(this,"Обновите до PRO",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Обновите до PRO",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.action_save:
+                saveCurrent();
+        }
+        return true;
+    }
+
+    private boolean saveCurrent(){
+        try {
+            String dir = getApplicationInfo().dataDir;
+            String name = currentCalendar.getId()+"_"+currentCalendar.getName()+".iee";
+            SaveItem saveData = database.getSaveData(currentCalendar);
+            FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return true;
     }

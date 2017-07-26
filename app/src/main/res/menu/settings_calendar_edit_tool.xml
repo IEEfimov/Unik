@@ -12,6 +12,11 @@
         android:icon="@drawable/ic_delete_white_24dp"
         app:showAsAction="never"/>
     <item
+        android:title="@string/settings_calendars_Save"
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_delete_white_24dp"
+        app:showAsAction="never"/>
+    <item
         android:title="@string/settings_calendars_Rename"
         android:id="@+id/action_Rename"
         android:icon="@drawable/ic_delete_white_24dp"
