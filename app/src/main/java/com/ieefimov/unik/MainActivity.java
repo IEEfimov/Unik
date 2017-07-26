@@ -1,5 +1,6 @@
 package com.ieefimov.unik;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Dialogs.askCalendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +34,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
    // Context context;
+    Activity activity;
+
     DrawerLayout drawerLayout;
     ListView mainList;
     Button today,tomorrow;
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         Space.mainDrawer = drawerLayout;
         Space.stausBarHeight = getStatusBarHeight();
 
+        activity = this;
 
         database = new ConnectorDB(this,1); // подключение к БД.
         getData();
@@ -206,16 +211,18 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()){
                 case R.id.nav_settingsBtn:
                     intent = new Intent(getApplicationContext(),SettingsActivity.class);
+                    ActivityOptions options =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                    startActivity(intent,options.toBundle());
                     break;
                 case (R.id.nav_choiseCalendar):
-                    intent = new Intent(getApplicationContext(),SelectCalendar.class);
-                    getData();
+                    askCalendar ask = new askCalendar();
+                    ask.setActivity(activity,0);
+                    ask.show(getFragmentManager(),"1");
                     break;
 
             }
-            ActivityOptions options =
-                    ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-            startActivity(intent,options.toBundle());
+
         }
     };
 public Button.OnClickListener onClickListener = new View.OnClickListener() {
@@ -235,6 +242,14 @@ public Button.OnClickListener onClickListener = new View.OnClickListener() {
         }
     };
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+
+    }
+
     ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener(){
 
         @Override
@@ -242,4 +257,6 @@ public Button.OnClickListener onClickListener = new View.OnClickListener() {
 
         }
     };
+
+
 }

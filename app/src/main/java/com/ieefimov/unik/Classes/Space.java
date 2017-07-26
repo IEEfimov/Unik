@@ -14,7 +14,7 @@ public class Space {
     public static final String APP_PREFERENCE = "settings.IEE";
     public static final String PREF_CURRENT_CALENDAR = "stng_1";
 
-    public static String currentCalendar="";
+    public static String currentCalendar="isNull";
 
 
     public static interface OnCompleteListener{

@@ -1,29 +1,32 @@
-package com.ieefimov.unik;
+package com.ieefimov.unik.Dialogs;
+
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
+import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Classes.mySimpleAdapter;
+import com.ieefimov.unik.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SelectCalendar extends AppCompatActivity {
 
+
+public class askCalendar extends DialogFragment {
 
     ListView calendarList;
     Activity activity;
@@ -32,59 +35,64 @@ public class SelectCalendar extends AppCompatActivity {
     SharedPreferences mPreferences;
     final String ATTRIBUTE_NAME = "name";
 
-    ////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////
 
     private String[] calendars;
     private int mCurrent=0;
 
+    TextView title,subtitle;
+    String titleStr,subStr;
+
+
+    private int todo;
+
+    public askCalendar() {
+        // Required empty public constructor
+    }
+
+    public void setActivity(Activity activity, int todo){
+        this.todo = todo;
+        if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
+            // todo Написать нормальный текст
+            titleStr = activity.getResources().getString(R.string.dialog_editTime_title);
+            subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
+        }
+        mPreferences = activity.getSharedPreferences(Space.APP_PREFERENCE,activity.MODE_PRIVATE);
+        database =  new ConnectorDB(activity,1);
+        this.activity = activity;
+    }
+
+
+    public void show(FragmentManager manager, Hour hour) {
+        super.show(manager, "askTime");
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_calendar);
-
-        Toolbar tool = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tool);  // Добавляем тулбар
-
-        FrameLayout kostil = (FrameLayout) findViewById(R.id.kostil_top);
-        ViewGroup.LayoutParams params = kostil.getLayoutParams(); //    Задается правильный отступ для тулбара
-        params.height = Space.stausBarHeight;   //                  для разных устройств
-        kostil.setLayoutParams(params);
-
-        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,activity.MODE_PRIVATE);
-
-        calendarList = (ListView) findViewById(R.id.calendarList);
-        calendarList.setOnItemClickListener(onItemClickListener);
-
-        database =  new ConnectorDB(this,1);
-        activity = this;
+        setStyle(DialogFragment.STYLE_NO_TITLE,android.R.style.Theme_Holo_Dialog);
         getData();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO: 26.07.2017 Адекватное меню для выбора календаря
-        //getMenuInflater().inflate(R.menu.settings_backups_tool,menu);
-        return true;
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_select_calendar,container,false);
 
-    @Override
-    public void finish() {
-        Space.mainDrawer.closeDrawer(Gravity.LEFT,false);
-        super.finish();
-        overridePendingTransition(R.anim.show_activity,R.anim.hide_activity);
-    }
+//        title = (TextView) view.findViewById(R.id.Title);
+//        subtitle = (TextView) view.findViewById(R.id.Subtitle);
+
+        calendarList = (ListView) view.findViewById(R.id.calendarList);
+        calendarList.setOnItemClickListener(onItemClickListener);
 
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                break;
 
-        }
-        return true;
+//        title.setText(titleStr);
+//        subtitle.setText(subStr);
+
+        return view;
     }
 
     private void getData(){
@@ -103,9 +111,9 @@ public class SelectCalendar extends AppCompatActivity {
         String[] from = { ATTRIBUTE_NAME};
         int [] to = { R.id.file};
 
-        //mySimpleAdapter sAdapter = new mySimpleAdapter(this, data, R.layout.item_select_calendar, from, to);
+        mySimpleAdapter sAdapter = new mySimpleAdapter(activity, data, R.layout.item_select_calendar, from, to);
 
-        //calendarList.setAdapter(sAdapter);
+        calendarList.setAdapter(sAdapter);
         calendarList.setOnItemClickListener(onItemClickListener);
 
     }
@@ -115,7 +123,7 @@ public class SelectCalendar extends AppCompatActivity {
         calendars = new String[result.length];
 
         for (int i = 0; i < result.length; i++) {
-           calendars[i] = result[i].getName();
+            calendars[i] = result[i].getName();
         }
     }
 
@@ -127,7 +135,7 @@ public class SelectCalendar extends AppCompatActivity {
             editor.putInt(Space.PREF_CURRENT_CALENDAR,position);
             editor.apply();
 
-            finish();
+            dismiss();
 //            askName askAction = new askName();
 //            currentFile = files[position];
 //            askAction.setActivity(activity,Space.OnCompleteListener.RENAME_CALENDAR);
@@ -136,8 +144,4 @@ public class SelectCalendar extends AppCompatActivity {
     };
 
 
-
-
 }
-
-
