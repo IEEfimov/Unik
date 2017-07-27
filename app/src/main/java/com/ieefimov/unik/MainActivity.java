@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Space.mainDialogListener {
 
    // Context context;
     Activity activity;
@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
         public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
             calendar.set(year,month,dayOfMonth);
             update();
-            // info.setText(ufo);
         }
     };
 
@@ -225,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-public Button.OnClickListener onClickListener = new View.OnClickListener() {
+
+    public Button.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             calendar = Calendar.getInstance();
@@ -259,4 +259,9 @@ public Button.OnClickListener onClickListener = new View.OnClickListener() {
     };
 
 
+    @Override
+    public void choiseCalendar() {
+        drawerLayout.closeDrawer(Gravity.LEFT,false);
+        getData();
+    }
 }

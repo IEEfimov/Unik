@@ -20,11 +20,17 @@ public class mySimpleAdapter extends SimpleAdapter {
 
     @Override
     public void setViewText(TextView v, String text) {
-
-        if (text.equals(Space.currentCalendar)) {
+        if (text == Space.currentCalendar){
             v.setBackgroundColor(Color.argb(155,34,34,34));
             v.setTextColor(Color.argb(255,64,255,179));
         }
+        else {
+            v.setBackgroundColor(Color.argb(0,0,0,0));
+            v.setTextColor(Color.WHITE);
+        }
+
+
+
         v.setText(text);
 
     }

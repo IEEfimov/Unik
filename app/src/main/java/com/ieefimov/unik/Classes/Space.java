@@ -35,5 +35,11 @@ public class Space {
         public abstract void editItem(Item item);
     }
 
+    public static interface mainDialogListener{
+        public final int CHOISE_CALENDAR = 1;
+        public abstract void choiseCalendar();
+    }
+
+
 
 }

@@ -10,6 +10,30 @@
 
     <!--Toolbar-->
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/settings_calendar_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            android:textSize="22sp"
+            android:textColor="@color/actionTitleText"
+            android:padding="15dp"
+            android:background="@color/settings_bar_background"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_height="2dp">
+
+    </FrameLayout>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

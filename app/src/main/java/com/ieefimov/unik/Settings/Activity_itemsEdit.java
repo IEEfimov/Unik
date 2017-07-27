@@ -1,6 +1,7 @@
 package com.ieefimov.unik.Settings;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -139,6 +140,8 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
 
     private void getData(){
 
+
+
         calendarItems = database.selectCalendar(-1);
         calendars = new String[calendarItems.length];
         for (int i=0;i<calendars.length;i++){
@@ -149,7 +152,13 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         calendarSelector.setAdapter(spinnerAdapter);
 
-        if (currentCalendar == null) currentCalendar = calendarItems[0];
+        if (currentCalendar == null) {
+            SharedPreferences mPreferences;
+            mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
+            int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+            calendarSelector.setSelection(current);
+            currentCalendar = calendarItems[current];
+        }
         else {
             boolean flag = false;
             for (int i = 0; i < calendarItems.length; i++) {
