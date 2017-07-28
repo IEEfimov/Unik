@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,7 +14,7 @@ import android.widget.LinearLayout;
 
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Settings.Activity_backups;
-import com.ieefimov.unik.Settings.Activity_calendarEdit;
+import com.ieefimov.unik.Settings.Activity_calendarList;
 import com.ieefimov.unik.Settings.Activity_itemsEdit;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -50,6 +51,16 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+
+        }
+        return true;
+    }
+
     public LinearLayout.OnClickListener onClickListener = new LinearLayout.OnClickListener(){
 
         @Override
@@ -60,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             switch (v.getId()){
                 case R.id.settings_calendarListBtn:
-                    intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
+                    intent = new Intent(getApplicationContext(),Activity_calendarList.class);
                     startActivity(intent,options.toBundle());
                     break;
                 case R.id.settings_ItemListBtn:

@@ -72,7 +72,7 @@ public class askCalendar extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_select_calendar,container,false);
+        View view = inflater.inflate(R.layout.dialog_ask_calendar,container,false);
 
         calendarList = (ListView) view.findViewById(R.id.calendarList);
         calendarList.setAdapter(sAdapter);

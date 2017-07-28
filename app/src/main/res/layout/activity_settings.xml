@@ -29,6 +29,7 @@
         android:longClickable="false"
         app:title="@string/nav_settings"
         app:titleTextColor="@color/settings_bar_titleText"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
         app:titleMargin="10dp">
     </android.support.v7.widget.Toolbar>
 

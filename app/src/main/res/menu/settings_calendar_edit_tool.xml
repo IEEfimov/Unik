@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="@string/settings_calendars_New"
-        android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_white_24dp"
-        app:showAsAction="always"/>
-    <item
         android:title="@string/settings_calendars_Crypt"
         android:id="@+id/action_crypt"
         android:icon="@drawable/ic_delete_white_24dp"
@@ -17,10 +12,10 @@
         android:icon="@drawable/ic_delete_white_24dp"
         app:showAsAction="never"/>
     <item
-        android:title="@string/settings_calendars_Rename"
-        android:id="@+id/action_Rename"
+        android:title="@string/settings_calendars_Save"
+        android:id="@+id/action_share"
         android:icon="@drawable/ic_delete_white_24dp"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:title="@string/settings_calendars_Delete"
         android:id="@+id/action_delete"

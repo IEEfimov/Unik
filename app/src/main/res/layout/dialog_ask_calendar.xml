@@ -19,7 +19,7 @@
             android:text="@string/settings_calendar_edit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView6"
+            android:id="@+id/dialogTitle"
             android:textSize="22sp"
             android:textColor="@color/actionTitleText"
             android:padding="15dp"

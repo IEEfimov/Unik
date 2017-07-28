@@ -42,7 +42,7 @@ public class SelectCalendar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_calendar);
+        setContentView(R.layout.dialog_ask_calendar);
 
         Toolbar tool = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tool);  // Добавляем тулбар

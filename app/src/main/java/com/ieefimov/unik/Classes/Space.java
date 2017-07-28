@@ -13,8 +13,10 @@ public class Space {
     public static final String FILE_EXTENSION = ".iee";
     public static final String APP_PREFERENCE = "settings.IEE";
     public static final String PREF_CURRENT_CALENDAR = "stng_1";
+    public static final String PREF_EDITED_CALENDAR = "stng_2";
 
     public static String currentCalendar="isNull";
+    public static String editedCalendar="isNull";
 
 
     public static interface OnCompleteListener{
@@ -31,13 +33,17 @@ public class Space {
         public abstract void editItemTime(Hour hour);
     }
 
-    public static interface itemsEditListener{
+    public static interface onChoiceAction {
+        public abstract void choiceDone(int result);
         public abstract void editItem(Item item);
     }
+
 
     public static interface mainDialogListener{
         public final int CHOISE_CALENDAR = 1;
         public abstract void choiseCalendar();
+
+
     }
 
 

@@ -26,7 +26,6 @@
         android:background="@color/settings_bar_background"
         android:layout_height="?actionBarSize"
         android:longClickable="false"
-        app:title="@string/settings_calendars"
         app:titleTextColor="@color/settings_bar_titleText"
         app:titleMargin="10dp"
         app:navigationIcon="@drawable/ic_arrow_back_white_24dp"

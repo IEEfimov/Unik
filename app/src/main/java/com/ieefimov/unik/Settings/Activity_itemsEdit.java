@@ -1,6 +1,8 @@
 package com.ieefimov.unik.Settings;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,13 +28,14 @@ import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askAction;
+import com.ieefimov.unik.Dialogs.choiceAction;
 import com.ieefimov.unik.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_itemsEdit extends AppCompatActivity implements Space.itemsEditListener{
+public class Activity_itemsEdit extends AppCompatActivity implements Space.onChoiceAction{
 
     Spinner calendarSelector;
     ToggleButton daySelect[];
@@ -51,6 +54,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
     Item[] currentItems;
     ConnectorDB database;
 
+    SharedPreferences mPreferences;
 
 
     Activity activity;
@@ -81,6 +85,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
         calendarSelector = (Spinner) findViewById(R.id.sett_cal_spinner);
         itemList = (ListView) findViewById(R.id.itemList);
 
+        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
 
         daySelect = new ToggleButton[7];
         daySelect[0] = (ToggleButton) findViewById(R.id.w1);
@@ -133,15 +138,16 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
             case android.R.id.home:
                 finish();
                 break;
-
+            case R.id.action_edit:
+                Intent intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
+                ActivityOptions options =
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                startActivity(intent,options.toBundle());
         }
         return true;
     }
 
     private void getData(){
-
-
-
         calendarItems = database.selectCalendar(-1);
         calendars = new String[calendarItems.length];
         for (int i=0;i<calendars.length;i++){
@@ -153,8 +159,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
         calendarSelector.setAdapter(spinnerAdapter);
 
         if (currentCalendar == null) {
-            SharedPreferences mPreferences;
-            mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
+
             int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
             calendarSelector.setSelection(current);
             currentCalendar = calendarItems[current];
@@ -240,6 +245,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
 
         itemList.setAdapter(sAdapter);
         itemList.setOnItemClickListener(onItemClickListener);
+        itemList.setOnItemLongClickListener(onItemLongClickListener);
 
     }
 
@@ -248,9 +254,12 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             try{
                 currentCalendar = calendarItems[position];
+                SharedPreferences.Editor mEditor = mPreferences.edit();
+                mEditor.putInt(Space.PREF_CURRENT_CALENDAR,position);
+                mEditor.apply();
                 update();
             }catch (Exception e){
-                Toast.makeText(getApplicationContext(),"Ошибочка вышла :(",Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),"Ошибочка вышла :(",Toast.LENGTH_LONG).show();
             }
         }
 
@@ -267,6 +276,19 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
             askAction askAction = new askAction();
             askAction.setActivity(activity);
             askAction.show(getFragmentManager(),currentItems[position]);
+        }
+    };
+
+    ListView.OnItemLongClickListener onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            String actions[] = new String[2];
+            actions[0] = "Изменить данные";
+            actions[1] = "Редактировать время";
+            choiceAction askAction = new choiceAction();
+            askAction.setActivity(activity,actions);
+            askAction.show(getFragmentManager(),"Выберите действие:");
+            return false;
         }
     };
 
@@ -310,5 +332,10 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.items
         if (item.getId()!= -1) database.updateItem(item);
         else database.insertItem(item);
         update();
+    }
+
+    @Override
+    public void choiceDone(int result) {
+
     }
 }

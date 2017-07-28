@@ -17,7 +17,7 @@
     </style>
 
     <style name="TextAppearance.AppTheme.Widget.Day" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/calendar_text </item>
+        <item name="android:textColor">@color/calendar_text</item>
     </style>
 
     <!--Тема туулбара-->

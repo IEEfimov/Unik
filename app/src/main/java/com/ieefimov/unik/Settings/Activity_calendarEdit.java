@@ -44,8 +44,10 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
     Spinner calendarSelector;
     LinearLayout differentWeekLayout;
     LinearLayout itemCountLayout;
+    LinearLayout setNameLayout;
     CheckBox differentWeekChkBx;
     TextView countView;
+    TextView nameView;
     ListView timeList;
 
     ////////////////
@@ -84,13 +86,16 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
         calendarSelector = (Spinner) findViewById(R.id.sett_cal_spinner);
         differentWeekLayout = (LinearLayout) findViewById(R.id.diffrentWeekLayout);
         itemCountLayout = (LinearLayout) findViewById(R.id.itemCountLayout);
-        differentWeekChkBx = (CheckBox) findViewById(R.id.diffrentWeek);
+        setNameLayout = (LinearLayout) findViewById(R.id.nameLinear);
+        differentWeekChkBx = (CheckBox) findViewById(R.id.differentWeek);
         countView = (TextView) findViewById(R.id.item_count);
+        nameView = (TextView) findViewById(R.id.nameView);
         timeList = (ListView) findViewById(R.id.timeList);
 
 
         differentWeekLayout.setOnClickListener(linearOnClick);
         itemCountLayout.setOnClickListener(linearOnClick);
+        setNameLayout.setOnClickListener(linearOnClick);
         calendarSelector.setOnItemSelectedListener(spinnerOnClick);
         timeList.setOnItemClickListener(onItemClickListener);
 
@@ -121,14 +126,7 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.action_add:
-                askName.setActivity(this,Space.OnCompleteListener.ADD_CALENDAR);
-                askName.show(getFragmentManager(),"Новый календарь");
-                break;
-            case R.id.action_Rename:
-                askName.setActivity(this,Space.OnCompleteListener.RENAME_CALENDAR);
-                askName.show(getFragmentManager(),currentCalendar.getName());
-                break;
+
             case R.id.action_delete:
                 if (calendarItems.length < 2){
                     Toast.makeText(activity, "Нельзя удалить единственный календарь", Toast.LENGTH_SHORT).show();
@@ -157,6 +155,7 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
             out.writeObject(saveData);
             out.close();
             fileOut.close();
+            Toast.makeText(activity, "Создана копия: \n\r "+name, Toast.LENGTH_SHORT).show();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -183,6 +182,11 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
                     ask.setActivity(activity,Space.OnCompleteListener.EDIT_ITEM_COUNT);
                     ask.show(getFragmentManager(),(currentCalendar.getItemCount()+""));
                     break;
+                case R.id.nameLinear:
+                    askName askName = new askName();
+                    askName.setActivity(activity,Space.OnCompleteListener.RENAME_CALENDAR);
+                    askName.show(getFragmentManager(),currentCalendar.getName());
+                    break;
 
             }
         }
@@ -207,17 +211,9 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
 
     private void update(){
         currentHours = database.selectHour(currentCalendar);
-
-        //time_start = new String[currentHours.length];
-       // time_end = new String[currentHours.length];
-
-//        for (int i=0;i<time_start.length;i++){
-//            time_start[i] = currentHours[i].getStart();
-//            time_end[i] = currentHours[i].getEnd();
-//        }
-
         differentWeekChkBx.setChecked(currentCalendar.isDifferentWeek());
         countView.setText(currentCalendar.getItemCount()+"");
+        nameView.setText(currentCalendar.getName());
 
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(currentCalendar.getItemCount());
         Map<String, Object> m;

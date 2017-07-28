@@ -38,14 +38,14 @@ public class askAction extends DialogFragment {
     ///////////////////////////////////////////////////////////
     Item currentItem;
 
-    private Space.itemsEditListener mListener;
+    private Space.onChoiceAction mListener;
 
     public askAction() {
         // Required empty public constructor
     }
 
     public void setActivity(Activity activity){
-        this.mListener = (Space.itemsEditListener) activity;
+        this.mListener = (Space.onChoiceAction) activity;
 
             titleStr = activity.getResources().getString(R.string.dialog_editItem_title);
             //subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);

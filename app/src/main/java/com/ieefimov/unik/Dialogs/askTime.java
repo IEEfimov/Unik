@@ -187,7 +187,6 @@ public class askTime extends DialogFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            subtitle.setText("1="+timeStart.getText().toString()+"\n\r2="+s.toString());
             if (timeStart.hasFocus()){
                 timeStart.setSelectAllOnFocus(false);
                 timeEnd.requestFocus();

@@ -30,10 +30,13 @@
     <string name="settings_calendars_Delete">Удалить</string>
     <string name="settings_calendars_Rename">Переименовать</string>
     <string name="settings_calendars_Crypt">Зашифровать (PRO)</string>
-    <string name="settings_calendars_Save">Сохранить</string>
+    <string name="settings_calendars_Save">Сделать резервную копию</string>
+    <string name="settings_calendars_Share">Поделиться</string>
     <string name="settings_items">Расписание</string>
-    <string name="settings_difrentWeekTitle">Контроль четности</string>
-    <string name="settings_difrentWeekSubtitle">Разное расписание для четных и нечетных недель</string>
+    <string name="settings_differentWeekTitle">Контроль четности</string>
+    <string name="settings_differentWeekSubtitle">Разное расписание для четных и нечетных недель</string>
+    <string name="settings_setNameTitle">Название</string>
+    <string name="settings_setNameSubtitle">Если ты читаешь это - сообщи мне плз</string>
     <string name="settings_itemCount">Количество элементов</string>
     <string name="settings_itemCountSubtitle">Количество элементов рассписания каждый день</string>
 
@@ -78,11 +81,8 @@
     <string name="w6">сб</string>
     <string name="w7">вс</string>
 
-    <string name="week1">1</string>
-    <string name="week2">2</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="week1">числ.</string>
+    <string name="week2">знамен.</string>
 
 
 </resources>

@@ -19,7 +19,8 @@
         <activity android:name=".Settings.Activity_itemsEdit" />
         <activity android:name=".Settings.Activity_calendarEdit" />
         <activity android:name=".Settings.Activity_backups" />
-        <activity android:name=".SelectCalendar"></activity>
+        <activity android:name=".SelectCalendar" />
+        <activity android:name=".Settings.Activity_calendarList"></activity>
     </application>
 
 </manifest>
