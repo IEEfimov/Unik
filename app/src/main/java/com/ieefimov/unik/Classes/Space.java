@@ -28,14 +28,21 @@ public class Space {
 
         public abstract void addCalendar(String result);
         public abstract void renameCalendar(String result);
-        public abstract void deleteCalendar();
+        //public abstract void deleteCalendar();
         public abstract void editItemCount(int count);
-        public abstract void editItemTime(Hour hour);
+//        public abstract void editItemTime(Hour hour);
     }
 
     public static interface onChoiceAction {
-        public abstract void choiceDone(int result);
+        public abstract void choiceDone(int position,int result);
         public abstract void editItem(Item item);
+    }
+
+    public static interface editTimeDialog{
+        public abstract void editTime(Hour hour);
+    }
+    public static interface DialogConfirm{
+        public abstract void confirm(Hour hour);
     }
 
 

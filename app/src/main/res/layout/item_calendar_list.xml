@@ -23,7 +23,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="1dp"
         android:layout_width="match_parent"
-        android:background="#666"
+        android:background="#555"
         >
 
     </FrameLayout>

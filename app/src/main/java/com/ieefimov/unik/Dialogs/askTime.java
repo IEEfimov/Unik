@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,13 +201,5 @@ public class askTime extends DialogFragment {
         }
     };
 
-    EditText.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            EditText temp = (EditText) v;
-            if (temp.getText().length()==2) temp.setText("00:");
-            return false;
-        }
-    };
 
 }

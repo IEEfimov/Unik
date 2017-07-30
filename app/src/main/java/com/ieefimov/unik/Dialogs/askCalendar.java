@@ -86,6 +86,8 @@ public class askCalendar extends DialogFragment {
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(calendars.length);
         Map<String, Object> m;
 
+        if (calendars.length<=mCurrent) mCurrent=0;
+
         Space.currentCalendar = calendars[mCurrent];
 
         for (int i = 0; i < calendars.length; i++) {
@@ -121,7 +123,7 @@ public class askCalendar extends DialogFragment {
 
             dismiss();
 //            askName askAction = new askName();
-//            currentFile = files[position];
+//            currentFile = files[who];
 //            askAction.setActivity(activity,Space.OnCompleteListener.RENAME_CALENDAR);
 //            askAction.show(getFragmentManager(),currentFile);
         }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -260,6 +259,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
                 update();
             }catch (Exception e){
                 Toast.makeText(getApplicationContext(),"Ошибочка вышла :(",Toast.LENGTH_LONG).show();
+                // TODO: 30.07.2017 ! Явно заданные строки
             }
         }
 
@@ -285,19 +285,14 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
             String actions[] = new String[2];
             actions[0] = "Изменить данные";
             actions[1] = "Редактировать время";
+            // TODO: 30.07.2017 ! Явно заданные строки
             choiceAction askAction = new choiceAction();
-            askAction.setActivity(activity,actions);
+            askAction.setActivity(activity,actions,position);
             askAction.show(getFragmentManager(),"Выберите действие:");
             return false;
         }
     };
 
-    ToggleButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-        }
-    };
 
     ToggleButton.OnClickListener onClickListenerToggle = new View.OnClickListener() {
         @Override
@@ -335,7 +330,15 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
     }
 
     @Override
-    public void choiceDone(int result) {
-
+    public void choiceDone(int position,int result) {
+        switch (result){
+            case 0:
+                askAction askAction = new askAction();
+                askAction.setActivity(activity);
+                askAction.show(getFragmentManager(),currentItems[position]);
+                break;
+            case 1:
+                break;
+        }
     }
 }

@@ -39,7 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_calendarEdit extends AppCompatActivity implements Space.OnCompleteListener {
+public class Activity_calendarEdit extends AppCompatActivity
+        implements Space.OnCompleteListener, Space.editTimeDialog {
 
     Spinner calendarSelector;
     LinearLayout differentWeekLayout;
@@ -62,6 +63,7 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
     ConnectorDB database;
 
     Activity activity;
+    SharedPreferences mPreferences;
 
 
     final String ATTRIBUTE_START = "start";
@@ -100,6 +102,7 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
         timeList.setOnItemClickListener(onItemClickListener);
 
         activity = this;
+        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
 
         //////////////////////////////////////////////////
         getData();
@@ -247,8 +250,6 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
         calendarSelector.setAdapter(spinnerAdapter);
 
         if (currentCalendar == null) {
-            SharedPreferences mPreferences;
-            mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
             int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
             calendarSelector.setSelection(current);
             currentCalendar = calendarItems[current];
@@ -303,6 +304,7 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
     @Override
     public void deleteCalendar() {
         database.deleteCalendar(currentCalendar);
+
         getData();
         update();
     }
@@ -315,11 +317,11 @@ public class Activity_calendarEdit extends AppCompatActivity implements Space.On
         update();
     }
 
+
     @Override
-    public void editItemTime(Hour hour) {
+    public void editTime(Hour hour) {
         if (hour.getId() > -1) database.updateHour(hour);
         else database.insertHour(hour);
         update();
     }
-
 }

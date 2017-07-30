@@ -37,7 +37,8 @@ import java.util.Map;
 
 import static com.ieefimov.unik.Classes.Space.currentCalendar;
 
-public class Activity_calendarList extends AppCompatActivity implements Space.onChoiceAction,Space.OnCompleteListener {
+public class Activity_calendarList extends AppCompatActivity implements
+        Space.onChoiceAction,Space.OnCompleteListener,Space.editTimeDialog {
 
     ListView calendarList;
     Activity activity;
@@ -45,6 +46,8 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
     ConnectorDB database;
     SharedPreferences mPreferences;
     final String ATTRIBUTE_NAME = "name";
+
+    // TODO: 30.07.2017 Сделать кнопку "Добавить календарь" плавающим плюсеком
 
 
     ////////////////////////////////////////////////////
@@ -91,6 +94,7 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
     private void getData(){
         getCalendars();
         mCurrent = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+        if (calendars.length<=mCurrent) mCurrent=0;
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(calendars.length);
         Map<String, Object> m;
 
@@ -149,7 +153,7 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
             choiceAction askAction = new choiceAction();
-            askAction.setActivity(activity,mLongActions);
+            askAction.setActivity(activity,mLongActions,position);
             askAction.show(getFragmentManager(),"Выберите действие:");
 
             SharedPreferences.Editor editor = mPreferences.edit();
@@ -162,7 +166,7 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
 
 
     @Override
-    public void choiceDone(int result) {
+    public void choiceDone(int position,int result) {
 //        mLongActions[0] = "Редактировать рассписание";
 //        mLongActions[1] = "Настройки календаря";
 //        mLongActions[2] = "Сделать резервную копию";
@@ -240,7 +244,13 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
     public void deleteCalendar() {
         int selected = mPreferences.getInt(Space.PREF_EDITED_CALENDAR,-2);
         CalendarItem currentCalendar = calendars[selected];
+        if (selected==mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,-1)){
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putInt(Space.PREF_CURRENT_CALENDAR,0);
+            editor.apply();
+        }
         database.deleteCalendar(currentCalendar);
+
         getData();
     }
 
@@ -249,8 +259,9 @@ public class Activity_calendarList extends AppCompatActivity implements Space.on
 
     }
 
+
     @Override
-    public void editItemTime(Hour hour) {
+    public void editTime(Hour hour) {
 
     }
 }

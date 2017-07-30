@@ -36,6 +36,7 @@ public class choiceAction extends DialogFragment {
     String titleStr;
 
     mySimpleAdapter sAdapter;
+    int who;
 
     private Space.onChoiceAction mListener;
 
@@ -43,10 +44,11 @@ public class choiceAction extends DialogFragment {
         // Required empty public constructor
     }
 
-    public void setActivity(Activity activity, String[] todo){
+    public void setActivity(Activity activity, String[] todo,int position){
         this.actions = todo;
         this.mListener = (Space.onChoiceAction) activity ;
         this.activity = activity;
+        this.who = position;
         getData();
     }
 
@@ -95,7 +97,7 @@ public class choiceAction extends DialogFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mListener.choiceDone(position);
+            mListener.choiceDone(who,position);
             dismiss();
         }
     };
