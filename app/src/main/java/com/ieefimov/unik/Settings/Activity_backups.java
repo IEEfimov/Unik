@@ -12,20 +12,13 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Hour;
-import com.ieefimov.unik.Classes.SaveItem;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askName;
 import com.ieefimov.unik.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -145,36 +138,10 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         }
     };
 
-    @Override
-    public void addCalendar(String result) {}
 
-    @Override
-    public void renameCalendar(String result) {
-        try {
-            String dir = getApplicationInfo().dataDir;
-            FileInputStream fileIn = new FileInputStream(dir+ "/" + currentFile);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            SaveItem restored = (SaveItem) in.readObject();
-            restored.getCalendar().setName(result);
-            database.writeSaveData(restored);
-            in.close();
-            fileIn.close();
-            Toast.makeText(activity, "Готово", Toast.LENGTH_SHORT).show();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void deleteCalendar() {}
 
     @Override
     public void editItemCount(int count) {}
 
-    @Override
-    public void editItemTime(Hour hour) {}
+
 }

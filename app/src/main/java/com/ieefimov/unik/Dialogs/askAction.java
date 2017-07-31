@@ -38,14 +38,14 @@ public class askAction extends DialogFragment {
     ///////////////////////////////////////////////////////////
     Item currentItem;
 
-    private Space.onChoiceAction mListener;
+    private Space.DialogChoiceAction mListener;
 
     public askAction() {
         // Required empty public constructor
     }
 
     public void setActivity(Activity activity){
-        this.mListener = (Space.onChoiceAction) activity;
+        this.mListener = (Space.DialogChoiceAction) activity;
 
             titleStr = activity.getResources().getString(R.string.dialog_editItem_title);
             //subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
@@ -54,8 +54,8 @@ public class askAction extends DialogFragment {
 
     public void show(FragmentManager manager, Item item) {
         super.show(manager, "askTime");
-//        nameFieldText1 = hour.getStart();
-//        nameFieldText2 = hour.getEnd();
+//        defaultStart = hour.getStart();
+//        defaultEnd = hour.getEnd();
         this.currentItem = item;
     }
 

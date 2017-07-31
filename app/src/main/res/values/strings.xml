@@ -39,6 +39,8 @@
     <string name="settings_setNameSubtitle">Если ты читаешь это - сообщи мне плз</string>
     <string name="settings_itemCount">Количество элементов</string>
     <string name="settings_itemCountSubtitle">Количество элементов рассписания каждый день</string>
+    <string name="settings_saved">Создана копия:\n\r</string>
+    <string name="settings_notSaved">Не могу создать копию \n\r Для деталей см. лог</string>
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -52,6 +54,10 @@
     <string name="dialog_deleteCalendar_title">Удаление календаря \"</string>
     <string name="dialog_deleteCalendar_subtitle">Восстановить календарь можно только при наличии резервной копии</string>
     <string name="dialog_deleteCalendar_confirm">Я знаю что делаю</string>
+    <string name="dialog_deleteCalendar_lastOne">Нельзя удалить единственный календарь</string>
+
+    <string name="dialog_setTime_title">Введите время</string>
+    <string name="dialog_setTime_subtitle">Первое поле - начало, второе - конец</string>
 
     <string name="dialog_renameCalendar_title">Введите новое имя:</string>
     <string name="dialog_renameCalendar_subtitle">Выбранное имя будет установленно для выбранного календаря</string>

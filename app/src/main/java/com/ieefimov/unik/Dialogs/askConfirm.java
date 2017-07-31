@@ -18,8 +18,8 @@ import com.ieefimov.unik.R;
 
 public class askConfirm extends DialogFragment {
 
-    Space.OnCompleteListener mListener;
-    int todo;
+    Space.DialogConfirm mListener;
+    int position;
 
     Button cancel;
     Button ok;
@@ -37,9 +37,9 @@ public class askConfirm extends DialogFragment {
         // Required empty public constructor
     }
 
-    public void setActivity(Activity activity, int todo){
-        this.mListener = (Space.OnCompleteListener) activity;
-        this.todo = todo;
+    public void setActivity(Activity activity,int position){
+        this.mListener = (Space.DialogConfirm) activity;
+        this.position = position;
         this.activity = activity;
         //if (tod==Space.OnCompleteListener.DELETE_CALENDAR)
     }
@@ -69,13 +69,12 @@ public class askConfirm extends DialogFragment {
         return view;
     }
 
-    @Override
-    public void show(FragmentManager manager, String tag) {
-        super.show(manager, tag);
-
-        titleStr = activity.getResources().getString(R.string.dialog_deleteCalendar_title) + tag + "\".";
-        subStr = activity.getResources().getString(R.string.dialog_deleteCalendar_subtitle);
-
+    public void show(FragmentManager manager,String title,String subtitle) {
+        titleStr = title;
+        subStr = subtitle;
+//        titleStr = activity.getResources().getString(R.string.dialog_deleteCalendar_title) + tag + "\".";
+//        subStr = activity.getResources().getString(R.string.dialog_deleteCalendar_subtitle);
+        super.show(manager, "tag");
     }
 
     Button.OnClickListener btnOnClick = new View.OnClickListener() {
@@ -89,12 +88,13 @@ public class askConfirm extends DialogFragment {
                 case R.id.btn_ok:
                     try{
                         if (aSwitch.isChecked()){
-                            if (todo == Space.OnCompleteListener.DELETE_CALENDAR) mListener.deleteCalendar();
+                            mListener.confirm(position,true);
                             dismiss();
                         }
                        // dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());
+                        dismiss();
                     }
                     break;
             }

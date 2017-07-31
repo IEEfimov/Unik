@@ -38,7 +38,7 @@ public class choiceAction extends DialogFragment {
     mySimpleAdapter sAdapter;
     int who;
 
-    private Space.onChoiceAction mListener;
+    private Space.DialogChoiceAction mListener;
 
     public choiceAction() {
         // Required empty public constructor
@@ -46,7 +46,7 @@ public class choiceAction extends DialogFragment {
 
     public void setActivity(Activity activity, String[] todo,int position){
         this.actions = todo;
-        this.mListener = (Space.onChoiceAction) activity ;
+        this.mListener = (Space.DialogChoiceAction) activity ;
         this.activity = activity;
         this.who = position;
         getData();

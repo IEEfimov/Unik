@@ -17,47 +17,40 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
 
 
 public class askTime extends DialogFragment {
 
-    Button cancel;
-    Button ok;
+    private EditText timeStart,timeEnd;
+    private TextView title,subtitle;
+    private Button cancel;
+    private Button ok;
 
-    TextView title,subtitle;
-    String titleStr,subStr, nameFieldText1,nameFieldText2;
+    private String titleStr,subStr, defaultStart, defaultEnd;
 
-    EditText timeStart,timeEnd;
-
-    Hour hour;
-
-    private Space.OnCompleteListener mListener;
-    private int todo;
+    private Space.DialogTimeEdit mListener;
+    private int position;
 
     public askTime() {
         // Required empty public constructor
     }
 
-    public void setActivity(Activity activity, int todo){
-        this.mListener = (Space.OnCompleteListener) activity;
-        this.todo = todo;
-        if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
-            // todo Написать нормальный текст
-            titleStr = activity.getResources().getString(R.string.dialog_editTime_title);
-            subStr = activity.getResources().getString(R.string.dialog_editTime_subtitle);
-        }
+    public void setActivity(Activity activity, int position){
+        this.mListener = (Space.DialogTimeEdit) activity;
+        this.position = position;
+        titleStr = activity.getResources().getString(R.string.dialog_setTime_title);
+        subStr = activity.getResources().getString(R.string.dialog_setTime_subtitle);
 
     }
 
 
-    public void show(FragmentManager manager, Hour hour) {
+    public void show(FragmentManager manager, String start, String end) {
         super.show(manager, "askTime");
-        nameFieldText1 = hour.getStart();
-        nameFieldText2 = hour.getEnd();
-        this.hour = hour;
+        defaultStart = start;
+        defaultEnd = end;
+
     }
 
 
@@ -75,20 +68,18 @@ public class askTime extends DialogFragment {
         timeEnd = (EditText) view.findViewById(R.id.endTime);
         cancel = (Button) view.findViewById(R.id.btn_cancel);
         ok = (Button) view.findViewById(R.id.btn_ok);
-
         title = (TextView) view.findViewById(R.id.Title);
         subtitle = (TextView) view.findViewById(R.id.Subtitle);
-        timeStart.setText(nameFieldText1);
-        timeEnd.setText(nameFieldText2);
+
+        timeStart.setText(defaultStart);
+        timeEnd.setText(defaultEnd);
+        title.setText(titleStr);
+        subtitle.setText(subStr);
 
         timeStart.addTextChangedListener(textWatcher);
         timeEnd.addTextChangedListener(textWatcher);
         timeStart.setSelectAllOnFocus(true);
         timeEnd.setSelectAllOnFocus(true);
-
-
-        title.setText(titleStr);
-        subtitle.setText(subStr);
 
         cancel.setOnClickListener(btnOnClick);
         ok.setOnClickListener(btnOnClick);
@@ -110,9 +101,9 @@ public class askTime extends DialogFragment {
                     break;
                 case R.id.btn_ok:
                     try{
-                        hour.setStart(timeStart.getText().toString());
-                        hour.setEnd(timeEnd.getText().toString());
-                        if (todo == Space.OnCompleteListener.EDIT_ITEM) mListener.editItemTime(hour);
+                        String a = timeStart.getText().toString();
+                        String b = timeEnd.getText().toString();
+                        mListener.editTime(position,a,b);
                         dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());

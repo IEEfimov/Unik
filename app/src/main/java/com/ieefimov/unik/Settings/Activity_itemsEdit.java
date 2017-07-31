@@ -27,6 +27,7 @@ import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askAction;
+import com.ieefimov.unik.Dialogs.askName;
 import com.ieefimov.unik.Dialogs.choiceAction;
 import com.ieefimov.unik.R;
 
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_itemsEdit extends AppCompatActivity implements Space.onChoiceAction{
+public class Activity_itemsEdit extends AppCompatActivity implements Space.DialogChoiceAction {
 
     Spinner calendarSelector;
     ToggleButton daySelect[];
@@ -44,11 +45,12 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
 
 
     CalendarItem[] calendarItems;
-    String calendars[];
+    int currentCalendar=-1;
+    //String calendars[];
 
     //////////////////////
 
-    CalendarItem currentCalendar;
+
     Hour[] currentHours;
     Item[] currentItems;
     ConnectorDB database;
@@ -138,6 +140,8 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
                 finish();
                 break;
             case R.id.action_edit:
+                SharedPreferences.Editor mEdit = mPreferences.edit();
+                mEdit.putInt(Space.PREF_EDITED_CALENDAR,3);
                 Intent intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
                 ActivityOptions options =
                         ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
@@ -146,9 +150,16 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+        update();
+    }
+
     private void getData(){
         calendarItems = database.selectCalendar(-1);
-        calendars = new String[calendarItems.length];
+        String[] calendars = new String[calendarItems.length];
         for (int i=0;i<calendars.length;i++){
             calendars[i] = calendarItems[i].getName();
         }
@@ -157,23 +168,36 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         calendarSelector.setAdapter(spinnerAdapter);
 
-        if (currentCalendar == null) {
+        if (currentCalendar == -1) {
+            int current = mPreferences.getInt(Space.PREF_EDITED_CALENDAR,-1);
+            if (current == -1) current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+            else {
+                SharedPreferences.Editor mEdit = mPreferences.edit();
+                mEdit.putInt(Space.PREF_EDITED_CALENDAR,-1);
+                mEdit.apply();
+            }
 
-            int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
             calendarSelector.setSelection(current);
-            currentCalendar = calendarItems[current];
+            currentCalendar = current;
         }
+
+//        if (currentCalendar == null) {
+//
+//            int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+//            calendarSelector.setSelection(current);
+//            currentCalendar = calendarItems[current];
+//        }
         else {
             boolean flag = false;
             for (int i = 0; i < calendarItems.length; i++) {
-                if (currentCalendar.getId() == calendarItems[i].getId()) {
-                    currentCalendar = calendarItems[i];
+                if (calendarItems[currentCalendar].getId() == calendarItems[i].getId()) {
+                    calendarItems[currentCalendar] = calendarItems[i];
                     calendarSelector.setSelection(i);
                     flag = true;
                     break;
                 }
             }
-            if (!flag) currentCalendar = calendarItems[0];
+            if (!flag) calendarItems[currentCalendar] = calendarItems[0];
         }
 
 
@@ -194,7 +218,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
                 break;
             }
         }
-        if (!currentCalendar.isDifferentWeek()){
+        if (!calendarItems[currentCalendar].isDifferentWeek()){
             weekSelect[0].setChecked(true);
             weekSelect[1].setChecked(false);
             weekLayout.setVisibility(View.GONE);
@@ -203,10 +227,10 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
 
         ////////////////////////////////////////////////
 
-        currentHours = database.selectHour(currentCalendar);
+        currentHours = database.selectHour(calendarItems[currentCalendar]);
         //================
-        currentItems = new Item[currentCalendar.getItemCount()];
-        Item[] tempItems = database.selectItems(day,week,currentCalendar.getId());
+        currentItems = new Item[calendarItems[currentCalendar].getItemCount()];
+        Item[] tempItems = database.selectItems(day,week,calendarItems[currentCalendar].getId());
 
         for (int i = 0; i < tempItems.length; i++) {
             for (int j = 0; j < currentHours.length;j++){
@@ -218,7 +242,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
             if (currentItems[i] == null){
                 currentItems[i] = new Item();
                 currentItems[i].setDay(day);
-                currentItems[i].setCalendar(currentCalendar.getId());
+                currentItems[i].setCalendar(calendarItems[currentCalendar].getId());
                 currentItems[i].setHour(currentHours[i].getId());
                 currentItems[i].setWeek(week);
                 currentItems[i].setName(getResources().getString(R.string.dialog_editItem_defaultName));
@@ -226,10 +250,10 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
             }
         }
 
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(currentCalendar.getItemCount());
+        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(calendarItems[currentCalendar].getItemCount());
         Map<String, Object> m;
 
-        for (int i = 0; i < currentCalendar.getItemCount(); i++) {
+        for (int i = 0; i < calendarItems[currentCalendar].getItemCount(); i++) {
             m = new HashMap<String, Object>();
             m.put(ATTRIBUTE_START, currentHours[i].getStart());
             m.put(ATTRIBUTE_END, currentHours[i].getEnd());
@@ -252,9 +276,9 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             try{
-                currentCalendar = calendarItems[position];
+                calendarItems[currentCalendar] = calendarItems[position];
                 SharedPreferences.Editor mEditor = mPreferences.edit();
-                mEditor.putInt(Space.PREF_CURRENT_CALENDAR,position);
+                mEditor.putInt(Space.PREF_EDITED_CALENDAR,position);
                 mEditor.apply();
                 update();
             }catch (Exception e){
@@ -282,9 +306,10 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
     ListView.OnItemLongClickListener onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            String actions[] = new String[2];
-            actions[0] = "Изменить данные";
-            actions[1] = "Редактировать время";
+            String actions[] = new String[3];
+            actions[0] = "Изменить название";
+            actions[1] = "Изменить кабинет";
+            actions[2] = "Редактировать время";
             // TODO: 30.07.2017 ! Явно заданные строки
             choiceAction askAction = new choiceAction();
             askAction.setActivity(activity,actions,position);
@@ -331,6 +356,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
 
     @Override
     public void choiceDone(int position,int result) {
+        askName askName = new askName();
         switch (result){
             case 0:
                 askAction askAction = new askAction();
@@ -338,6 +364,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.onCho
                 askAction.show(getFragmentManager(),currentItems[position]);
                 break;
             case 1:
+
                 break;
         }
     }

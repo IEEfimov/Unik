@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Hour;
 import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.SaveItem;
 import com.ieefimov.unik.Classes.Space;
@@ -38,7 +37,7 @@ import java.util.Map;
 import static com.ieefimov.unik.Classes.Space.currentCalendar;
 
 public class Activity_calendarList extends AppCompatActivity implements
-        Space.onChoiceAction,Space.OnCompleteListener,Space.editTimeDialog {
+        Space.DialogChoiceAction,Space.DialogConfirm {
 
     ListView calendarList;
     Activity activity;
@@ -138,7 +137,7 @@ public class Activity_calendarList extends AppCompatActivity implements
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putInt(Space.PREF_CURRENT_CALENDAR,position);
+            editor.putInt(Space.PREF_EDITED_CALENDAR,position);
             editor.apply();
 
             Intent intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
@@ -186,11 +185,11 @@ public class Activity_calendarList extends AppCompatActivity implements
                 intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
                 startActivity(intent,options.toBundle());
                 break;
-            case 1:
+            case 1: // Настройки календаря
                 intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
                 startActivity(intent,options.toBundle());
                 break;
-            case 2:
+            case 2: // Сделать резевную копию
                 try {
                     String dir = getApplicationInfo().dataDir;
                     String name = currentCalendar.getName()+".iee";
@@ -208,18 +207,22 @@ public class Activity_calendarList extends AppCompatActivity implements
                     e.printStackTrace();
                 }
                 break;
-            case 3:
+            case 3: // Поделится
                 // TODO: 28.07.2017 Функция "Поделится"
-                Toast.makeText(activity, "Если ты видишь это сообщение, значит еще не готово, типо TODO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Еще не работает", Toast.LENGTH_SHORT).show();
                 break;
-            case 4:
-                if (database.selectCalendar(-1).length < 2){
-                    Toast.makeText(activity, "Нельзя удалить единственный календарь", Toast.LENGTH_SHORT).show();
+            case 4: // Удалить
+                if (calendars.length < 2){
+                    String no = activity.getResources().getString(R.string.dialog_deleteCalendar_lastOne);
+                    Toast.makeText(activity, no, Toast.LENGTH_SHORT).show();
                     break;
                 }
+                String title = activity.getResources().getString(R.string.dialog_deleteCalendar_title)
+                        + calendars[position].getName() + "\".";
+                String subtitle = activity.getResources().getString(R.string.dialog_deleteCalendar_subtitle);
                 askConfirm askConfirm = new askConfirm();
-                askConfirm.setActivity(this,Space.OnCompleteListener.DELETE_CALENDAR);
-                askConfirm.show(getFragmentManager(),currentCalendar.getName());
+                askConfirm.setActivity(activity,position);
+                askConfirm.show(getFragmentManager(),title,subtitle);
 
                 break;
         }
@@ -231,37 +234,10 @@ public class Activity_calendarList extends AppCompatActivity implements
     }
 
     @Override
-    public void addCalendar(String result) {
-
-    }
-
-    @Override
-    public void renameCalendar(String result) {
-
-    }
-
-    @Override
-    public void deleteCalendar() {
-        int selected = mPreferences.getInt(Space.PREF_EDITED_CALENDAR,-2);
-        CalendarItem currentCalendar = calendars[selected];
-        if (selected==mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,-1)){
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putInt(Space.PREF_CURRENT_CALENDAR,0);
-            editor.apply();
+    public void confirm(int position, boolean result) {
+        if (result){
+            database.deleteCalendar(calendars[position]);
+            getData();
         }
-        database.deleteCalendar(currentCalendar);
-
-        getData();
-    }
-
-    @Override
-    public void editItemCount(int count) {
-
-    }
-
-
-    @Override
-    public void editTime(Hour hour) {
-
     }
 }

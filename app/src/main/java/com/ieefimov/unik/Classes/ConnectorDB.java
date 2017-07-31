@@ -1,13 +1,18 @@
 package com.ieefimov.unik.Classes;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ieefimov.unik.R;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 import static android.content.ContentValues.TAG;
 
@@ -464,6 +469,46 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
     //=======================================================//
 
+
+    public boolean DeleteCalendar(CalendarItem calendar,Activity context){
+        try {
+            String dir = context.getApplicationInfo().dataDir;
+            String name = calendar.getName()+".iee";
+            SaveItem saveData = getSaveData(calendar);
+            FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+            String result = context.getResources().getString(R.string.settings_saved) + name;
+            return true;
+        } catch (Exception e) {
+            String result = context.getResources().getString(R.string.settings_notSaved);
+            Log.e("error","ууупс, не могу сохранить :(");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean SaveCalendarCalendarItem(CalendarItem calendar,Context context){
+        try {
+            String dir = context.getApplicationInfo().dataDir;
+            String name = calendar.getName()+".iee";
+            SaveItem saveData = getSaveData(calendar);
+            FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+            String result = context.getResources().getString(R.string.settings_saved) + name;
+            Toast.makeText(context,result, Toast.LENGTH_SHORT).show();
+            return true;
+        } catch (Exception e) {
+            Log.e("error","ууупс, не могу сохранить :(");
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public SaveItem getSaveData(CalendarItem calendar){
         //SQLiteDatabase db = getReadableDatabase();

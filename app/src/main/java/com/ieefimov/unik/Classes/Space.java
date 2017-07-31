@@ -26,24 +26,28 @@ public class Space {
         public final int EDIT_ITEM_COUNT = 4;
         public final int EDIT_ITEM = 5;
 
-        public abstract void addCalendar(String result);
-        public abstract void renameCalendar(String result);
+        //public abstract void addCalendar(String result);
+        //public abstract void renameCalendar(String result);
         //public abstract void deleteCalendar();
         public abstract void editItemCount(int count);
 //        public abstract void editItemTime(Hour hour);
     }
 
-    public static interface onChoiceAction {
+    public static interface DialogChoiceAction {
         public abstract void choiceDone(int position,int result);
         public abstract void editItem(Item item);
     }
 
-    public static interface editTimeDialog{
-        public abstract void editTime(Hour hour);
+    public static interface DialogTimeEdit {
+        public abstract void editTime(int position,String start,String end);
     }
     public static interface DialogConfirm{
-        public abstract void confirm(Hour hour);
+        public abstract void confirm(int position,boolean result);
     }
+    public static interface DialogName{
+        public abstract void getName(int position,String result);
+    }
+
 
 
     public static interface mainDialogListener{

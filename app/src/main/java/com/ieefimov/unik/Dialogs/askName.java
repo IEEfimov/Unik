@@ -22,18 +22,18 @@ public class askName extends DialogFragment {
     Button ok;
 
     TextView title,subtitle;
-    String titleStr,subStr, nameFieldText;
+    String titleStr,subStr, defaultName;
 
-    private Space.OnCompleteListener mListener;
-    private int todo;
+    private Space.DialogName mListener;
+    private int position;
 
     public askName() {
         // Required empty public constructor
     }
 
     public void setActivity(Activity activity, int todo){
-        this.mListener = (Space.OnCompleteListener) activity;
-        this.todo = todo;
+        this.mListener = (Space.DialogName) activity;
+        this.position = todo;
         if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
             titleStr = activity.getResources().getString(R.string.dialog_renameCalendar_title);
             subStr = activity.getResources().getString(R.string.dialog_renameCalendar_subtitle);
@@ -42,15 +42,16 @@ public class askName extends DialogFragment {
         if (todo==Space.OnCompleteListener.ADD_CALENDAR){
             titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
             subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
-            nameFieldText = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
+            defaultName = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
         }
 
     }
 
-    @Override
-    public void show(FragmentManager manager, String tag) {
-        super.show(manager, tag);
-        nameFieldText = tag;
+    public void show(FragmentManager manager,String title,String subtitle,String defaultName) {
+        super.show(manager, "tag");
+        this.titleStr = title;
+        this.subStr = subtitle;
+        this.defaultName = defaultName;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class askName extends DialogFragment {
 
         title = (TextView) view.findViewById(R.id.Title);
         subtitle = (TextView) view.findViewById(R.id.Subtitle);
-        name.setText(nameFieldText);
+        name.setText(defaultName);
         name.setOnClickListener(editOnClick);
 
         title.setText(titleStr);
@@ -100,8 +101,7 @@ public class askName extends DialogFragment {
                     break;
                 case R.id.btn_ok:
                     try{
-                        if (todo == Space.OnCompleteListener.ADD_CALENDAR) mListener.addCalendar(name.getText().toString());
-                        if (todo == Space.OnCompleteListener.RENAME_CALENDAR) mListener.renameCalendar(name.getText().toString());
+                        mListener.getName(position,name.getText().toString());
                         dismiss();
                     }catch (Exception e){
                         Log.e("ERROR",e.getMessage());
