@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements Space.mainDialogListener {
+public class MainActivity extends AppCompatActivity implements Space.DialogChoiceCalendar {
 
    // Context context;
     Activity activity;
@@ -210,9 +211,13 @@ public class MainActivity extends AppCompatActivity implements Space.mainDialogL
             switch (v.getId()){
                 case R.id.nav_settingsBtn:
                     intent = new Intent(getApplicationContext(),SettingsActivity.class);
-                    ActivityOptions options =
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-                    startActivity(intent,options.toBundle());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                        ActivityOptions options =
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                        startActivity(intent,options.toBundle());
+                    }
+                    else startActivity(intent);
+
                     break;
                 case (R.id.nav_choiseCalendar):
                     askCalendar ask = new askCalendar();
@@ -263,5 +268,10 @@ public class MainActivity extends AppCompatActivity implements Space.mainDialogL
     public void choiseCalendar() {
         drawerLayout.closeDrawer(Gravity.LEFT,false);
         getData();
+    }
+
+    @Override
+    public void retCalendar() {
+
     }
 }

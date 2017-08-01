@@ -34,16 +34,16 @@ public class askName extends DialogFragment {
     public void setActivity(Activity activity, int todo){
         this.mListener = (Space.DialogName) activity;
         this.position = todo;
-        if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
-            titleStr = activity.getResources().getString(R.string.dialog_renameCalendar_title);
-            subStr = activity.getResources().getString(R.string.dialog_renameCalendar_subtitle);
-
-        }
-        if (todo==Space.OnCompleteListener.ADD_CALENDAR){
-            titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
-            subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
-            defaultName = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
-        }
+//        if (todo==Space.OnCompleteListener.RENAME_CALENDAR){
+//            titleStr = activity.getResources().getString(R.string.dialog_renameCalendar_title);
+//            subStr = activity.getResources().getString(R.string.dialog_renameCalendar_subtitle);
+//
+//        }
+//        if (todo==Space.OnCompleteListener.ADD_CALENDAR){
+//            titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
+//            subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
+//            defaultName = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
+//        }
 
     }
 

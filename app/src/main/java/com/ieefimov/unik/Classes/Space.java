@@ -50,9 +50,11 @@ public class Space {
 
 
 
-    public static interface mainDialogListener{
+    public static interface DialogChoiceCalendar {
         public final int CHOISE_CALENDAR = 1;
+        public final int RETURN_CALENDAR = 2;
         public abstract void choiseCalendar();
+        public abstract void retCalendar();
 
 
     }

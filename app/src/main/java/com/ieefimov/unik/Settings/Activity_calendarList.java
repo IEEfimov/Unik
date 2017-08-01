@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,10 +39,12 @@ import java.util.Map;
 import static com.ieefimov.unik.Classes.Space.currentCalendar;
 
 public class Activity_calendarList extends AppCompatActivity implements
-        Space.DialogChoiceAction,Space.DialogConfirm {
+        Space.DialogChoiceAction,Space.DialogConfirm, Space.DialogName {
 
     ListView calendarList;
     Activity activity;
+
+    LinearLayout addNewCalendar;
 
     ConnectorDB database;
     SharedPreferences mPreferences;
@@ -74,6 +78,8 @@ public class Activity_calendarList extends AppCompatActivity implements
         calendarList = (ListView) findViewById(R.id.calendarList);
         calendarList.setOnItemClickListener(onItemClickListener);
         calendarList.setOnItemLongClickListener(onItemLongClickListener);
+        addNewCalendar = (LinearLayout) findViewById(R.id.addNewCalendar);
+        addNewCalendar.setOnClickListener(onLinearClick);
 
         database = new ConnectorDB(this,1);
         activity = this;
@@ -141,9 +147,12 @@ public class Activity_calendarList extends AppCompatActivity implements
             editor.apply();
 
             Intent intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
-            ActivityOptions options =
-                    ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-            startActivity(intent,options.toBundle());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                ActivityOptions options =
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                startActivity(intent,options.toBundle());
+            }
+            else startActivity(intent);
         }
     };
 
@@ -174,8 +183,6 @@ public class Activity_calendarList extends AppCompatActivity implements
 //
 
         Intent intent;
-        ActivityOptions options =
-                ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
 
         int selected = mPreferences.getInt(Space.PREF_EDITED_CALENDAR,-2);
         CalendarItem currentCalendar = calendars[selected];
@@ -183,11 +190,21 @@ public class Activity_calendarList extends AppCompatActivity implements
         switch (result){
             case 0: // Редактировать рассписание
                 intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
-                startActivity(intent,options.toBundle());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    ActivityOptions options =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                    startActivity(intent,options.toBundle());
+                }
+                else startActivity(intent);
                 break;
             case 1: // Настройки календаря
                 intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
-                startActivity(intent,options.toBundle());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    ActivityOptions options =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                    startActivity(intent,options.toBundle());
+                }
+                else startActivity(intent);
                 break;
             case 2: // Сделать резевную копию
                 try {
@@ -239,5 +256,25 @@ public class Activity_calendarList extends AppCompatActivity implements
             database.deleteCalendar(calendars[position]);
             getData();
         }
+    }
+
+    LinearLayout.OnClickListener onLinearClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
+            String subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
+            String defaultName = activity.getResources().getString(R.string.dialog_addCalendar_defaultName);
+            askName askName = new askName();
+            askName.setActivity(activity,-1);
+            askName.show(getFragmentManager(),titleStr,subStr,defaultName);
+        }
+    };
+
+    @Override
+    public void getName(int position, String result) {
+        CalendarItem temp = new CalendarItem();
+        temp.setName(result);
+        database.insertCalendar(temp);
+        getData();
     }
 }

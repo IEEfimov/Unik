@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.Dialogs.askCalendar;
 import com.ieefimov.unik.Dialogs.askName;
 import com.ieefimov.unik.R;
 
@@ -23,10 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_backups extends AppCompatActivity implements Space.OnCompleteListener{
+public class Activity_backups extends AppCompatActivity implements Space.OnCompleteListener,
+            Space.DialogChoiceCalendar{
 
     ListView backupsList;
     Activity activity;
+    LinearLayout addNew;
 
     ConnectorDB database;
 
@@ -55,6 +59,9 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
         backupsList = (ListView) findViewById(R.id.backupsList);
         backupsList.setOnItemClickListener(onItemClickListener);
+
+        addNew = (LinearLayout) findViewById(R.id.addNewCalendar);
+        addNew.setOnClickListener(onLinearClick);
 
         database = new ConnectorDB(this,1);
         activity = this;
@@ -138,10 +145,28 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         }
     };
 
+    LinearLayout.OnClickListener onLinearClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            askCalendar asker = new askCalendar();
+            asker.setActivity(activity,0);
+            asker.show(getFragmentManager(),"tag");
+        }
+    };
+
 
 
     @Override
     public void editItemCount(int count) {}
 
 
+    @Override
+    public void choiseCalendar() {
+
+    }
+
+    @Override
+    public void retCalendar() {
+
+    }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ import com.ieefimov.unik.Classes.Item;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askAction;
 import com.ieefimov.unik.Dialogs.askName;
+import com.ieefimov.unik.Dialogs.askTime;
 import com.ieefimov.unik.Dialogs.choiceAction;
 import com.ieefimov.unik.R;
 
@@ -35,7 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_itemsEdit extends AppCompatActivity implements Space.DialogChoiceAction {
+public class Activity_itemsEdit extends AppCompatActivity implements Space.DialogChoiceAction,
+        Space.DialogName,Space.DialogTimeEdit{
 
     Spinner calendarSelector;
     ToggleButton daySelect[];
@@ -46,6 +49,8 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.Dialo
 
     CalendarItem[] calendarItems;
     int currentCalendar=-1;
+
+    int choiseTodo = -1;
     //String calendars[];
 
     //////////////////////
@@ -143,9 +148,12 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.Dialo
                 SharedPreferences.Editor mEdit = mPreferences.edit();
                 mEdit.putInt(Space.PREF_EDITED_CALENDAR,3);
                 Intent intent = new Intent(getApplicationContext(),Activity_calendarEdit.class);
-                ActivityOptions options =
-                        ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-                startActivity(intent,options.toBundle());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    ActivityOptions options =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                    startActivity(intent,options.toBundle());
+                }
+                else startActivity(intent);
         }
         return true;
     }
@@ -358,14 +366,47 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.Dialo
     public void choiceDone(int position,int result) {
         askName askName = new askName();
         switch (result){
-            case 0:
-                askAction askAction = new askAction();
-                askAction.setActivity(activity);
-                askAction.show(getFragmentManager(),currentItems[position]);
+            case 0: // изменить название
+                choiseTodo = 1;
+                askName.setActivity(activity,position);
+                askName.show(getFragmentManager(),"Введите название:","",currentItems[position].getName());
                 break;
-            case 1:
-
+            case 1: // изменить кабинет
+                choiseTodo = 2;
+                askName.setActivity(activity,position);
+                askName.show(getFragmentManager(),"Введите номер кабинета:","",currentItems[position].getRoom());
+                break;
+            case 2: // редактировать время
+                askTime ask = new askTime();
+                ask.setActivity(activity,position);
+                ask.show(getFragmentManager(),currentHours[position].getStart(),currentHours[position].getEnd());
                 break;
         }
+    }
+
+    @Override
+    public void getName(int position, String result) {
+        switch (choiseTodo){
+            case 1:
+                currentItems[position].setName(result);
+                break;
+            case 2:
+                currentItems[position].setRoom(result);
+                break;
+        }
+        choiseTodo = -1;
+        if (currentItems[position].getId() >= 0) database.updateItem(currentItems[position]);
+        else database.insertItem(currentItems[position]);
+        update();
+    }
+
+    @Override
+    public void editTime(int position, String start, String end) {
+        currentHours[position].setStart(start);
+        currentHours[position].setEnd(end);
+        database.updateHour(currentHours[position]);
+        if (currentHours[position].getId() > -1) database.updateHour(currentHours[position]);
+        else database.insertHour(currentHours[position]);
+        update();
     }
 }

@@ -44,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
-        android:background="@drawable/nav">
+        android:background="@drawable/nav"
+        android:id="@+id/addNewCalendar">
 
         <TextView
             android:layout_width="match_parent"
@@ -54,6 +55,7 @@
             android:textSize="18sp"
             android:textColor="@color/actionTitleText"
             android:paddingStart="20dp"
+            android:paddingLeft="20dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
 

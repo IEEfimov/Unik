@@ -44,7 +44,7 @@ public class askCalendar extends DialogFragment {
 
     mySimpleAdapter sAdapter;
 
-    private Space.mainDialogListener mListener;
+    private Space.DialogChoiceCalendar mListener;
     private int todo;
 
     public askCalendar() {
@@ -53,7 +53,7 @@ public class askCalendar extends DialogFragment {
 
     public void setActivity(Activity activity, int todo){
         this.todo = todo;
-        this.mListener = (Space.mainDialogListener) activity ;
+        this.mListener = (Space.DialogChoiceCalendar) activity ;
 
         mPreferences = activity.getSharedPreferences(Space.APP_PREFERENCE,activity.MODE_PRIVATE);
         database =  new ConnectorDB(activity,1);

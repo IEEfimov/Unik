@@ -2,6 +2,7 @@ package com.ieefimov.unik;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -66,21 +67,33 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent;
-            ActivityOptions options =
-                    ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
-
             switch (v.getId()){
                 case R.id.settings_calendarListBtn:
                     intent = new Intent(getApplicationContext(),Activity_calendarList.class);
-                    startActivity(intent,options.toBundle());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                        ActivityOptions options =
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                        startActivity(intent,options.toBundle());
+                    }
+                    else startActivity(intent);
                     break;
                 case R.id.settings_ItemListBtn:
                     intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
-                    startActivity(intent,options.toBundle());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                        ActivityOptions options =
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                        startActivity(intent,options.toBundle());
+                    }
+                    else startActivity(intent);
                     break;
                 case R.id.settings_backupLayout:
                     intent = new Intent(getApplicationContext(),Activity_backups.class);
-                    startActivity(intent,options.toBundle());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                        ActivityOptions options =
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.show_activity,R.anim.hide_activity);
+                        startActivity(intent,options.toBundle());
+                    }
+                    else startActivity(intent);
                     break;
             }
         }
