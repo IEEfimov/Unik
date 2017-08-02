@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     DrawerLayout drawerLayout;
     ListView mainList;
     Button today,tomorrow;
+    Toolbar tool;
 
     Button choiseCalendarBtn;
 
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         setContentView(R.layout.activity_main);
         //context = this;
 
-        Toolbar tool = (Toolbar) findViewById(R.id.toolbar);
+        tool = (Toolbar) findViewById(R.id.toolbar);
         FrameLayout kostil = (FrameLayout) findViewById(R.id.kostil_top);
         ViewGroup.LayoutParams params = kostil.getLayoutParams(); //    Задается правильный отступ для тулбара
         params.height = getStatusBarHeight();   //                  для разных устройств
@@ -80,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         calendarView = (CalendarView) findViewById(R.id.calendarView);
         today = (Button) findViewById(R.id.today);
         tomorrow = (Button) findViewById(R.id.tomorrow);
-
-
 
         Button settingsBtn = (Button) findViewById(R.id.nav_settingsBtn);
         choiseCalendarBtn = (Button) findViewById(R.id.nav_choiseCalendar);
@@ -141,10 +140,12 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     private void update(){
 
         currentHours = database.selectHour(currentCalendar);
+        tool.setTitle(currentCalendar.getName());
         //================
 
         int day = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
-        int week = (calendar.get(Calendar.WEEK_OF_YEAR)%2);
+        int week = 0;
+        if (currentCalendar.isDifferentWeek()) week = (calendar.get(Calendar.WEEK_OF_YEAR)%2);
 
         currentItems = new Item[currentCalendar.getItemCount()];
         Item[] tempItems = database.selectItems(day,week,currentCalendar.getId());
@@ -265,13 +266,15 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
 
     @Override
-    public void choiseCalendar() {
+    public void choiceCalendar() {
         drawerLayout.closeDrawer(Gravity.LEFT,false);
         getData();
     }
 
     @Override
-    public void retCalendar() {
+    public void retCalendar(int index) {
 
     }
+
+
 }

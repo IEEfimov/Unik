@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.ieefimov.unik.Classes.CalendarItem;
 import com.ieefimov.unik.Classes.ConnectorDB;
 import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.Dialogs.askCalendar;
@@ -91,9 +92,6 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
     }
 
     private void getData(){
-
-
-
         dir = getApplicationInfo().dataDir;
         files = getFiles();
 
@@ -161,12 +159,15 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
 
     @Override
-    public void choiseCalendar() {
+    public void choiceCalendar() {
 
     }
 
     @Override
-    public void retCalendar() {
+    public void retCalendar(int index) {
 
+        CalendarItem current = database.selectCalendar(-1)[index];
+        database.SaveCalendarCalendarItem(current,activity);
+        getData();
     }
 }

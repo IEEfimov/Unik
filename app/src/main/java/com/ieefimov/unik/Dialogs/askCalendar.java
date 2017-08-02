@@ -119,7 +119,8 @@ public class askCalendar extends DialogFragment {
             editor.putInt(Space.PREF_CURRENT_CALENDAR,position);
             editor.apply();
 
-            mListener.choiseCalendar();
+            mListener.choiceCalendar();
+            mListener.retCalendar(position);
 
             dismiss();
 //            askName askAction = new askName();
