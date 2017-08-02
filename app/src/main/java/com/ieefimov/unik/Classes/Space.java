@@ -11,9 +11,14 @@ public class Space {
     public static int stausBarHeight=0;
 
     public static final String FILE_EXTENSION = ".iee";
+
     public static final String APP_PREFERENCE = "settings.IEE";
-    public static final String PREF_CURRENT_CALENDAR = "stng_1";
-    public static final String PREF_EDITED_CALENDAR = "stng_2";
+    public static final String PREF_CURRENT_CALENDAR = "50838";
+    public static final String PREF_EDITED_CALENDAR = "d31f0";
+
+    public static final String PREF_SETTINGS_ANIMATION = "13256";
+    public static final String PREF_SETTINGS_KEYBOARD = "6390b";
+    public static final String PREF_SETTINGS_CALENDAR = "7066f";
 
     public static String currentCalendar="isNull";
     public static String editedCalendar="isNull";

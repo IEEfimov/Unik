@@ -15,6 +15,10 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
 
+
+    <string name="main_defaultText"> Напишете что-нибудь</string>
+
+
     <string name="settings_calendar_edit_title">Список календарей</string>
     <string name="settings_calendar_edit_subtitle">!!!!Настройки цикличности календарей </string>
 
@@ -27,6 +31,9 @@
     <string name="settings_mainAnimation_title">Анимация диалога</string>
     <string name="settings_mainAnimation_subtitle">Анимировать движения диалогового окна
         (может замедлять работу)</string>
+
+    <string name="settings_showCalendar_title">Показывать календарь</string>
+    <string name="settings_showCalendar_subtitle">Отключение этой опции даст больше свободного пространства</string>
 
     <string name="settings_autoShowKeyboard_title">Авто клавиатура</string>
     <string name="settings_autoShowKeyboard_subtitle">Показывать клавиатуру при выборе элемента</string>

@@ -2,6 +2,7 @@ package com.ieefimov.unik;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -26,9 +28,14 @@ public class SettingsActivity extends AppCompatActivity {
     LinearLayout backupBtn;
     LinearLayout animationBtn;
     LinearLayout keyboardBtn;
+    LinearLayout showCalendarBtn;
 
     CheckBox animationCheck;
     CheckBox autoKeyCheck;
+    CheckBox showCalendarCheck;
+
+    SharedPreferences mPreferences;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +55,28 @@ public class SettingsActivity extends AppCompatActivity {
         backupBtn = (LinearLayout) findViewById(R.id.settings_backupLayout);
         animationBtn = (LinearLayout) findViewById(R.id.showAnimationLay);
         keyboardBtn = (LinearLayout) findViewById(R.id.autoKeyboardLay);
+        showCalendarBtn = (LinearLayout) findViewById(R.id.showCalendarLay);
 
         animationCheck = (CheckBox) findViewById(R.id.animationChk);
         autoKeyCheck = (CheckBox) findViewById(R.id.autoKeyChk);
+        showCalendarCheck = (CheckBox) findViewById(R.id.showCalendarChk);
+
+        animationCheck.setOnCheckedChangeListener(onCheckedChangeListener);
+        autoKeyCheck.setOnCheckedChangeListener(onCheckedChangeListener);
+        showCalendarCheck.setOnCheckedChangeListener(onCheckedChangeListener);
 
         calendarListBtn.setOnClickListener(onClickListener);
         itemListBtn.setOnClickListener(onClickListener);
         backupBtn.setOnClickListener(onClickListener);
         animationBtn.setOnClickListener(onClickListener);
         keyboardBtn.setOnClickListener(onClickListener);
+        showCalendarBtn.setOnClickListener(onClickListener);
+
+        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
+
+        animationCheck.setChecked(mPreferences.getBoolean(Space.PREF_SETTINGS_ANIMATION,true));
+        autoKeyCheck.setChecked(mPreferences.getBoolean(Space.PREF_SETTINGS_KEYBOARD,true));
+        showCalendarCheck.setChecked(mPreferences.getBoolean(Space.PREF_SETTINGS_CALENDAR,true));
 
     }
 
@@ -118,7 +138,31 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.autoKeyboardLay:
                     autoKeyCheck.setChecked(!autoKeyCheck.isChecked());
                     break;
+                case R.id.showCalendarLay:
+                    showCalendarCheck.setChecked(!showCalendarCheck.isChecked());
+                    break;
+
             }
+        }
+    };
+
+    CheckBox.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mEditor = mPreferences.edit();
+            switch (buttonView.getId()){
+                case R.id.animationChk:
+                    mEditor.putBoolean(Space.PREF_SETTINGS_ANIMATION,animationCheck.isChecked());
+                    break;
+                case R.id.autoKeyChk:
+                    mEditor.putBoolean(Space.PREF_SETTINGS_KEYBOARD,autoKeyCheck.isChecked());
+                    break;
+                case R.id.showCalendarChk:
+                    mEditor.putBoolean(Space.PREF_SETTINGS_CALENDAR,showCalendarCheck.isChecked());
+                    break;
+
+            }
+            mEditor.apply();
         }
     };
 }

@@ -73,9 +73,12 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     Item[] currentItems;
     HomeWork[] currentHomeWorks;
     ConnectorDB database;
+    SharedPreferences mPreferences;
 
     LinearLayout curItem;
     boolean isShowed = false;
+
+    boolean editedFlag = false;
 
 
     //////////////////////////////////////
@@ -127,9 +130,10 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         okDZ.setOnClickListener(psevdoOnClickBtn);
         cancelDZ.setOnClickListener(psevdoOnClickBtn);
 
-        newBG.setY(10000);
-        newBG.setX(10000);
+        newBG.setX(1000);
 
+        String standard = getResources().getString(R.string.main_defaultText);
+        editDZ.setText(standard);
 //        ViewGroup.LayoutParams params1 = mainList.getLayoutParams();
 //        params1.height = mainList.getHeight();
 //        params1.width = mainList.getWidth();
@@ -138,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         activity = this;
 
         database = new ConnectorDB(this,1); // подключение к БД.
+        mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
         getData();
         calendarView.setOnDateChangeListener(onDateChangeListener);
 
@@ -320,35 +325,74 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
             newBG.setY(curItem.getHeight());
             newBG.setX(0);
 
-            Animation animo = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_0);
-            animo.setAnimationListener(animationOnShow);
-            float animoHeight = curItem.getY();
-            Animation animo2 = new TranslateAnimation(0,0,0,-animoHeight);
-            animo2.setDuration(250);
-            animo2.setFillAfter(true);
+            String standard = activity.getResources().getString(R.string.main_defaultText);
+            if (editDZ.getText().toString().equals(standard)) editDZ.setSelectAllOnFocus(true);
+            else editDZ.setSelectAllOnFocus(false);
 
-            curItem.startAnimation(animo2);
-            newBG.startAnimation(animo);
+            float animoHeight = curItem.getY();
+
+            if (mPreferences.getBoolean(Space.PREF_SETTINGS_ANIMATION,true)){
+                Animation animo = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_0);
+                animo.setAnimationListener(animationOnShow);
+
+                Animation animo2 = new TranslateAnimation(0,0,0,-animoHeight);
+                animo2.setDuration(250);
+                animo2.setFillAfter(true);
+
+                curItem.startAnimation(animo2);
+                newBG.startAnimation(animo);
+            }else {
+                curItem.setTranslationY(-animoHeight);
+                afterShowDialog();
+            }
         }
     }
     private void hideDialog(){
         if (isShowed){
             isShowed = false;
+            mainList.setEnabled(true);
 
-            Animation animation1 = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_1);
-            float translateY = curItem.getY();
-            Animation animation2 = new TranslateAnimation(0,0,-translateY,0);
-            animation2.setDuration(400);
-            animation2.setFillAfter(true);
-            animation2.setAnimationListener(animationOnHide);
+            if (mPreferences.getBoolean(Space.PREF_SETTINGS_ANIMATION,true)){
+                Animation animation1 = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_1);
+                float translateY = curItem.getY();
+                Animation animation2 = new TranslateAnimation(0,0,-translateY,0);
+                animation2.setDuration(400);
+                animation2.setFillAfter(true);
+                animation2.setAnimationListener(animationOnHide);
 
-            animation1.setFillAfter(true);
-            curItem.startAnimation(animation2);
-            newBG.startAnimation(animation1);
+                animation1.setFillAfter(true);
+                curItem.startAnimation(animation2);
+                newBG.startAnimation(animation1);
+            }else {
+                afterHideDialog();
+            }
 
-            newBG.setY(curItem.getHeight());
-            curItem = null;
+
+
         }
+
+    }
+
+    private void afterShowDialog(){
+        newBG.setX(0);
+        newBG.setTranslationX(0);
+        if (mPreferences.getBoolean(Space.PREF_SETTINGS_KEYBOARD,true)){
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editDZ,0);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+            editDZ.requestFocus();
+        }
+
+    }
+    private void afterHideDialog(){
+        curItem.setTranslationY(0);
+        newBG.setY(curItem.getHeight());
+        curItem = null;
+        newBG.setTranslationX(1000);
+        newBG.setX(1000);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editDZ.getWindowToken(),0);
+
 
     }
 
@@ -366,9 +410,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            newBG.setX(1000);
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editDZ.getWindowToken(),0);
+            afterHideDialog();
         }
 
         @Override
@@ -381,10 +423,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editDZ,0);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-            editDZ.requestFocus();
+            afterShowDialog();
         }
 
         @Override
@@ -402,6 +441,5 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     public void retCalendar(int index) {
 
     }
-
 
 }
