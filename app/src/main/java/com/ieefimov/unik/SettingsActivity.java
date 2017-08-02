@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -19,6 +20,15 @@ import com.ieefimov.unik.Settings.Activity_calendarList;
 import com.ieefimov.unik.Settings.Activity_itemsEdit;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    LinearLayout calendarListBtn;
+    LinearLayout itemListBtn;
+    LinearLayout backupBtn;
+    LinearLayout animationBtn;
+    LinearLayout keyboardBtn;
+
+    CheckBox animationCheck;
+    CheckBox autoKeyCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +43,20 @@ public class SettingsActivity extends AppCompatActivity {
         params.height = Space.stausBarHeight;   //                  для разных устройств
         kostil.setLayoutParams(params);
 
-        LinearLayout calendarListBtn = (LinearLayout) findViewById(R.id.settings_calendarListBtn);
-        LinearLayout itemListBtn = (LinearLayout) findViewById(R.id.settings_ItemListBtn);
-        LinearLayout backupBtn = (LinearLayout) findViewById(R.id.settings_backupLayout);
+        calendarListBtn = (LinearLayout) findViewById(R.id.settings_calendarListBtn);
+        itemListBtn = (LinearLayout) findViewById(R.id.settings_ItemListBtn);
+        backupBtn = (LinearLayout) findViewById(R.id.settings_backupLayout);
+        animationBtn = (LinearLayout) findViewById(R.id.showAnimationLay);
+        keyboardBtn = (LinearLayout) findViewById(R.id.autoKeyboardLay);
+
+        animationCheck = (CheckBox) findViewById(R.id.animationChk);
+        autoKeyCheck = (CheckBox) findViewById(R.id.autoKeyChk);
 
         calendarListBtn.setOnClickListener(onClickListener);
         itemListBtn.setOnClickListener(onClickListener);
         backupBtn.setOnClickListener(onClickListener);
+        animationBtn.setOnClickListener(onClickListener);
+        keyboardBtn.setOnClickListener(onClickListener);
 
     }
 
@@ -94,6 +111,12 @@ public class SettingsActivity extends AppCompatActivity {
                         startActivity(intent,options.toBundle());
                     }
                     else startActivity(intent);
+                    break;
+                case R.id.showAnimationLay:
+                    animationCheck.setChecked(!animationCheck.isChecked());
+                    break;
+                case R.id.autoKeyboardLay:
+                    autoKeyCheck.setChecked(!autoKeyCheck.isChecked());
                     break;
             }
         }

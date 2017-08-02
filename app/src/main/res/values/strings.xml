@@ -17,10 +17,19 @@
 
     <string name="settings_calendar_edit_title">Список календарей</string>
     <string name="settings_calendar_edit_subtitle">!!!!Настройки цикличности календарей </string>
+
     <string name="settings_item_edit_title">Расписание календарей</string>
     <string name="settings_item_edit_subtitle">!!!!Настройки расписания календарей </string>
+
     <string name="settings_backup_title">Резервное копирование</string>
     <string name="settings_backup_subtitle">Импорт и экспорт календарей</string>
+
+    <string name="settings_mainAnimation_title">Анимация диалога</string>
+    <string name="settings_mainAnimation_subtitle">Анимировать движения диалогового окна
+        (может замедлять работу)</string>
+
+    <string name="settings_autoShowKeyboard_title">Авто клавиатура</string>
+    <string name="settings_autoShowKeyboard_subtitle">Показывать клавиатуру при выборе элемента</string>
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -74,6 +83,12 @@
 
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
+
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <string name="settings_label_Calendars">Настройки календарей</string>
+    <string name="settings_label_Main">Главный экран</string>
 
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->

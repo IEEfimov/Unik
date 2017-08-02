@@ -38,11 +38,101 @@
             app:navigationIcon="@drawable/ic_menu_white_24dp">
         </android.support.v7.widget.Toolbar>
 
-        <ListView
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/main_list"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/main_list"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bgNew"
+                android:background="@color/background">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/psevdo">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textMultiLine"
+                        android:ems="10"
+                        android:id="@+id/editDZ"
+                        android:text=" Напишите что-нибудь"
+                        android:textSize="15sp"
+                        android:textColor="@color/settings_bar_titleText"
+                        android:background="@null"
+                        android:padding="10dp"
+                        android:gravity="top"
+                        android:layout_weight="1" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/clockSeparator">
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:text="@string/cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/cancelDZ"
+                            android:layout_weight="1"
+                            android:textAllCaps="false"
+                            android:textColor="@color/actionClockText"
+                            android:backgroundTint="@color/settings_background"
+                            android:elevation="2dp" />
+
+                        <FrameLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/clockSeparator">
+
+                        </FrameLayout>
+
+                        <Button
+                            android:text="Сохранить"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/okDZ"
+                            android:layout_weight="1"
+                            android:textAllCaps="false"
+                            android:textStyle="normal|bold"
+                            android:textColor="@color/actionClockText"
+                            android:backgroundTint="@color/nav_button_default"
+                            android:textSize="16sp"
+                            android:elevation="1dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="horizontal"
