@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -490,7 +491,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         }
     }
 
-    public boolean SaveCalendarCalendarItem(CalendarItem calendar,Context context){
+    public String SaveCalendarCalendarItem(CalendarItem calendar,Context context){
         try {
             String dir = context.getApplicationInfo().dataDir;
             String name = calendar.getName()+".iee";
@@ -502,11 +503,32 @@ public class ConnectorDB extends SQLiteOpenHelper {
             fileOut.close();
             String result = context.getResources().getString(R.string.settings_saved) + name;
             Toast.makeText(context,result, Toast.LENGTH_SHORT).show();
-            return true;
+            return dir+"/"+name;
         } catch (Exception e) {
             Log.e("error","ууупс, не могу сохранить :(");
             e.printStackTrace();
-            return false;
+            return "";
+        }
+    }
+
+    public String ShareCalendarItem(CalendarItem calendar,Context context){
+        try {
+            String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String name = calendar.getName()+".iee";
+            SaveItem saveData = getSaveData(calendar);
+            FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+            String result = context.getResources().getString(R.string.settings_saved) + name;
+            Toast.makeText(context,dir, Toast.LENGTH_SHORT).show();
+            return dir+"/"+name;
+        } catch (Exception e) {
+            Log.e("error","ууупс, не могу сохранить :(");
+            Toast.makeText(context,"ууупс, не могу сохранить :(", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            return "";
         }
     }
 

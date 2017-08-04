@@ -329,20 +329,20 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
             if (editDZ.getText().toString().equals(standard)) editDZ.setSelectAllOnFocus(true);
             else editDZ.setSelectAllOnFocus(false);
 
-            float animoHeight = curItem.getY();
+            float currentItemHeight = curItem.getY();
 
             if (mPreferences.getBoolean(Space.PREF_SETTINGS_ANIMATION,true)){
-                Animation animo = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_0);
-                animo.setAnimationListener(animationOnShow);
+                Animation editDialogAnimation = AnimationUtils.loadAnimation(activity,R.anim.edit_dialog_show);
+                editDialogAnimation.setAnimationListener(animationOnShow);
 
-                Animation animo2 = new TranslateAnimation(0,0,0,-animoHeight);
-                animo2.setDuration(250);
-                animo2.setFillAfter(true);
+                Animation currentItemAnimation = new TranslateAnimation(0,0,0,-currentItemHeight);
+                currentItemAnimation.setDuration(250);
+                currentItemAnimation.setFillAfter(true);
 
-                curItem.startAnimation(animo2);
-                newBG.startAnimation(animo);
+                curItem.startAnimation(currentItemAnimation);
+                newBG.startAnimation(editDialogAnimation);
             }else {
-                curItem.setTranslationY(-animoHeight);
+                curItem.setTranslationY(-currentItemHeight);
                 afterShowDialog();
             }
         }
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
             mainList.setEnabled(true);
 
             if (mPreferences.getBoolean(Space.PREF_SETTINGS_ANIMATION,true)){
-                Animation animation1 = AnimationUtils.loadAnimation(activity,R.anim.alpha_to_1);
+                Animation animation1 = AnimationUtils.loadAnimation(activity,R.anim.edit_dialog_hide);
                 float translateY = curItem.getY();
                 Animation animation2 = new TranslateAnimation(0,0,-translateY,0);
                 animation2.setDuration(400);
@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         newBG.setY(curItem.getHeight());
         curItem = null;
         newBG.setTranslationX(1000);
-        newBG.setX(1000);
+        //newBG.setX(1000);
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editDZ.getWindowToken(),0);
 

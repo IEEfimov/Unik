@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -226,7 +227,14 @@ public class Activity_calendarList extends AppCompatActivity implements
                 break;
             case 3: // Поделится
                 // TODO: 28.07.2017 Функция "Поделится"
-                Toast.makeText(activity, "Еще не работает", Toast.LENGTH_SHORT).show();
+                String filePath = database.ShareCalendarItem(currentCalendar,activity);
+                Intent sharing = new Intent(Intent.ACTION_SEND);
+                sharing.setType("file/*");
+                sharing.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+filePath));
+                sharing.putExtra(Intent.EXTRA_SUBJECT,"sharing..");
+                sharing.putExtra(Intent.EXTRA_TEXT,"sharing..");
+                startActivity(Intent.createChooser(sharing,"ShareFile"));
+                //Toast.makeText(activity, "Еще не работает", Toast.LENGTH_SHORT).show();
                 break;
             case 4: // Удалить
                 if (calendars.length < 2){
