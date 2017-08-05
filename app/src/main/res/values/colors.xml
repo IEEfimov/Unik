@@ -34,6 +34,8 @@
     <color name="toggleText_pressed">#fff</color>
     <color name="toggleText_toggle">#40ffb3</color>
 
+    <color name="btn_bgColor">#44222222</color>
+    <color name="btn_bgColor_pressed">#44aaaaaa</color>
 
 
 

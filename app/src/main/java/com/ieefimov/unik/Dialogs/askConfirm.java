@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Dialogs;
+package com.ieefimov.unik.dialogs;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.Space;
 
 
 public class askConfirm extends DialogFragment {

@@ -1,6 +1,8 @@
-package com.ieefimov.unik.Classes;
+package com.ieefimov.unik.classes;
 
 import android.support.v4.widget.DrawerLayout;
+
+import java.util.Calendar;
 
 /**
  * Created by IEEfimov on 12.07.2017.
@@ -11,6 +13,7 @@ public class Space {
     public static int stausBarHeight=0;
 
     public static final String FILE_EXTENSION = ".iee";
+
 
     public static final String APP_PREFERENCE = "settings.IEE";
     public static final String PREF_CURRENT_CALENDAR = "50838";
@@ -51,6 +54,9 @@ public class Space {
     }
     public static interface DialogName{
         public abstract void getName(int position,String result);
+    }
+    public static interface DialogDate{
+        public abstract void getDate(int position, Calendar date);
     }
 
 

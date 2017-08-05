@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/settings_background"
-    tools:context="com.ieefimov.unik.Settings.Activity_itemsEdit">
+    tools:context="com.ieefimov.unik.settings.Activity_itemsEdit">
 
     <FrameLayout
         android:id="@+id/kostil_top"

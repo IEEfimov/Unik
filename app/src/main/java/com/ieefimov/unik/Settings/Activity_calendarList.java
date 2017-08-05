@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Settings;
+package com.ieefimov.unik.settings;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -18,26 +18,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Item;
-import com.ieefimov.unik.Classes.SaveItem;
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Classes.mySimpleAdapter;
-import com.ieefimov.unik.Dialogs.askConfirm;
-import com.ieefimov.unik.Dialogs.askName;
-import com.ieefimov.unik.Dialogs.choiceAction;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.Item;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.classes.mySimpleAdapter;
+import com.ieefimov.unik.dialogs.askConfirm;
+import com.ieefimov.unik.dialogs.askName;
+import com.ieefimov.unik.dialogs.choiceAction;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ieefimov.unik.Classes.Space.currentCalendar;
+import static com.ieefimov.unik.classes.Space.currentCalendar;
 
 public class Activity_calendarList extends AppCompatActivity implements
         Space.DialogChoiceAction,Space.DialogConfirm, Space.DialogName {
@@ -208,31 +203,15 @@ public class Activity_calendarList extends AppCompatActivity implements
                 else startActivity(intent);
                 break;
             case 2: // Сделать резевную копию
-                try {
-                    String dir = getApplicationInfo().dataDir;
-                    String name = currentCalendar.getName()+".iee";
-                    SaveItem saveData = database.getSaveData(currentCalendar);
-                    FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
-                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                    out.writeObject(saveData);
-                    out.close();
-                    fileOut.close();
-                    Toast.makeText(activity, "Создана копия: \n\r "+name, Toast.LENGTH_SHORT).show();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    database.SaveCalendar(currentCalendar,activity);
+                 break;
             case 3: // Поделится
                 // TODO: 28.07.2017 Функция "Поделится"
                 String filePath = database.ShareCalendarItem(currentCalendar,activity);
                 Intent sharing = new Intent(Intent.ACTION_SEND);
                 sharing.setType("file/*");
                 sharing.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+filePath));
-                sharing.putExtra(Intent.EXTRA_SUBJECT,"sharing..");
-                sharing.putExtra(Intent.EXTRA_TEXT,"sharing..");
+                //текстовая подпись sharing.putExtra(Intent.EXTRA_SUBJECT,"sharing calendar..");
                 startActivity(Intent.createChooser(sharing,"ShareFile"));
                 //Toast.makeText(activity, "Еще не работает", Toast.LENGTH_SHORT).show();
                 break;

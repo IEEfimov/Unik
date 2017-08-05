@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Dialogs;
+package com.ieefimov.unik.dialogs;
 
 
 import android.app.Activity;
@@ -12,9 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Classes.mySimpleAdapter;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.classes.mySimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

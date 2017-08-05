@@ -1,6 +1,7 @@
-package com.ieefimov.unik.Classes;
+package com.ieefimov.unik.classes;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by IEEfimov on 02.08.2017.
@@ -10,7 +11,7 @@ public class HomeWork {
     private long id;
     private long subject;
     private long calendar;
-    private Date date;
+    private Calendar dateOfShow;
     private String string;
 
 
@@ -18,15 +19,21 @@ public class HomeWork {
         id = -1;
         subject = -1;
         calendar = -1;
-        date = Date.valueOf("2000-01-01");
+        dateOfShow = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            dateOfShow.setTime(sdf.parse("01.02.2010"));
+        }catch (Exception e){
+
+        }
         string = "";
     }
 
-    public HomeWork(long id, long subject, long calendar, Date date, String string) {
+    public HomeWork(long id, long subject, long calendar, Calendar dateOfShow, String string) {
         this.id = id;
         this.subject = subject;
         this.calendar = calendar;
-        this.date = date;
+        this.dateOfShow = dateOfShow;
         this.string = string;
     }
 
@@ -34,7 +41,7 @@ public class HomeWork {
         this.id = copy.id;
         this.subject = copy.subject;
         this.calendar = copy.calendar;
-        this.date = copy.date;
+        this.dateOfShow = copy.dateOfShow;
         this.string = copy.string;
     }
 
@@ -62,12 +69,12 @@ public class HomeWork {
         this.calendar = calendar;
     }
 
-    public Date getDate() {
-        return date;
+    public Calendar getDateOfShow() {
+        return dateOfShow;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateOfShow(Calendar dateOfShow) {
+        this.dateOfShow = dateOfShow;
     }
 
     public String getString() {

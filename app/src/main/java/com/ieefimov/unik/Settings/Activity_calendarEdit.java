@@ -1,7 +1,9 @@
-package com.ieefimov.unik.Settings;
+package com.ieefimov.unik.settings;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,15 +22,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Hour;
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Dialogs.askConfirm;
-import com.ieefimov.unik.Dialogs.askDigit;
-import com.ieefimov.unik.Dialogs.askName;
-import com.ieefimov.unik.Dialogs.askTime;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.Hour;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.dialogs.askConfirm;
+import com.ieefimov.unik.dialogs.askDigit;
+import com.ieefimov.unik.dialogs.askName;
+import com.ieefimov.unik.dialogs.askTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,10 +138,14 @@ public class Activity_calendarEdit extends AppCompatActivity
                 Toast.makeText(this,"Не работает (пока)",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_share:
-                Toast.makeText(this,"Еще не реализовано",Toast.LENGTH_SHORT).show();
+                String filePath = database.ShareCalendarItem(calendarItems[currentCalendar],activity);
+                Intent sharing = new Intent(Intent.ACTION_SEND);
+                sharing.setType("file/*");
+                sharing.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+filePath));
+                startActivity(Intent.createChooser(sharing,"ShareFile"));
                 break;
             case R.id.action_save:
-                database.SaveCalendarCalendarItem(calendarItems[currentCalendar],activity);
+                database.SaveCalendar(calendarItems[currentCalendar],activity);
         }
         return true;
     }

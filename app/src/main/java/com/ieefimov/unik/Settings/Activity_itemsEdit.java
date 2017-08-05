@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Settings;
+package com.ieefimov.unik.settings;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -22,16 +22,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Hour;
-import com.ieefimov.unik.Classes.Item;
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Dialogs.askAction;
-import com.ieefimov.unik.Dialogs.askName;
-import com.ieefimov.unik.Dialogs.askTime;
-import com.ieefimov.unik.Dialogs.choiceAction;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.Hour;
+import com.ieefimov.unik.classes.Item;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.dialogs.askAction;
+import com.ieefimov.unik.dialogs.askName;
+import com.ieefimov.unik.dialogs.askTime;
+import com.ieefimov.unik.dialogs.choiceAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Classes;
+package com.ieefimov.unik.classes;
 
 import android.content.Context;
 import android.graphics.Color;

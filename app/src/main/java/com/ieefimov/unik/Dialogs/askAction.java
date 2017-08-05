@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Dialogs;
+package com.ieefimov.unik.dialogs;
 
 
 import android.app.Activity;
@@ -18,9 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ieefimov.unik.Classes.Item;
-import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.Item;
+import com.ieefimov.unik.classes.Space;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -144,7 +144,7 @@ public class askAction extends DialogFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-//            subtitle.setText("1="+timeStart.getText().toString()+"\n\r2="+s.toString());
+//            subtitle.setString("1="+timeStart.getString().toString()+"\n\r2="+s.toString());
 //            if (timeStart.hasFocus()){
 //                timeStart.setSelectAllOnFocus(false);
 //                timeEnd.requestFocus();

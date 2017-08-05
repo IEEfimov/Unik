@@ -16,10 +16,10 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Settings.Activity_backups;
-import com.ieefimov.unik.Settings.Activity_calendarList;
-import com.ieefimov.unik.Settings.Activity_itemsEdit;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.settings.Activity_backups;
+import com.ieefimov.unik.settings.Activity_calendarList;
+import com.ieefimov.unik.settings.Activity_itemsEdit;
 
 public class SettingsActivity extends AppCompatActivity {
 

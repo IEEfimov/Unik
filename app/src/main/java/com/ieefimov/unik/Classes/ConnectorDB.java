@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Classes;
+package com.ieefimov.unik.classes;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ieefimov.unik.R;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
@@ -491,9 +492,15 @@ public class ConnectorDB extends SQLiteOpenHelper {
         }
     }
 
-    public String SaveCalendarCalendarItem(CalendarItem calendar,Context context){
+    public String SaveCalendar(CalendarItem calendar, Context context){
         try {
-            String dir = context.getApplicationInfo().dataDir;
+            String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            dir += "/Android/data/com.ieefimov.unik/files";
+            dir += "/saved";
+            File file = new File(dir);
+            if (!file.exists()){
+                file.mkdirs();
+            }
             String name = calendar.getName()+".iee";
             SaveItem saveData = getSaveData(calendar);
             FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
@@ -514,6 +521,12 @@ public class ConnectorDB extends SQLiteOpenHelper {
     public String ShareCalendarItem(CalendarItem calendar,Context context){
         try {
             String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            dir += "/Android/data/com.ieefimov.unik/files";
+            dir += "/shared";
+            File file = new File(dir);
+            if (!file.exists()){
+                file.mkdirs();
+            }
             String name = calendar.getName()+".iee";
             SaveItem saveData = getSaveData(calendar);
             FileOutputStream fileOut = new FileOutputStream(dir+"/"+name);
@@ -521,8 +534,8 @@ public class ConnectorDB extends SQLiteOpenHelper {
             out.writeObject(saveData);
             out.close();
             fileOut.close();
-            String result = context.getResources().getString(R.string.settings_saved) + name;
-            Toast.makeText(context,dir, Toast.LENGTH_SHORT).show();
+            //String result = context.getResources().getString(R.string.settings_saved) + name;
+            //Toast.makeText(context,dir, Toast.LENGTH_SHORT).show();
             return dir+"/"+name;
         } catch (Exception e) {
             Log.e("error","ууупс, не могу сохранить :(");

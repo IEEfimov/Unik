@@ -14,9 +14,9 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Space;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.Space;
 
 import java.util.ArrayList;
 import java.util.HashMap;

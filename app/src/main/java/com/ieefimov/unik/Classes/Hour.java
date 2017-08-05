@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Classes;
+package com.ieefimov.unik.classes;
 
 import java.io.Serializable;
 

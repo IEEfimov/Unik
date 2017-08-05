@@ -1,7 +1,8 @@
-package com.ieefimov.unik.Settings;
+package com.ieefimov.unik.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,12 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Dialogs.askCalendar;
-import com.ieefimov.unik.Dialogs.askName;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.dialogs.askCalendar;
+import com.ieefimov.unik.dialogs.askName;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,7 +93,13 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
     }
 
     private void getData(){
-        dir = getApplicationInfo().dataDir;
+        dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        dir += "/Android/data/com.ieefimov.unik/files";
+        dir += "/saved";
+        File file = new File(dir);
+        if (!file.exists()){
+            file.mkdirs();
+        }
         files = getFiles();
 
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(files.length);
@@ -167,7 +174,7 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
     public void retCalendar(int index) {
 
         CalendarItem current = database.selectCalendar(-1)[index];
-        database.SaveCalendarCalendarItem(current,activity);
+        database.SaveCalendar(current,activity);
         getData();
     }
 }

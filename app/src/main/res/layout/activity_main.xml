@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     layout_width="match_parent"
     layout_height="match_parent"
@@ -20,7 +21,7 @@
             android:id="@+id/kostil_top"
             android:layout_width="match_parent"
             android:layout_height="25dp"
-            android:background="@color/statusbar">
+            android:background="@color/background">
         </FrameLayout>
 
         <!--Toolbar-->
@@ -54,13 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/bgNew"
-                android:background="@color/background">
+                android:background="@color/background"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_marginBottom="100dp"
                     android:layout_marginEnd="30dp"
                     android:layout_marginLeft="30dp"
@@ -68,7 +68,72 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
-                    android:id="@+id/psevdo">
+                    android:id="@+id/psevdo"
+                    android:layout_height="250dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|end"
+                        android:background="@drawable/dialog_btn">
+
+                        <TextView
+                            android:text="@string/main_to_be_showed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/textView2"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/actionClockText"
+                            android:paddingLeft="20dp"
+                            android:paddingStart="20dp"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:paddingBottom="5dp"
+                                android:paddingEnd="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingStart="10dp"
+                                android:paddingTop="5dp"
+                                android:background="@drawable/dialog_btn"
+                                android:id="@+id/ShowAtBtn">
+
+                                <TextView
+                                    android:text="05.08.2017"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:textColor="@color/actionTitleText"
+                                    android:layout_weight="1"
+                                    android:id="@+id/showAtView" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_date_range_white_24dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@color/colorAccent">
+
+                            </FrameLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -110,6 +175,26 @@
                         <FrameLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
+                            android:background="@color/clockSeparator"
+                            android:visibility="gone">
+
+                        </FrameLayout>
+
+                        <Button
+                            android:text="Изменить время"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/button"
+                            android:layout_weight="1"
+                            android:textAllCaps="false"
+                            android:textColor="@color/actionClockText"
+                            android:backgroundTint="@color/settings_background"
+                            android:elevation="2dp"
+                            android:visibility="gone" />
+
+                        <FrameLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
                             android:background="@color/clockSeparator">
 
                         </FrameLayout>
@@ -137,7 +222,9 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/calendarViewer"
+            android:visibility="visible">
 
             <CalendarView
                 android:layout_height="230dp"
@@ -174,6 +261,73 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/calendarViewerAlternative"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:text="Суббота, 5 августа 2017"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:textSize="16sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:text="@string/today"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/today2"
+                        android:textAllCaps="false"
+                        android:background="@drawable/button"
+                        android:textColor="@color/actionTitleText"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:text="@string/tomorrow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tomorrow2"
+                        android:textAllCaps="false"
+                        android:background="@drawable/button"
+                        android:textColor="@color/actionTitleText"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:text="@string/when"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/when"
+                        android:textAllCaps="false"
+                        android:background="@drawable/button"
+                        android:textColor="@color/actionTitleText"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Navigation draver content -->
@@ -186,7 +340,8 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimaryDark"
+        tools:visibility="gone">
         <include layout="@layout/drawer"/>
 
     </LinearLayout>

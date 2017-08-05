@@ -14,9 +14,11 @@
 
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
+    <string name="when">Указать дату</string>
 
 
     <string name="main_defaultText"> Напишете что-нибудь</string>
+    <string name="main_to_be_showed">Показать заметку</string>
 
 
     <string name="settings_calendar_edit_title">Список календарей</string>

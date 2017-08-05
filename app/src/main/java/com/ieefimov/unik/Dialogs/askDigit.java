@@ -1,4 +1,4 @@
-package com.ieefimov.unik.Dialogs;
+package com.ieefimov.unik.dialogs;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.ieefimov.unik.Classes.Space;
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.classes.Space;
 
 import java.lang.reflect.Field;
 

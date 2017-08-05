@@ -27,14 +27,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ieefimov.unik.Classes.CalendarItem;
-import com.ieefimov.unik.Classes.ConnectorDB;
-import com.ieefimov.unik.Classes.HomeWork;
-import com.ieefimov.unik.Classes.Hour;
-import com.ieefimov.unik.Classes.Item;
-import com.ieefimov.unik.Classes.Space;
-import com.ieefimov.unik.Classes.mainSimpleAdapter;
-import com.ieefimov.unik.Dialogs.askCalendar;
+import com.ieefimov.unik.classes.CalendarItem;
+import com.ieefimov.unik.classes.ConnectorDB;
+import com.ieefimov.unik.classes.HomeWork;
+import com.ieefimov.unik.classes.Hour;
+import com.ieefimov.unik.classes.Item;
+import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.classes.mainSimpleAdapter;
+import com.ieefimov.unik.dialogs.askCalendar;
+import com.ieefimov.unik.dialogs.askDate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +44,8 @@ import java.util.Map;
 
 import static com.ieefimov.unik.R.id.timeStart;
 
-public class MainActivity extends AppCompatActivity implements Space.DialogChoiceCalendar {
+public class MainActivity extends AppCompatActivity implements Space.DialogChoiceCalendar,
+        Space.DialogDate{
 
    // Context context;
     Activity activity;
@@ -51,12 +53,19 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     DrawerLayout drawerLayout;
     ListView mainList;
     Button today,tomorrow;
+    Button today2,tomorrow2;
+    Button whenBtn;
     Toolbar tool;
 
     Button choiseCalendarBtn;
 
     LinearLayout newBG;
     LinearLayout psevdo;
+    LinearLayout showAt;
+
+    LinearLayout calendarViewer;
+    LinearLayout calendarViewerAlt;
+
     EditText editDZ;
     Button cancelDZ;
     Button okDZ;
@@ -107,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         calendarView = (CalendarView) findViewById(R.id.calendarView);
         today = (Button) findViewById(R.id.today);
         tomorrow = (Button) findViewById(R.id.tomorrow);
+        today2 = (Button) findViewById(R.id.today2);
+        tomorrow2 = (Button) findViewById(R.id.tomorrow2);
+        whenBtn = (Button) findViewById(R.id.when);
 
         Button settingsBtn = (Button) findViewById(R.id.nav_settingsBtn);
         choiseCalendarBtn = (Button) findViewById(R.id.nav_choiseCalendar);
@@ -116,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         today.setOnClickListener(onClickListener);
         tomorrow.setOnClickListener(onClickListener);
+        today2.setOnClickListener(onClickListener);
+        tomorrow2.setOnClickListener(onClickListener);
+        whenBtn.setOnClickListener(onClickListener);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         Space.mainDrawer = drawerLayout;
@@ -123,12 +138,18 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         newBG = (LinearLayout) findViewById(R.id.bgNew);
         psevdo = (LinearLayout) findViewById(R.id.psevdo);
+        showAt = (LinearLayout) findViewById(R.id.ShowAtBtn);
         editDZ = (EditText) findViewById(R.id.editDZ);
         okDZ = (Button) findViewById(R.id.okDZ);
         cancelDZ = (Button) findViewById(R.id.cancelDZ);
 
+        calendarViewer = (LinearLayout) findViewById(R.id.calendarViewer);
+        calendarViewerAlt = (LinearLayout) findViewById(R.id.calendarViewerAlternative);
+
         okDZ.setOnClickListener(psevdoOnClickBtn);
         cancelDZ.setOnClickListener(psevdoOnClickBtn);
+
+        showAt.setOnClickListener(linearOnClickListener);
 
         newBG.setX(1000);
 
@@ -164,6 +185,14 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         SharedPreferences mPreferences;
         mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
         int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+
+        if (!mPreferences.getBoolean(Space.PREF_SETTINGS_CALENDAR,true)){
+            calendarViewer.setVisibility(View.GONE);
+            calendarViewerAlt.setVisibility(View.VISIBLE);
+        } else {
+            calendarViewer.setVisibility(View.VISIBLE);
+            calendarViewerAlt.setVisibility(View.GONE);
+        }
 
         CalendarItem[] items = database.selectCalendar(-1);
         if (current >= items.length) current = 0;
@@ -250,6 +279,13 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         }
     };
 
+    public LinearLayout.OnClickListener linearOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
     public Button.OnClickListener onNavClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -279,14 +315,30 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     public Button.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            calendar = Calendar.getInstance();
+            Calendar calendarNow = Calendar.getInstance();
             switch (v.getId()){
                 case (R.id.today):
-                    calendarView.setDate(calendar.getTime().getTime());
+                    calendarView.setDate(calendarNow.getTime().getTime());
+                    calendar = calendarNow;
                     break;
                 case (R.id.tomorrow):
-                    calendar.add(Calendar.DATE,1);
-                    calendarView.setDate(calendar.getTime().getTime());
+                    calendarNow.add(Calendar.DATE,1);
+                    calendarView.setDate(calendarNow.getTime().getTime());
+                    calendar = calendarNow;
+                    break;
+                case (R.id.today2):
+                    calendarView.setDate(calendarNow.getTime().getTime());
+                    calendar = calendarNow;
+                    break;
+                case (R.id.tomorrow2):
+                    calendarNow.add(Calendar.DATE,1);
+                    calendarView.setDate(calendarNow.getTime().getTime());
+                    calendar = calendarNow;
+                    break;
+                case (R.id.when):
+                    askDate ask = new askDate();
+                    ask.setActivity(activity,-1);
+                    ask.show(getFragmentManager(),calendar);
                     break;
             }
             update();
@@ -442,4 +494,12 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
     }
 
+    @Override
+    public void getDate(int position, Calendar result) {
+        if (position == -1) {
+            calendarView.setDate(result.getTimeInMillis());
+            calendar = result;
+            update();
+        }
+    }
 }

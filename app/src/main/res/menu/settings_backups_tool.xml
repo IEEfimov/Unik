@@ -7,4 +7,5 @@
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_delete_white_24dp"
         app:showAsAction="never"/>
+
 </menu>
