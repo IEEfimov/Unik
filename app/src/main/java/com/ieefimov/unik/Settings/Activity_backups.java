@@ -143,10 +143,15 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            askName askAction = new askName();
             currentFile = files[position];
-            askAction.setActivity(activity,Space.OnCompleteListener.RENAME_CALENDAR);
-            askAction.show(getFragmentManager(),currentFile);
+
+
+            String titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
+            String subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
+            String defaultName = currentFile;
+            askName askName = new askName();
+            askName.setActivity(activity,-1);
+            askName.show(getFragmentManager(),titleStr,subStr,defaultName);;
         }
     };
 
