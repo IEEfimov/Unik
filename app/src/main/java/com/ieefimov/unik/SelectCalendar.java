@@ -57,7 +57,7 @@ public class SelectCalendar extends AppCompatActivity {
         calendarList = (ListView) findViewById(R.id.calendarList);
         calendarList.setOnItemClickListener(onItemClickListener);
 
-        database =  new ConnectorDB(this,1);
+        database =  new ConnectorDB(this);
         activity = this;
         getData();
     }

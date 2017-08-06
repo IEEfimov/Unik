@@ -77,7 +77,7 @@ public class Activity_calendarList extends AppCompatActivity implements
         addNewCalendar = (LinearLayout) findViewById(R.id.addNewCalendar);
         addNewCalendar.setOnClickListener(onLinearClick);
 
-        database = new ConnectorDB(this,1);
+        database = new ConnectorDB(this);
         activity = this;
         mPreferences = activity.getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
 
@@ -171,12 +171,6 @@ public class Activity_calendarList extends AppCompatActivity implements
 
     @Override
     public void choiceDone(int position,int result) {
-//        mLongActions[0] = "Редактировать рассписание";
-//        mLongActions[1] = "Настройки календаря";
-//        mLongActions[2] = "Сделать резервную копию";
-//        mLongActions[3] = "Поделится";
-//        mLongActions[4] = "Удалить";
-//
 
         Intent intent;
 

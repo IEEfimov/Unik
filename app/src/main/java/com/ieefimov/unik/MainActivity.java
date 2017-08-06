@@ -5,12 +5,14 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ieefimov.unik.classes.CalendarItem;
@@ -36,6 +39,7 @@ import com.ieefimov.unik.classes.Space;
 import com.ieefimov.unik.classes.mainSimpleAdapter;
 import com.ieefimov.unik.dialogs.askCalendar;
 import com.ieefimov.unik.dialogs.askDate;
+import com.ieefimov.unik.settings.Activity_itemsEdit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,11 +66,13 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     LinearLayout newBG;
     LinearLayout psevdo;
     LinearLayout showAt;
+    TextView showAtView;
 
     LinearLayout calendarViewer;
     LinearLayout calendarViewerAlt;
 
     EditText editDZ;
+
     Button cancelDZ;
     Button okDZ;
 
@@ -81,11 +87,14 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     Hour[] currentHours;
     Item[] currentItems;
     HomeWork[] currentHomeWorks;
+
     ConnectorDB database;
     SharedPreferences mPreferences;
 
     LinearLayout curItem;
     boolean isShowed = false;
+
+    int selected = -1;
 
     boolean editedFlag = false;
 
@@ -140,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         psevdo = (LinearLayout) findViewById(R.id.psevdo);
         showAt = (LinearLayout) findViewById(R.id.ShowAtBtn);
         editDZ = (EditText) findViewById(R.id.editDZ);
+        showAtView = (TextView) findViewById(R.id.showAtViewID);
         okDZ = (Button) findViewById(R.id.okDZ);
         cancelDZ = (Button) findViewById(R.id.cancelDZ);
 
@@ -162,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         activity = this;
 
-        database = new ConnectorDB(this,1); // подключение к БД.
+        database = new ConnectorDB(this); // подключение к БД.
         mPreferences = getSharedPreferences(Space.APP_PREFERENCE,MODE_PRIVATE);
         getData();
         calendarView.setOnDateChangeListener(onDateChangeListener);
@@ -171,11 +181,43 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 drawerLayout.openDrawer(Gravity.LEFT);
                 break;
+            case R.id.action_edit:
+                int current = mPreferences.getInt(Space.PREF_CURRENT_CALENDAR,0);
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putInt(Space.PREF_EDITED_CALENDAR,current);
+                editor.apply();
+
+                Intent intent = new Intent(getApplicationContext(),Activity_itemsEdit.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    ActivityOptions options =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(),
+                                    R.anim.show_activity,R.anim.hide_activity);
+                    startActivity(intent,options.toBundle());
+                }
+                else startActivity(intent);
+                break;
+            case R.id.action_backup:
+                database.SaveCalendar(currentCalendar,activity);
+                break;
+            case R.id.action_share:
+                String filePath = database.ShareCalendarItem(currentCalendar,activity);
+                Intent sharing = new Intent(Intent.ACTION_SEND);
+                sharing.setType("file/*");
+                sharing.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+filePath));
+                startActivity(Intent.createChooser(sharing,"ShareFile"));
+                break;
+
         }
         return true;
     }
@@ -234,12 +276,42 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
             }
         }
 
-        int[] teeemp = new int[currentCalendar.getItemCount()];
-        for (int i = 0; i < teeemp.length; i++) {
-            teeemp[i] = 0;
+        HomeWork[] tempHW = database.selectHW(calendar,currentCalendar.getId());
+        currentHomeWorks = new HomeWork[currentItems.length];
+
+
+        for (int i = 0; i < currentItems.length; i++) {
+            for (int j = 0; j < tempHW.length; j++) {
+                if (tempHW[j] != null) {
+                    if (tempHW[j].getSubject().equals(currentItems[i].getName())) {
+                        currentHomeWorks[i] = tempHW[j];
+                    }
+                }
+            }
         }
-        teeemp[1] = R.drawable.ic_info_outline_white_24dp;
-        teeemp[2] = R.drawable.ic_autorenew_white_24dp;
+
+        for (int i = 0; i < currentItems.length; i++) {
+            if (currentHomeWorks[i] == null) {
+                currentHomeWorks[i] = new HomeWork();
+            }
+        }
+
+        int[] teeemp = new int[currentCalendar.getItemCount()];
+
+        for (int i = 0; i < teeemp.length; i++) {
+            String temp = currentHomeWorks[i].getGroupText();
+            if (!temp.equals("")) teeemp[i] =
+                    R.drawable.ic_autorenew_white_24dp;
+            temp = currentHomeWorks[i].getMyText();
+            if (!temp.equals("")) teeemp[i] =
+                    R.drawable.ic_info_outline_white_24dp;
+        }
+
+
+
+
+
+
 
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(currentCalendar.getItemCount());
         Map<String, Object> m;
@@ -359,7 +431,18 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
             switch (v.getId()){
                 case R.id.okDZ:
                     // TODO: 02.08.2017 Сохранение ДЗ..
-                    Toast.makeText(activity, "ХАХ, ти думав я працюю?! (с)", Toast.LENGTH_SHORT).show();
+                    long result = -1;
+                    currentHomeWorks[selected].setMyText(editDZ.getText().toString());
+                    currentHomeWorks[selected].setDateOfShow(HomeWork.parseDate(showAtView.getText().toString()));
+                    currentHomeWorks[selected].setCalendar(currentCalendar.getId());
+                    currentHomeWorks[selected].setSubject(currentItems[selected].getName());
+                    if (currentHomeWorks[selected].getId() < 0)
+                        result = database.insertHW(currentHomeWorks[selected]);
+                    else {
+                        if (database.updateHW(currentHomeWorks[selected])) result = 1;
+                    }
+                    if (result < 0) Toast.makeText(activity, "Опа, баг :(", Toast.LENGTH_SHORT).show();
+                    hideDialog();
                     break;
                 case R.id.cancelDZ:
                     hideDialog();
@@ -371,11 +454,54 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
     private void showDialog(View view,int position){
         if (!isShowed){
             isShowed = true;
+
+            selected = position;
+
+            if (currentHomeWorks[position].getId() >= 0) {
+                editDZ.setText(currentHomeWorks[position].getMyText());
+            } else editDZ.setText(activity.getResources().getString(R.string.main_defaultText));
+
             mainList.setEnabled(false);
             curItem = (LinearLayout) view;
 
             newBG.setY(curItem.getHeight());
             newBG.setX(0);
+
+            Item[] research = database.selectItems(currentItems[position].getName(),
+                    currentCalendar.getId());
+
+            int mDay = currentItems[position].getDay();
+            int mWeek = currentItems[position].getWeek();
+
+            int translateDay = 0;
+
+            /////   Поиск ближайшей пары
+            do {
+                boolean flag = false;
+                translateDay++;
+                if (mDay<6) mDay++;
+                else {
+                    mDay=0;
+                    if (currentCalendar.isDifferentWeek() && mWeek < 1) mWeek++;
+                    else mWeek = 0;
+                }
+                for (int i = 0; i < research.length; i++) {
+                    if (mDay==research[i].getDay() && mWeek==research[i].getWeek()){
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag) break;
+            }while (mDay!=currentItems[position].getDay() || mWeek != currentItems[position].getWeek());
+
+            Calendar researched = Calendar.getInstance();
+            researched.setTime(calendar.getTime());
+            researched.add(Calendar.DATE,translateDay);
+
+
+            String result = HomeWork.calendarToString(researched);
+
+            showAtView.setText(result);
 
             String standard = activity.getResources().getString(R.string.main_defaultText);
             if (editDZ.getText().toString().equals(standard)) editDZ.setSelectAllOnFocus(true);

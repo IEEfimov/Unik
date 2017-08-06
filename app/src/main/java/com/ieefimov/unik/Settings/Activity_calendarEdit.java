@@ -67,7 +67,7 @@ public class Activity_calendarEdit extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        database = new ConnectorDB(this,1); // подключение к БД.
+        database = new ConnectorDB(this); // подключение к БД.
 
         setContentView(R.layout.activity_settings_calendar_edit);
 

@@ -56,7 +56,7 @@ public class askCalendar extends DialogFragment {
         this.mListener = (Space.DialogChoiceCalendar) activity ;
 
         mPreferences = activity.getSharedPreferences(Space.APP_PREFERENCE,activity.MODE_PRIVATE);
-        database =  new ConnectorDB(activity,1);
+        database =  new ConnectorDB(activity);
         this.activity = activity;
         getData();
     }

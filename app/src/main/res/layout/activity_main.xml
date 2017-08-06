@@ -36,7 +36,8 @@
             app:title="IEEfimov"
             android:longClickable="false"
             app:titleTextColor="@android:color/background_light"
-            app:navigationIcon="@drawable/ic_menu_white_24dp">
+            app:navigationIcon="@drawable/ic_menu_white_24dp"
+            app:popupTheme="@style/AppTheme.PopupDark">
         </android.support.v7.widget.Toolbar>
 
         <RelativeLayout
@@ -115,7 +116,7 @@
                                     android:gravity="center"
                                     android:textColor="@color/actionTitleText"
                                     android:layout_weight="1"
-                                    android:id="@+id/showAtView" />
+                                    android:id="@+id/showAtViewID" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"

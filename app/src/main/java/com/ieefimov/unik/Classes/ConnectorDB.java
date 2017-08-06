@@ -15,6 +15,7 @@ import com.ieefimov.unik.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,7 +24,10 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ConnectorDB extends SQLiteOpenHelper {
-    private Context context = null;
+
+
+        private static final int VERSION = 1;
+
 
     private final String TABLE_ITEMS = "Main";
     private final String ROW_ITEMS_NAME = "Name";
@@ -44,21 +48,17 @@ public class ConnectorDB extends SQLiteOpenHelper {
     private final String ROW_HOURS_CALENDAR = "Calendar";
     private final String ROW_HOURS_NUMBER = "num";
 
-    private final String TABLE_SUBJECTS = "Subjects";
-    private final String ROW_SUBJECTS_NAME = "Name";
-
     private final String TABLE_HOMEWORK = "HomeWork";
     private final String ROW_HOMEWORK_SUBJECT = "Subject";
-    private final String ROW_HOMEWORK_DATE_OF_ADD = "Date";
+    private final String ROW_HOMEWORK_DATE = "Date";
     private final String ROW_HOMEWORK_MY_TEXT = "MyText";
     private final String ROW_HOMEWORK_GROUP_TEXT = "GroupText";
+    private final String ROW_HOMEWORK_CALENDAR = "Calendar";
 
     final String ROW_ID = "id";
 
-    public ConnectorDB(Context context, int version) {
-        super(context,context.getResources().getString(R.string.app_BD_name) , null, version);
-        this.context = context;
-
+    public ConnectorDB(Context context) {
+        super(context,context.getResources().getString(R.string.app_BD_name) , null, VERSION);
     }
 
     @Override // При первой установке приложения
@@ -90,16 +90,12 @@ public class ConnectorDB extends SQLiteOpenHelper {
                 + ROW_HOURS_NUMBER + " integer,"
                 + "Calendar integer);");
 
-        // таблица предметов
-        db.execSQL("create table "+ TABLE_SUBJECTS +" ("
-                + "id integer primary key autoincrement,"
-                +  ROW_SUBJECTS_NAME +" text);");
-
 
         db.execSQL("create table "+ TABLE_HOMEWORK +" ("
-                + "id integer primary key autoincrement,"
-                + ROW_HOMEWORK_SUBJECT+ " integer,"
-                + ROW_HOMEWORK_DATE_OF_ADD+ " text,"
+                + ROW_ID+" integer primary key autoincrement,"
+                + ROW_HOMEWORK_SUBJECT+ " text,"
+                + ROW_HOMEWORK_CALENDAR+ " integer,"
+                + ROW_HOMEWORK_DATE + " text,"
                 + ROW_HOMEWORK_MY_TEXT+ " text,"
                 + ROW_HOMEWORK_GROUP_TEXT+ " text);");
 
@@ -133,11 +129,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
     public Item[] selectItems(int day, int week, long calendar){
         SQLiteDatabase db = getReadableDatabase();
-//        // TODO: 25.07.2017 Сделать аргументный ввод
-//        String selectCondition = "Day = " + day
-//                + "Week = " + week
-//                + "Calendar = " + calendar;
-//        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,null,null,null,null);
+
         String selectCondition = "("
                 +ROW_ITEMS_DAY+" = ? and "
                 +ROW_ITEMS_WEEK+" = ? and "
@@ -181,6 +173,47 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
         String selectCondition = "("+ROW_ITEMS_CALENDAR+" = ?)";
         String[] values = {calendar.getId()+""};
+        Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
+        // поиск по таблице с заданным условием
+
+        if (reader.moveToFirst()){ // если найдена хотя бы одна запись
+            int count = reader.getCount();
+            int idIndex = reader.getColumnIndex(ROW_ID);
+            int nameIndex = reader.getColumnIndex("Name");
+            int roomIndex = reader.getColumnIndex("Room");
+            int hourIndex = reader.getColumnIndex("Hour");
+            int dayIndex = reader.getColumnIndex("Day");
+            int weekIndex = reader.getColumnIndex("Week");
+            int calendarIndex = reader.getColumnIndex("Calendar");
+            int i = 0;
+            Item[] items = new Item[count];
+            do {
+                Item temp = new Item();
+                temp.setId(reader.getInt(idIndex));
+                temp.setName(reader.getString(nameIndex));
+                temp.setRoom(reader.getString(roomIndex));
+                temp.setHour(reader.getInt(hourIndex));
+                temp.setDay(reader.getInt(dayIndex));
+                temp.setWeek(reader.getInt(weekIndex));
+                temp.setCalendar(reader.getInt(calendarIndex));
+
+                items[i] = temp;
+                i++;
+            }
+            while (reader.moveToNext());
+            return  items;
+        }
+        else return new Item[0];
+    }
+
+    public Item[] selectItems(String subject, long calendar){
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selectCondition = "("
+                +ROW_ITEMS_NAME+" = ? and "
+                +ROW_ITEMS_CALENDAR+" = ?)";
+
+        String[] values = {subject,calendar+""};
         Cursor reader = db.query(TABLE_ITEMS,null,selectCondition,values,null,null,null,null);
         // поиск по таблице с заданным условием
 
@@ -465,6 +498,102 @@ public class ConnectorDB extends SQLiteOpenHelper {
         String selectCondition = "id = " + item.getId();
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_HOURS,selectCondition,null);
+        return true;
+    }
+
+
+    //=======================================================//
+
+
+    public HomeWork[] selectHW(Calendar when,long calendar){
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selectCondition = "("
+                +ROW_HOMEWORK_DATE+" = ? and "
+                +ROW_HOMEWORK_CALENDAR+" = ?)";
+        String[] values = {HomeWork.calendarToString(when),calendar+""};
+
+        Cursor reader = db.query(TABLE_HOMEWORK,null,selectCondition,values,null,null,null);
+        // поиск по таблице с заданным условием
+
+        HomeWork[] result = new HomeWork[reader.getCount()];
+
+        if (reader.moveToFirst()){ // если найдена хотя бы одна запись
+            int idIndex = reader.getColumnIndex("id");
+            int calendarIndex = reader.getColumnIndex(ROW_HOMEWORK_CALENDAR);
+            int subjectIndex = reader.getColumnIndex(ROW_HOMEWORK_SUBJECT);
+            int dateOfShowIndex = reader.getColumnIndex(ROW_HOMEWORK_DATE);
+            int myTextIndex = reader.getColumnIndex(ROW_HOMEWORK_MY_TEXT);
+            int groupTextIndex = reader.getColumnIndex(ROW_HOMEWORK_GROUP_TEXT);
+
+            int i = 0;
+            //Hour[] items = new Hour[count];
+            do {
+                HomeWork temp = new HomeWork();
+                temp.setId(reader.getInt(idIndex));
+                temp.setCalendar(reader.getInt(calendarIndex));
+                temp.setSubject(reader.getString(subjectIndex));
+                temp.setDateOfShow(HomeWork.parseDate(reader.getString(dateOfShowIndex)));
+                temp.setMyText(reader.getString(myTextIndex));
+                temp.setGroupText(reader.getString(groupTextIndex));
+                result[i] = temp;
+            }
+            while (reader.moveToNext());
+        }
+        return result;
+    }
+
+    public long insertHW(HomeWork item){
+        if (!item.isValid()) return -1;
+        // не записывать если данные не правильные
+        SQLiteDatabase db = getReadableDatabase();
+        String selectCondition = "("
+                +ROW_ID+" = ?)";
+        String[] values = {item.getId()+""};
+        Cursor reader = db.query(TABLE_HOMEWORK,null,selectCondition,values,null,null,null,null);
+
+        // если уже существует запись с данными параметрами - выход
+        if (!reader.moveToFirst()){
+            db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+
+            cv.put(ROW_HOMEWORK_CALENDAR,item.getCalendar());
+            cv.put(ROW_HOMEWORK_SUBJECT,item.getSubject());
+            cv.put(ROW_HOMEWORK_DATE,HomeWork.calendarToString(item.getDateOfShow()));
+            cv.put(ROW_HOMEWORK_MY_TEXT,item.getMyText());
+            cv.put(ROW_HOMEWORK_GROUP_TEXT,item.getGroupText());
+
+            long result = db.insert(TABLE_HOMEWORK,null,cv);
+
+            return result;
+        }
+        return -1;
+    }
+
+    public boolean updateHW(HomeWork item){
+        if (!item.isValid()) return false;
+        if (item.getId()<0) return false;
+        // не изменять при поврежденных данных
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectCondition = "id = " + item.getId();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ROW_HOMEWORK_CALENDAR,item.getCalendar());
+        cv.put(ROW_HOMEWORK_SUBJECT,item.getSubject());
+        cv.put(ROW_HOMEWORK_DATE,HomeWork.calendarToString(item.getDateOfShow()));
+        cv.put(ROW_HOMEWORK_MY_TEXT,item.getMyText());
+        cv.put(ROW_HOMEWORK_GROUP_TEXT,item.getGroupText());
+
+        db.update(TABLE_HOMEWORK,cv,selectCondition,null);
+        return true;
+    }
+
+    public boolean deleteHW(HomeWork item){
+        if (item.getId()<0) return false;
+        String selectCondition = "id = " + item.getId();
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_HOMEWORK,selectCondition,null);
         return true;
     }
 

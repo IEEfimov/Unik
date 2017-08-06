@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Activity_backups extends AppCompatActivity implements Space.OnCompleteListener,
-            Space.DialogChoiceCalendar{
+            Space.DialogChoiceCalendar,Space.DialogName{
 
     ListView backupsList;
     Activity activity;
@@ -65,7 +65,7 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         addNew = (LinearLayout) findViewById(R.id.addNewCalendar);
         addNew.setOnClickListener(onLinearClick);
 
-        database = new ConnectorDB(this,1);
+        database = new ConnectorDB(this);
         activity = this;
         getData();
     }
@@ -176,5 +176,10 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         CalendarItem current = database.selectCalendar(-1)[index];
         database.SaveCalendar(current,activity);
         getData();
+    }
+
+    @Override
+    public void getName(int position, String result) {
+
     }
 }

@@ -1,5 +1,7 @@
 package com.ieefimov.unik.classes;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -9,32 +11,31 @@ import java.util.Calendar;
 
 public class HomeWork {
     private long id;
-    private long subject;
     private long calendar;
+    private String subject;
     private Calendar dateOfShow;
-    private String string;
+    private String myText;
+    private String groupText;
+    private String strDate;
 
 
     public HomeWork() {
         id = -1;
-        subject = -1;
         calendar = -1;
-        dateOfShow = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            dateOfShow.setTime(sdf.parse("01.02.2010"));
-        }catch (Exception e){
-
-        }
-        string = "";
+        subject = "";
+        dateOfShow = parseDate("01.01.2017");
+        strDate = "";
+        myText = "";
+        groupText = "";
     }
 
-    public HomeWork(long id, long subject, long calendar, Calendar dateOfShow, String string) {
+    public HomeWork(long id, String subject, long calendar, Calendar dateOfShow, String myText, String groupText) {
         this.id = id;
         this.subject = subject;
         this.calendar = calendar;
         this.dateOfShow = dateOfShow;
-        this.string = string;
+        this.myText = myText;
+        this.groupText = groupText;
     }
 
     public HomeWork(HomeWork copy) {
@@ -42,7 +43,8 @@ public class HomeWork {
         this.subject = copy.subject;
         this.calendar = copy.calendar;
         this.dateOfShow = copy.dateOfShow;
-        this.string = copy.string;
+        this.myText = copy.myText;
+        this.groupText = copy.groupText;
     }
 
     public long getId() {
@@ -53,11 +55,11 @@ public class HomeWork {
         this.id = id;
     }
 
-    public long getSubject() {
+    public String getSubject() {
         return subject;
     }
 
-    public void setSubject(long subject) {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
@@ -75,13 +77,54 @@ public class HomeWork {
 
     public void setDateOfShow(Calendar dateOfShow) {
         this.dateOfShow = dateOfShow;
+        strDate = calendarToString(dateOfShow);
     }
 
-    public String getString() {
-        return string;
+    public String getMyText() {
+        return myText;
     }
 
-    public void setString(String string) {
-        this.string = string;
+    public void setMyText(String myText) {
+        this.myText = myText;
+    }
+
+    public String getGroupText() {
+        return groupText;
+    }
+
+    public void setGroupText(String groupText) {
+        this.groupText = groupText;
+    }
+
+
+    public boolean isValid(){
+        if (calendar < 0) return false;
+        if (subject.equals("")) return false;
+        return true;
+    }
+
+
+    public static Calendar parseDate(String date){
+        Calendar result= Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            result.setTime(sdf.parse(date));
+        }catch (Exception e){
+            Log.e("ERRRRRRRRRROOOOR","Ошибка парсинга");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String calendarToString(Calendar calendar){
+        String result = "";
+        if (calendar.get(Calendar.DATE)<10) result += "0";
+        result += calendar.get(Calendar.DATE)+".";
+        if (calendar.get(Calendar.MONTH)<10) result += "0";
+        result += (calendar.get(Calendar.MONTH)+1)+".";
+        result += calendar.get(Calendar.YEAR);
+
+        return result;
     }
 }

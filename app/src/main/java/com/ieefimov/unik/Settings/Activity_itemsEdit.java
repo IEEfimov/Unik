@@ -78,7 +78,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.Dialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_items_edit);
 
-        database = new ConnectorDB(this,1); // подключение к БД.
+        database = new ConnectorDB(this); // подключение к БД.
 
         Toolbar tool = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tool);  // Добавляем тулбар
