@@ -1,4 +1,4 @@
-package com.ieefimov.unik.classes;
+package com.ieefimov.unik.adapters;
 
 import android.content.Context;
 import android.widget.SimpleAdapter;

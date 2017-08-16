@@ -13,7 +13,9 @@ import android.widget.Toast;
 import com.ieefimov.unik.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
@@ -647,6 +649,31 @@ public class ConnectorDB extends SQLiteOpenHelper {
         }
     }
 
+    public void RestoreCalendar(String currentFile,String newName, Context context){
+        try {
+            String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            dir += "/Android/data/com.ieefimov.unik/files";
+            dir += "/saved";
+            File file = new File(dir);
+            if (!file.exists()){
+                file.mkdirs();
+            }
+            FileInputStream fileIn = new FileInputStream(dir+ "/" + currentFile);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            SaveItem restored = (SaveItem) in.readObject();
+            restored.getCalendar().setName(newName);
+            writeSaveData(restored);
+            in.close();
+            fileIn.close();
+            Toast.makeText(context, "Готово", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e("error","ууупс, не могу сохранить :(");
+            e.printStackTrace();
+            Toast.makeText(context, "Что то пошло не так... \n см. Лог", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public String ShareCalendarItem(CalendarItem calendar,Context context){
         try {
             String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -680,6 +707,7 @@ public class ConnectorDB extends SQLiteOpenHelper {
         SaveItem result = new SaveItem();
         result.setHours(selectHour(calendar));
         result.setItems(selectItems(calendar));
+        result.setCalendar(calendar);
 
         return result;
     }

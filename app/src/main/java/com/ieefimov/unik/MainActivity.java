@@ -36,7 +36,7 @@ import com.ieefimov.unik.classes.HomeWork;
 import com.ieefimov.unik.classes.Hour;
 import com.ieefimov.unik.classes.Item;
 import com.ieefimov.unik.classes.Space;
-import com.ieefimov.unik.classes.mainSimpleAdapter;
+import com.ieefimov.unik.adapters.mainSimpleAdapter;
 import com.ieefimov.unik.dialogs.askCalendar;
 import com.ieefimov.unik.dialogs.askDate;
 import com.ieefimov.unik.settings.Activity_itemsEdit;

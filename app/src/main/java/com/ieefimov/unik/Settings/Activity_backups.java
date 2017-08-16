@@ -3,6 +3,7 @@ package com.ieefimov.unik.settings;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -32,7 +32,7 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
     ListView backupsList;
     Activity activity;
-    LinearLayout addNew;
+    FloatingActionButton floagting;
 
     ConnectorDB database;
 
@@ -62,8 +62,8 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         backupsList = (ListView) findViewById(R.id.backupsList);
         backupsList.setOnItemClickListener(onItemClickListener);
 
-        addNew = (LinearLayout) findViewById(R.id.addNewCalendar);
-        addNew.setOnClickListener(onLinearClick);
+        floagting = (FloatingActionButton) findViewById(R.id.floating);
+        floagting.setOnClickListener(onFloatClick);
 
         database = new ConnectorDB(this);
         activity = this;
@@ -150,12 +150,12 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
             String subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
             String defaultName = currentFile;
             askName askName = new askName();
-            askName.setActivity(activity,-1);
+            askName.setActivity(activity,position);
             askName.show(getFragmentManager(),titleStr,subStr,defaultName);;
         }
     };
 
-    LinearLayout.OnClickListener onLinearClick = new View.OnClickListener() {
+    View.OnClickListener onFloatClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             askCalendar asker = new askCalendar();
@@ -185,6 +185,6 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
     @Override
     public void getName(int position, String result) {
-
+        database.RestoreCalendar(files[position],result,activity);
     }
 }

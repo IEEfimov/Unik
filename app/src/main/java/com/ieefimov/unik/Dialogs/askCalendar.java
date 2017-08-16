@@ -16,7 +16,7 @@ import com.ieefimov.unik.R;
 import com.ieefimov.unik.classes.CalendarItem;
 import com.ieefimov.unik.classes.ConnectorDB;
 import com.ieefimov.unik.classes.Space;
-import com.ieefimov.unik.classes.mySimpleAdapter;
+import com.ieefimov.unik.adapters.mySimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

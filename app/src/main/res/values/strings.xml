@@ -22,7 +22,7 @@
 
 
     <string name="settings_calendar_edit_title">Список календарей</string>
-    <string name="settings_calendar_edit_subtitle">!!!!Настройки цикличности календарей </string>
+    <string name="settings_calendar_edit_subtitle">Управление вашими календарями </string>
 
     <string name="settings_item_edit_title">Расписание календарей</string>
     <string name="settings_item_edit_subtitle">!!!!Настройки расписания календарей </string>

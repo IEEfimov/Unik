@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -14,16 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ieefimov.unik.R;
+import com.ieefimov.unik.adapters.CalendarListSimpleAdapter;
 import com.ieefimov.unik.classes.CalendarItem;
 import com.ieefimov.unik.classes.ConnectorDB;
 import com.ieefimov.unik.classes.Item;
 import com.ieefimov.unik.classes.Space;
-import com.ieefimov.unik.classes.mySimpleAdapter;
 import com.ieefimov.unik.dialogs.askConfirm;
 import com.ieefimov.unik.dialogs.askName;
 import com.ieefimov.unik.dialogs.choiceAction;
@@ -40,7 +40,7 @@ public class Activity_calendarList extends AppCompatActivity implements
     ListView calendarList;
     Activity activity;
 
-    LinearLayout addNewCalendar;
+    FloatingActionButton floating;
 
     ConnectorDB database;
     SharedPreferences mPreferences;
@@ -55,7 +55,7 @@ public class Activity_calendarList extends AppCompatActivity implements
     private String[] mLongActions;
     private int mCurrent=0;
 
-    mySimpleAdapter sAdapter;
+    CalendarListSimpleAdapter sAdapter;
 
 
     @Override
@@ -74,8 +74,8 @@ public class Activity_calendarList extends AppCompatActivity implements
         calendarList = (ListView) findViewById(R.id.calendarList);
         calendarList.setOnItemClickListener(onItemClickListener);
         calendarList.setOnItemLongClickListener(onItemLongClickListener);
-        addNewCalendar = (LinearLayout) findViewById(R.id.addNewCalendar);
-        addNewCalendar.setOnClickListener(onLinearClick);
+        floating = (FloatingActionButton) findViewById(R.id.floating);
+        floating.setOnClickListener(onFloatingClick);
 
         database = new ConnectorDB(this);
         activity = this;
@@ -109,7 +109,7 @@ public class Activity_calendarList extends AppCompatActivity implements
         String[] from = { ATTRIBUTE_NAME};
         int [] to = { R.id.file};
 
-        sAdapter = new mySimpleAdapter(activity, data, R.layout.item_calendar_list, from, to);
+        sAdapter = new CalendarListSimpleAdapter(activity, data, R.layout.item_calendar_list, from, to);
         calendarList.setAdapter(sAdapter);
     }
 
@@ -239,7 +239,7 @@ public class Activity_calendarList extends AppCompatActivity implements
         }
     }
 
-    LinearLayout.OnClickListener onLinearClick = new View.OnClickListener() {
+    View.OnClickListener onFloatingClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
