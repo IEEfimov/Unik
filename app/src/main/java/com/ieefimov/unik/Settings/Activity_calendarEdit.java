@@ -291,7 +291,7 @@ public class Activity_calendarEdit extends AppCompatActivity
         Hour hour = currentHours[position];
         hour.setStart(start);
         hour.setEnd(end);
-        if (hour.getId() > -1) database.updateHour(hour);
+        if (hour.getId() > 0) database.updateHour(hour);
         else database.insertHour(hour);
         update();
     }

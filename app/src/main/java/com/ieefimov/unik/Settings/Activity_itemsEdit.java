@@ -405,7 +405,7 @@ public class Activity_itemsEdit extends AppCompatActivity implements Space.Dialo
         currentHours[position].setStart(start);
         currentHours[position].setEnd(end);
         database.updateHour(currentHours[position]);
-        if (currentHours[position].getId() > -1) database.updateHour(currentHours[position]);
+        if (currentHours[position].getId() > 0) database.updateHour(currentHours[position]);
         else database.insertHour(currentHours[position]);
         update();
     }

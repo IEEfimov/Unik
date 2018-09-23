@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--todo Нормальное меню для бекапов-->
     <item
-        android:title="@string/settings_edit"
-        android:id="@+id/action_edit"
+        android:id="@+id/addFromSD"
         android:icon="@drawable/ic_delete_white_24dp"
-        app:showAsAction="never"/>
+        android:title="@string/settings_fromSD"
+        app:showAsAction="never" />
+    <item
+            android:id="@+id/addFromSD2"
+            android:icon="@drawable/ic_delete_white_24dp"
+            android:title="tesstt"
+            app:showAsAction="never" />
 
 </menu>

@@ -19,8 +19,10 @@ import com.ieefimov.unik.R;
 import com.ieefimov.unik.classes.CalendarItem;
 import com.ieefimov.unik.classes.ConnectorDB;
 import com.ieefimov.unik.classes.Space;
+import com.ieefimov.unik.dialogs.OpenFileDialog_old;
 import com.ieefimov.unik.dialogs.askCalendar;
 import com.ieefimov.unik.dialogs.askName;
+import com.ieefimov.unik.dialogs.openFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Activity_backups extends AppCompatActivity implements Space.OnCompleteListener,
-            Space.DialogChoiceCalendar,Space.DialogName{
+            Space.DialogChoiceCalendar,Space.DialogName, Space.DialogOpenFile{
 
     ListView backupsList;
     Activity activity;
@@ -43,6 +45,8 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
     String[] files;
     String currentFile;
+
+    File current;
 
     // TODO: 26.07.2017 Почитать про атрибуты файла, мб прикрутить автора, дату и пр.
 
@@ -87,7 +91,15 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
             case android.R.id.home:
                 finish();
                 break;
-
+            case R.id.addFromSD:
+                OpenFileDialog_old fileDialog = new OpenFileDialog_old(activity);
+                fileDialog.show();
+                break;
+            case R.id.addFromSD2:
+                openFile open = new openFile();
+                open.setActivity(activity);
+                open.show(getFragmentManager(),"kek");
+                break;
         }
         return true;
     }
@@ -123,6 +135,7 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
     private String[] getFiles(){
         File directory = new File(dir);
         File files[] = directory.listFiles();
+        if (files == null){return new String[0];}
         String result[] = new String[files.length];
         ArrayList<String > res = new ArrayList<>();
         for (int i = 0; i < result.length; i++) {
@@ -145,13 +158,12 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             currentFile = files[position];
 
-
             String titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
             String subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
             String defaultName = currentFile;
             askName askName = new askName();
             askName.setActivity(activity,position);
-            askName.show(getFragmentManager(),titleStr,subStr,defaultName);;
+            askName.show(getFragmentManager(),titleStr,subStr,defaultName);
         }
     };
 
@@ -185,6 +197,20 @@ public class Activity_backups extends AppCompatActivity implements Space.OnCompl
 
     @Override
     public void getName(int position, String result) {
+        if (position==-5){
+            database.RestoreCalendar(current,result,activity);
+        }
         database.RestoreCalendar(files[position],result,activity);
+    }
+
+    @Override
+    public void open(File file) {
+        current = file;
+        String titleStr = activity.getResources().getString(R.string.dialog_addCalendar_title);
+        String subStr = activity.getResources().getString(R.string.dialog_addCalendar_subtitle);
+        String defaultName = currentFile;
+        askName askName = new askName();
+        askName.setActivity(activity,-5);
+        askName.show(getFragmentManager(),titleStr,subStr,defaultName);
     }
 }

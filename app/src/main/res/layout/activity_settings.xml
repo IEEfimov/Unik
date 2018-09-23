@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:id="@+id/toolbar"
         android:theme="@style/AppTheme.Bar"
-        android:elevation="0dp"
         android:background="@color/settings_bar_background"
         android:layout_height="?actionBarSize"
         android:longClickable="false"
@@ -43,80 +42,71 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:text="@string/settings_label_Calendars"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/statusbar"
-                    android:textColor="@color/clockSeparator"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp"
-                    android:textSize="12sp" />
-
-                <FrameLayout
-                    android:layout_height="1dp"
-                    android:layout_width="match_parent"
-                    android:background="@color/statusbar"
-                    android:layout_gravity="bottom">
-
-                </FrameLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.Dark.SettingDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_label_Calendars"
+                        android:textSize="12sp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/statusbar">
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_calendarListBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/nav"
-                    android:id="@+id/settings_calendarListBtn"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp"
                     android:paddingEnd="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingStart="20dp"
-                    android:paddingBottom="5dp"
                     android:paddingTop="5dp">
 
                     <TextView
-                        android:text="@string/settings_calendar_edit_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/settings_button_title"
-                        android:textSize="18sp" />
+                        style="@style/AppTheme.Dark.TextView"
+                        android:text="@string/settings_calendar_edit_title" />
 
                     <TextView
-                        android:text="@string/settings_calendar_edit_subtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/settings_button_subtitle"
-                        android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/settings_calendar_edit_subtitle"
+                        android:textColor="@color/settings_button_subtitle"
                         android:textSize="12sp" />
-
 
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:id="@+id/settings_backupLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/nav"
-                    android:id="@+id/settings_backupLayout"
+                    android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingEnd="20dp"
                     android:paddingLeft="20dp"
@@ -125,19 +115,19 @@
                     android:paddingTop="5dp">
 
                     <TextView
-                        android:text="@string/settings_backup_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/settings_backup_title"
                         android:textColor="@color/settings_button_title"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:text="@string/settings_backup_subtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/settings_button_subtitle"
-                        android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/settings_backup_subtitle"
+                        android:textColor="@color/settings_button_subtitle"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -181,176 +171,261 @@
             <!--////////////////////////////////////////////////////////////-->
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:text="@string/settings_label_Main"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.Dark.SettingDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_label_Main"
+                        android:textSize="12sp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/statusbar">
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/showAnimationLay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/statusbar"
-                    android:textColor="@color/clockSeparator"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp"
-                    android:textSize="12sp" />
+                    android:background="@drawable/nav"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp">
 
-                <FrameLayout
-                    android:layout_height="1dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_mainAnimation_title"
+                            android:textColor="@color/settings_button_title"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/settings_mainAnimation_subtitle"
+                            android:textColor="@color/settings_button_subtitle"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/animationChk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:theme="@style/AppTheme.CheckBox" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/autoKeyboardLay"
                     android:layout_width="match_parent"
-                    android:background="@color/statusbar"
-                    android:layout_gravity="bottom">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/nav"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp">
 
-                </FrameLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_autoShowKeyboard_title"
+                            android:textColor="@color/settings_button_title"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/settings_autoShowKeyboard_subtitle"
+                            android:textColor="@color/settings_button_subtitle"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/autoKeyChk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:theme="@style/AppTheme.CheckBox" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/showCalendarLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/nav"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_showCalendar_title"
+                            android:textColor="@color/settings_button_title"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/settings_showCalendar_subtitle"
+                            android:textColor="@color/settings_button_subtitle"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/showCalendarChk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:theme="@style/AppTheme.CheckBox" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="@string/settings_label_Appearance"
+                        style="@style/AppTheme.Dark.SettingDivider" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/statusbar">
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_choiceTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/nav"
+                    android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingEnd="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingStart="20dp"
-                    android:paddingTop="5dp"
-                    android:background="@drawable/nav"
-                    android:id="@+id/showAnimationLay">
+                    android:paddingTop="5dp">
 
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <TextView
+                        style="@style/AppTheme.Dark.TextView"
+                        android:text="@string/settings_calendar_edit_title" />
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/settings_calendar_edit_subtitle"
+                        android:textColor="@color/settings_button_subtitle"
+                        android:textSize="12sp" />
 
-                        <TextView
-                            android:text="@string/settings_mainAnimation_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_title"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:text="@string/settings_mainAnimation_subtitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_subtitle"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/animationChk"
-                        android:layout_gravity="center"
-                        android:theme="@style/AppTheme.CheckBox"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:id="@+id/settings_selectColor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/nav"
+                    android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingEnd="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingStart="20dp"
-                    android:paddingTop="5dp"
-                    android:background="@drawable/nav"
-                    android:id="@+id/autoKeyboardLay">
+                    android:paddingTop="5dp">
 
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:text="@string/settings_backup_title"
+                        android:textColor="@color/settings_button_title"
+                        android:textSize="18sp" />
 
-                        <TextView
-                            android:text="@string/settings_autoShowKeyboard_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_title"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:text="@string/settings_autoShowKeyboard_subtitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_subtitle"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/autoKeyChk"
-                        android:layout_gravity="center"
-                        android:theme="@style/AppTheme.CheckBox"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="5dp"
-                    android:paddingEnd="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="5dp"
-                    android:background="@drawable/nav"
-                    android:id="@+id/showCalendarLay">
-
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:text="@string/settings_showCalendar_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_title"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:text="@string/settings_showCalendar_subtitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/settings_button_subtitle"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/showCalendarChk"
-                        android:layout_gravity="center"
-                        android:theme="@style/AppTheme.CheckBox" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/settings_backup_subtitle"
+                        android:textColor="@color/settings_button_subtitle"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 

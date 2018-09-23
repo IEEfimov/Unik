@@ -2,6 +2,7 @@ package com.ieefimov.unik.classes;
 
 import android.support.v4.widget.DrawerLayout;
 
+import java.io.File;
 import java.util.Calendar;
 
 /**
@@ -58,6 +59,9 @@ public class Space {
     public static interface DialogDate{
         public abstract void getDate(int position, Calendar date);
     }
+    public static interface DialogOpenFile{
+        public abstract void open(File file);
+    }
 
 
 
@@ -68,6 +72,21 @@ public class Space {
         public abstract void retCalendar(int index);
 
 
+    }
+
+    public static boolean compareExtension(String name){
+        boolean result = false;
+
+        try {
+            if (name.charAt(name.length()-1)==FILE_EXTENSION.charAt(FILE_EXTENSION.length()-1))
+                if (name.charAt(name.length()-2)==FILE_EXTENSION.charAt(FILE_EXTENSION.length()-2))
+                    if (name.charAt(name.length()-3)==FILE_EXTENSION.charAt(FILE_EXTENSION.length()-3))
+                        return true;
+        }catch (Exception e){
+           return false;
+        }
+
+        return result;
     }
 
 

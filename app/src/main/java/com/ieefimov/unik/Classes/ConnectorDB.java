@@ -569,7 +569,11 @@ public class ConnectorDB extends SQLiteOpenHelper {
 
             return result;
         }
-        return -1;
+        else{
+            updateHW(item);
+            return -1;
+        }
+
     }
 
     public boolean updateHW(HomeWork item){
@@ -659,6 +663,24 @@ public class ConnectorDB extends SQLiteOpenHelper {
                 file.mkdirs();
             }
             FileInputStream fileIn = new FileInputStream(dir+ "/" + currentFile);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            SaveItem restored = (SaveItem) in.readObject();
+            restored.getCalendar().setName(newName);
+            writeSaveData(restored);
+            in.close();
+            fileIn.close();
+            Toast.makeText(context, "Готово", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e("error","ууупс, не могу сохранить :(");
+            e.printStackTrace();
+            Toast.makeText(context, "Что то пошло не так... \n см. Лог", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void RestoreCalendar(File currentFile,String newName, Context context){
+        try {
+            FileInputStream fileIn = new FileInputStream(currentFile.getAbsolutePath());
             ObjectInputStream in = new ObjectInputStream(fileIn);
             SaveItem restored = (SaveItem) in.readObject();
             restored.getCalendar().setName(newName);

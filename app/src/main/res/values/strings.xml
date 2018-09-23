@@ -59,6 +59,7 @@
     <string name="settings_itemCountSubtitle">Количество элементов рассписания каждый день</string>
     <string name="settings_saved">Создана копия:\n\r</string>
     <string name="settings_notSaved">Не могу создать копию \n\r Для деталей см. лог</string>
+    <string name="settings_fromSD">Открыть...</string>
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -98,6 +99,7 @@
 
     <string name="settings_label_Calendars">Настройки календарей</string>
     <string name="settings_label_Main">Главный экран</string>
+    <string name="settings_label_Appearance">Внешний вид</string>
 
 
     <!--/////////////////////////////////////////////////////////////////////////////////////////-->
@@ -113,6 +115,13 @@
 
     <string name="week1">числ.</string>
     <string name="week2">знамен.</string>
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <string name="openFileDialog_backSubtitle">На уровень выше</string>
+    <string name="openFileDialog_folder">Папка</string>
+
+
 
 
 </resources>

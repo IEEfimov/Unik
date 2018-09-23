@@ -30,13 +30,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ieefimov.unik.adapters.mainSimpleAdapter;
 import com.ieefimov.unik.classes.CalendarItem;
 import com.ieefimov.unik.classes.ConnectorDB;
 import com.ieefimov.unik.classes.HomeWork;
 import com.ieefimov.unik.classes.Hour;
 import com.ieefimov.unik.classes.Item;
 import com.ieefimov.unik.classes.Space;
-import com.ieefimov.unik.adapters.mainSimpleAdapter;
 import com.ieefimov.unik.dialogs.askCalendar;
 import com.ieefimov.unik.dialogs.askDate;
 import com.ieefimov.unik.settings.Activity_itemsEdit;
@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         calendarView.setOnDateChangeListener(onDateChangeListener);
 
         calendar = Calendar.getInstance();
+        update();
     }
 
     @Override
@@ -242,7 +243,6 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
 
         calendar = Calendar.getInstance();
 
-        update();
     }
 
     private void update(){
@@ -250,6 +250,8 @@ public class MainActivity extends AppCompatActivity implements Space.DialogChoic
         currentHours = database.selectHour(currentCalendar);
         tool.setTitle(currentCalendar.getName());
         //================
+
+        
 
         int day = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
         int week = 0;
